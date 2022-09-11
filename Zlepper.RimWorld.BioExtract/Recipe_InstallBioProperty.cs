@@ -5,21 +5,17 @@ using Verse;
 
 namespace Zlepper.Rimworld.BioExtract;
 
-public class Recipe_ExtractBioProperty : Recipe_Surgery
+public class Recipe_InstallBioProperty : Recipe_Surgery
 {
     public override bool AvailableOnNow(Thing thing, BodyPartRecord? part = null)
     {
-        if (recipe is not TraitRecipeDef traitRecipeDef)
+        if (recipe is not TraitRecipeDef {Trait: { } recipeTrait, TraitDegree: var traitDegree})
         {
-            BioExtractMod.ModLogger.Warning(
+            BioExtractMod.ModLogger.Error(
                 $"RecipeDef {recipe.defName} is not a TraitRecipeDef, got {recipe.GetType()}");
             return false;
         }
 
-        if (traitRecipeDef.Trait == null!)
-        {
-            return false;
-        }
 
         if (thing is not Pawn pawn)
         {
@@ -27,9 +23,10 @@ public class Recipe_ExtractBioProperty : Recipe_Surgery
             return false;
         }
 
-        var matches = pawn.story.traits.allTraits.FirstOrDefault(t =>
-            t.def == traitRecipeDef.Trait && t.Degree == traitRecipeDef.TraitDegree);
-        return matches != null;
+        var existing = pawn.story.traits.allTraits.FirstOrDefault(t => t.def == recipeTrait);
+
+        BioExtractMod.ModLogger.Message($"Checking if installation of trait '{recipeTrait.defName}' is available on pawn {pawn}. Found: {existing?.def};{existing?.Degree}");
+        return existing?.Degree != traitDegree;
     }
 
     public override IEnumerable<BodyPartRecord> GetPartsToApplyOn(Pawn pawn, RecipeDef recipe)
@@ -73,13 +70,29 @@ public class Recipe_ExtractBioProperty : Recipe_Surgery
             TaleRecorder.RecordTale(TaleDefOf.DidSurgery, billDoer, pawn);
             if (!pawn.health.hediffSet.GetNotMissingParts().Contains<BodyPartRecord>(part))
                 return;
-            var trait = pawn.story.traits.allTraits.FirstOrDefault(t =>
-                t.def == traitRecipeDef.Trait && t.Degree == traitRecipeDef.TraitDegree);
-            if (trait != null)
+
+
+            var newTrait = traitRecipeDef.Trait;
+
+            var traitsToRemove = new List<Trait>();
+
+
+            var sameTrait = pawn.story.traits.allTraits.FirstOrDefault(t => t.def == newTrait);
+            if (sameTrait != null)
             {
-                GenSpawn.Spawn(traitRecipeDef.TraitThing, billDoer.Position, billDoer.Map);
+                traitsToRemove.Add(sameTrait);
+            }
+
+            var incompatibleTraits = pawn.story.traits.allTraits.Where(t =>
+                newTrait.conflictingTraits.Contains(t.def) || t.def.conflictingTraits.Contains(newTrait));
+            traitsToRemove.AddRange(incompatibleTraits);
+
+            foreach (var trait in traitsToRemove)
+            {
                 pawn.story.traits.RemoveTrait(trait);
             }
+
+            pawn.story.traits.GainTrait(new Trait(newTrait, traitRecipeDef.TraitDegree));
         }
 
         if (!IsViolationOnPawn(pawn, part, Faction.OfPlayer))

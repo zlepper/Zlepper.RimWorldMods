@@ -58,26 +58,62 @@ public class BioExtractMod : ModBase
                 extractTraitRecipe.TraitDegree = degreeData.degree;
                 extractTraitRecipe.TraitThing = traitItemThing;
 
-                traitItemThing.descriptionHyperlinks = new List<DefHyperlink>
+                var installTraitRecipe = CreateCopy<TraitRecipeDef>(BioExtractModDefOf.SurgeryInstallBioProperty);
+                installTraitRecipe.defName = $"installTrait{traitDef.defName}OfDegree{degreeData.degree}";
+                installTraitRecipe.label = $"Install trait ({degreeData.label})";
+                installTraitRecipe.description = $"Install the trait '{degreeData.label}'";
+                installTraitRecipe.jobString = $"Install trait ({degreeData.label})";
+                installTraitRecipe.generated = true;
+                installTraitRecipe.Trait = traitDef;
+                installTraitRecipe.TraitDegree = degreeData.degree;
+                installTraitRecipe.TraitThing = traitItemThing;
+                var filter = new ThingFilter();
+                filter.SetAllow(traitItemThing, true);
+                installTraitRecipe.ingredients = new List<IngredientCount>(installTraitRecipe.ingredients)
                 {
-                    new(extractTraitRecipe),
-                };
-                extractTraitRecipe.descriptionHyperlinks = new List<DefHyperlink>
-                {
-                    new(traitItemThing)
+                    new()
+                    {
+                        filter = filter,
+                    }
                 };
 
-
+                var original = installTraitRecipe.fixedIngredientFilter;
+                installTraitRecipe.fixedIngredientFilter = new ThingFilter();
+                installTraitRecipe.fixedIngredientFilter.CopyAllowancesFrom(original);
+                
+                installTraitRecipe.fixedIngredientFilter.SetAllow(traitItemThing, true);
+                
+                HyperlinkAll(traitItemThing, extractTraitRecipe, installTraitRecipe);
+                
                 RecipeDefDatabase.Add(extractTraitRecipe);
+                RecipeDefDatabase.Add(installTraitRecipe);
                 ThingDefDatabase.Add(traitItemThing);
             }
         }
 
         RemoveFromDatabase(BioExtractModDefOf.SurgeryExtractBioProperty);
+        RemoveFromDatabase(BioExtractModDefOf.SurgeryInstallBioProperty);
         RemoveFromDatabase(BioExtractModDefOf.SurgeryExtractBioTraitItem);
     }
 
-    private void RemoveFromDatabase<T>(T def)
+    private static void HyperlinkAll(params Def[] defs)
+    {
+        for (var i = 0; i < defs.Length; i++)
+        {
+            var defI = defs[i];
+            defI.descriptionHyperlinks ??= new List<DefHyperlink>();
+            for (var j = 0; j < defs.Length; j++)
+            {
+                if (i == j)
+                {
+                    continue;
+                }
+                defI.descriptionHyperlinks.Add(new DefHyperlink(defs[j]));
+            }
+        }
+    }
+    
+    private static void RemoveFromDatabase<T>(T def)
         where T : Def
     {
         const string removeMethodName = "Remove";
@@ -97,7 +133,7 @@ public class BioExtractMod : ModBase
     /// <summary>
     /// Creates a shallow copy of the specified element for further modification
     /// </summary>
-    private T CreateCopy<T>(object from)
+    private static T CreateCopy<T>(object from)
         where T : notnull
     {
         if (from == null) throw new ArgumentNullException(nameof(from));

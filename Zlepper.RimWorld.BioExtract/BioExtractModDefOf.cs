@@ -7,6 +7,7 @@ namespace Zlepper.Rimworld.BioExtract;
 public static class BioExtractModDefOf
 {
     public static RecipeDef SurgeryExtractBioProperty = null!;
+    public static RecipeDef SurgeryInstallBioProperty = null!;
     public static ThingDef SurgeryExtractBioTraitItem = null!;
 
     static BioExtractModDefOf()
