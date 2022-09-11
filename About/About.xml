@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-    <name>Fast Farm</name>
+    <name>Bio Extract</name>
     <author>Zlepper</author>
-    <packageId>Zlepper.RimWorld.FastFarm</packageId>
+    <packageId>Zlepper.RimWorld.BioExtract</packageId>
     <supportedVersions>
         <li>1.3</li>
     </supportedVersions>
 
-    <description>Adds a FastFarm block that makes it possible to still have a lot of animals without the game slowing to a halt.</description>
+    <description>Allows extraction of most things in the Bio Tab</description>
 
     <modDependencies>
         <li>

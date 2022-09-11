@@ -3,7 +3,6 @@
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
         <Nullable>enable</Nullable>
-        <RootNamespace>Zlepper.Rimworld.FastFarm</RootNamespace>
         <LangVersion>10</LangVersion>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
     </PropertyGroup>

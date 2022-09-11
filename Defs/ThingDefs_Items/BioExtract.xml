@@ -1,0 +1,13 @@
+<Defs>
+
+    <ThingDef ParentName="BodyPartArchotechBase">
+        <defName>SurgeryExtractBioTraitItem</defName>
+        <label>Trait Item Base</label>
+        <description>If you got this item, then you either cheated or there is a bug somewhere</description>
+        <statBases>
+            <MarketValue>500</MarketValue>
+        </statBases>
+        <devNote>This thing will be used as the template for all other trait specific items</devNote>
+    </ThingDef>
+
+</Defs>

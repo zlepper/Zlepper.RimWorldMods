@@ -1,6 +1,6 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.FastFarm", "Zlepper.RimWorld.FastFarm\Zlepper.RimWorld.FastFarm.csproj", "{38967860-8205-4B71-849E-8E094840FBEA}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.BioExtract", "Zlepper.RimWorld.BioExtract\Zlepper.RimWorld.BioExtract.csproj", "{38967860-8205-4B71-849E-8E094840FBEA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
