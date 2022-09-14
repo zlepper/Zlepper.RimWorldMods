@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Reflection;
 using HugsLib;
 using HugsLib.Utils;
@@ -18,10 +19,6 @@ public class BioExtractMod : ModBase
     public override void EarlyInitialize()
     {
         _instance = this;
-    }
-
-    public override void Initialize()
-    {
     }
 
     public override void DefsLoaded()
@@ -48,30 +45,35 @@ public class BioExtractMod : ModBase
         {
             foreach (var passion in passionValues)
             {
-                Logger.TraceFormat("Registering recipe for skill {0} of passion {1}", skillDef.defName, passion);
+                Logger.TraceFormat("Registering recipe for skill {0} of passion {1}, value: {2}", skillDef.defName,
+                    passion, (int) passion);
 
 
                 var passionItemThing = CreateCopy<ThingDef>(BioExtractModDefOf.SurgeryExtractBioTraitItem);
                 passionItemThing.defName = $"skillPassion{skillDef.defName}OfDegree{passion}";
-                passionItemThing.description = $"{passion} passion for the skill {skillDef.label}";
-                passionItemThing.label = $"{passion} passion for {skillDef.label}";
-                passionItemThing.BaseMarketValue *= (int) passion;
+                passionItemThing.description = $"Passion{passion}ItemThingDescription".Translate(skillDef.label);
+                passionItemThing.label = $"Passion{passion}ItemThingLabel".Translate(skillDef.label);
+                passionItemThing.BaseMarketValue *= (float) passion;
 
-                var extractPassionRecipe = CreateCopy<ExtractPassionRecipeDef>(BioExtractModDefOf.SurgeryExtractBioProperty);
+                var extractPassionRecipe =
+                    CreateCopy<ExtractPassionRecipeDef>(BioExtractModDefOf.SurgeryExtractBioProperty);
                 extractPassionRecipe.defName = $"harvestSkillPassion{skillDef.defName}OfDegree{passion}";
-                extractPassionRecipe.label = $"Harvest {passion} passion for {skillDef.label}";
-                extractPassionRecipe.description = $"Harvests the {passion} passion for '{skillDef.label}', forcefully.";
-                extractPassionRecipe.jobString = $"Harvesting {skillDef.label} passion";
+                extractPassionRecipe.label = $"Extract{passion}PassionRecipeLabel".Translate(skillDef.label);
+                extractPassionRecipe.description =
+                    $"Extract{passion}PassionRecipeDescription".Translate(skillDef.label);
+                extractPassionRecipe.jobString = $"Extract{passion}PassionRecipeJobString".Translate(skillDef.label);
                 extractPassionRecipe.generated = true;
                 extractPassionRecipe.Skill = skillDef;
                 extractPassionRecipe.Passion = passion;
                 extractPassionRecipe.PassionThing = passionItemThing;
 
-                var installPassionRecipe = CreateCopy<InstallPassionRecipeDef>(BioExtractModDefOf.SurgeryInstallBioProperty);
+                var installPassionRecipe =
+                    CreateCopy<InstallPassionRecipeDef>(BioExtractModDefOf.SurgeryInstallBioProperty);
                 installPassionRecipe.defName = $"installSkillPassion{skillDef.defName}OfDegree{passion}";
-                installPassionRecipe.label = $"Install {passion} passion for {skillDef.label}";
-                installPassionRecipe.description = $"Install the {passion} passion for '{skillDef.label}";
-                installPassionRecipe.jobString = $"Install {skillDef.label} passion";
+                installPassionRecipe.label = $"Install{passion}PassionRecipeLabel".Translate(skillDef.label);
+                installPassionRecipe.description =
+                    $"Install{passion}PassionRecipeDescription".Translate(skillDef.label);
+                installPassionRecipe.jobString = $"Install{passion}PassionRecipeJobString".Translate(skillDef.label);
                 installPassionRecipe.generated = true;
                 installPassionRecipe.Skill = skillDef;
                 installPassionRecipe.Passion = passion;
@@ -113,25 +115,27 @@ public class BioExtractMod : ModBase
 
                 var traitItemThing = CreateCopy<ThingDef>(BioExtractModDefOf.SurgeryExtractBioTraitItem);
                 traitItemThing.defName = $"trait{traitDef.defName}OfDegree{degreeData.degree}";
-                traitItemThing.description = $"The trait '{degreeData.label}'.";
-                traitItemThing.label = $"Trait ({degreeData.label})";
+                traitItemThing.description = "TraitItemThingDescription".Translate(degreeData.label);
+                traitItemThing.label = "TraitItemThingLabel".Translate(degreeData.label);
                 traitItemThing.BaseMarketValue *= 1 + degreeData.marketValueFactorOffset;
 
-                var extractTraitRecipe = CreateCopy<ExtractTraitRecipeDef>(BioExtractModDefOf.SurgeryExtractBioProperty);
+                var extractTraitRecipe =
+                    CreateCopy<ExtractTraitRecipeDef>(BioExtractModDefOf.SurgeryExtractBioProperty);
                 extractTraitRecipe.defName = $"harvestTrait{traitDef.defName}OfDegree{degreeData.degree}";
-                extractTraitRecipe.label = $"Harvest trait ({degreeData.label})";
-                extractTraitRecipe.description = $"Harvests the trait '{degreeData.label}', forcefully.";
-                extractTraitRecipe.jobString = $"Harvesting {degreeData.label} trait";
+                extractTraitRecipe.label = "ExtractTraitRecipeLabel".Translate(degreeData.label);
+                extractTraitRecipe.description = "ExtractTraitRecipeDescription".Translate(degreeData.label);
+                extractTraitRecipe.jobString = "ExtractTraitRecipeJobString".Translate(degreeData.label);
                 extractTraitRecipe.generated = true;
                 extractTraitRecipe.Trait = traitDef;
                 extractTraitRecipe.TraitDegree = degreeData.degree;
                 extractTraitRecipe.TraitThing = traitItemThing;
 
-                var installTraitRecipe = CreateCopy<InstallTraitRecipeDef>(BioExtractModDefOf.SurgeryInstallBioProperty);
+                var installTraitRecipe =
+                    CreateCopy<InstallTraitRecipeDef>(BioExtractModDefOf.SurgeryInstallBioProperty);
                 installTraitRecipe.defName = $"installTrait{traitDef.defName}OfDegree{degreeData.degree}";
-                installTraitRecipe.label = $"Install trait ({degreeData.label})";
-                installTraitRecipe.description = $"Install the trait '{degreeData.label}'";
-                installTraitRecipe.jobString = $"Install trait ({degreeData.label})";
+                installTraitRecipe.label = "InstallTraitRecipeLabel".Translate(degreeData.label);
+                installTraitRecipe.description = "InstallTraitRecipeDescription".Translate(degreeData.label);
+                installTraitRecipe.jobString = "InstallTraitRecipeJobString".Translate(degreeData.label);
                 installTraitRecipe.generated = true;
                 installTraitRecipe.Trait = traitDef;
                 installTraitRecipe.TraitDegree = degreeData.degree;
@@ -173,16 +177,18 @@ public class BioExtractMod : ModBase
                 {
                     continue;
                 }
+
                 defI.descriptionHyperlinks.Add(new DefHyperlink(defs[j]));
             }
         }
     }
-    
+
     private static void RemoveFromDatabase<T>(T def)
         where T : Def
     {
         const string removeMethodName = "Remove";
-        var removeMethod = typeof(DefDatabase<T>).GetMethod(removeMethodName, BindingFlags.Static | BindingFlags.NonPublic);
+        var removeMethod =
+            typeof(DefDatabase<T>).GetMethod(removeMethodName, BindingFlags.Static | BindingFlags.NonPublic);
         if (removeMethod == null)
         {
             throw new MissingMethodException(typeof(DefDatabase<T>).FullName, removeMethodName);
@@ -198,8 +204,8 @@ public class BioExtractMod : ModBase
     /// <summary>
     /// Creates a shallow copy of the specified element for further modification
     /// </summary>
-    private static T CreateCopy<T>(object from)
-        where T : notnull
+    private static T CreateCopy<T>(Def from)
+        where T : Def, new()
     {
         if (from == null) throw new ArgumentNullException(nameof(from));
 
@@ -209,7 +215,7 @@ public class BioExtractMod : ModBase
             throw new ArgumentException($"type of {typeof(T)} cannot be generated from {fromType}");
         }
 
-        var newInstance = Activator.CreateInstance<T>();
+        var newInstance = new T();
 
         foreach (var field in fromType.GetFields(BindingFlags.Instance | BindingFlags.Public))
         {
@@ -219,6 +225,15 @@ public class BioExtractMod : ModBase
             }
 
             field.SetValue(newInstance, field.GetValue(from));
+        }
+
+        if (newInstance is BuildableDef newBuildable && from is BuildableDef fromBuildable)
+        {
+            newBuildable.statBases = fromBuildable.statBases.Select(s => new StatModifier()
+            {
+                stat = s.stat,
+                value = s.value
+            }).ToList();
         }
 
         return newInstance;

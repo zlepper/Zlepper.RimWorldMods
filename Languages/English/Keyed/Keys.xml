@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+    <TraitItemThingDescription>The trait '{0}'.</TraitItemThingDescription>
+    <TraitItemThingLabel>Trait ({0}).</TraitItemThingLabel>
+    
+    <ExtractTraitRecipeLabel>Harvest trait ({0})</ExtractTraitRecipeLabel>
+    <ExtractTraitRecipeDescription>Harvests the trait '{0}', forcefully.</ExtractTraitRecipeDescription>
+    <ExtractTraitRecipeJobString>Harvesting trait ({0})</ExtractTraitRecipeJobString>
+    
+    <InstallTraitRecipeLabel>Install trait ({0})</InstallTraitRecipeLabel>
+    <InstallTraitRecipeDescription>Install the trait '{0}'.</InstallTraitRecipeDescription>
+    <InstallTraitRecipeJobString>Installing trait ({0})</InstallTraitRecipeJobString>
+    
+    
+    <PassionMajorItemThingDescription>Burning passion for the skill {0}.</PassionMajorItemThingDescription>
+    <PassionMajorItemThingLabel>Burning passion for {0}.</PassionMajorItemThingLabel>
+    
+    <ExtractMajorPassionRecipeLabel>Harvest burning passion for {0}</ExtractMajorPassionRecipeLabel>
+    <ExtractMajorPassionRecipeDescription>Harvests burning passion for '{0}', forcefully.</ExtractMajorPassionRecipeDescription>
+    <ExtractMajorPassionRecipeJobString>Harvesting {0} burning passion</ExtractMajorPassionRecipeJobString>
+    
+    <InstallMajorPassionRecipeLabel>Install burning passion for {0}</InstallMajorPassionRecipeLabel>
+    <InstallMajorPassionRecipeDescription>Installs a burning passion for '{0}'.</InstallMajorPassionRecipeDescription>
+    <InstallMajorPassionRecipeJobString>Installing burning passion ({0})</InstallMajorPassionRecipeJobString>
+    
+    
+    <PassionMinorItemThingDescription>Passion for the skill {0}.</PassionMinorItemThingDescription>
+    <PassionMinorItemThingLabel>Passion for {0}.</PassionMinorItemThingLabel>
+    
+    <ExtractMinorPassionRecipeLabel>Harvest passion for {0}</ExtractMinorPassionRecipeLabel>
+    <ExtractMinorPassionRecipeDescription>Harvests passion for '{0}', forcefully.</ExtractMinorPassionRecipeDescription>
+    <ExtractMinorPassionRecipeJobString>Harvesting {0} passion</ExtractMinorPassionRecipeJobString>
+    
+    <InstallMinorPassionRecipeLabel>Install passion for {0}</InstallMinorPassionRecipeLabel>
+    <InstallMinorPassionRecipeDescription>Installs a passion for '{0}'.</InstallMinorPassionRecipeDescription>
+    <InstallMinorPassionRecipeJobString>Installing passion ({0})</InstallMinorPassionRecipeJobString>
+</LanguageData>
