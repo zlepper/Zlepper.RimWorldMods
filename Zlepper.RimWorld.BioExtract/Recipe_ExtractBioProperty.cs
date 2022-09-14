@@ -16,13 +16,14 @@ public class Recipe_ExtractBioProperty : Recipe_UpdateTrait
 
     protected override void ApplyTraitChanges(Pawn pawn, TraitRecipeDef traitRecipeDef, Pawn billDoer)
     {
-        
         var trait = pawn.story.traits.allTraits.FirstOrDefault(t =>
             t.def == traitRecipeDef.Trait && t.Degree == traitRecipeDef.TraitDegree);
         if (trait != null)
         {
             GenSpawn.Spawn(traitRecipeDef.TraitThing, billDoer.Position, billDoer.Map);
             pawn.story.traits.RemoveTrait(trait);
+            
+            HealthUtility.GiveInjuriesOperationFailureMinor(pawn, pawn.health.hediffSet.GetBrain());
         }
     }
 }
