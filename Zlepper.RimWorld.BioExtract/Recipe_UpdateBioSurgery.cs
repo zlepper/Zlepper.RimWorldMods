@@ -5,14 +5,14 @@ using Verse;
 
 namespace Zlepper.Rimworld.BioExtract;
 
-public abstract class Recipe_UpdateTrait : Recipe_Surgery
+public class Recipe_UpdateBioSurgery : Recipe_Surgery
 {
     public override bool AvailableOnNow(Thing thing, BodyPartRecord? part = null)
     {
-        if (recipe is not TraitRecipeDef {Trait: { } recipeTrait, TraitDegree: var traitDegree})
+        if (recipe is not BaseBioRecipeDef bioRecipe)
         {
             BioExtractMod.ModLogger.Error(
-                $"RecipeDef {recipe.defName} is not a TraitRecipeDef, got {recipe.GetType()}");
+                $"RecipeDef {recipe.defName} is not a {typeof(BaseBioRecipeDef)}, got {recipe.GetType()}");
             return false;
         }
 
@@ -23,7 +23,7 @@ public abstract class Recipe_UpdateTrait : Recipe_Surgery
             return false;
         }
 
-        return CheckIfSurgeryIsPossible(pawn, recipeTrait, traitDegree);
+        return bioRecipe.CheckIfSurgeryIsPossible(pawn);
     }
 
 
@@ -53,7 +53,7 @@ public abstract class Recipe_UpdateTrait : Recipe_Surgery
 
     public override void ApplyOnPawn(Pawn pawn, BodyPartRecord part, Pawn? billDoer, List<Thing> ingredients, Bill bill)
     {
-        if (recipe is not TraitRecipeDef traitRecipeDef)
+        if (recipe is not BaseBioRecipeDef bioRecipe)
         {
             BioExtractMod.ModLogger.Warning(
                 $"RecipeDef {recipe.defName} is not a TraitRecipeDef, got {recipe.GetType()}");
@@ -69,16 +69,11 @@ public abstract class Recipe_UpdateTrait : Recipe_Surgery
             if (!pawn.health.hediffSet.GetNotMissingParts().Contains<BodyPartRecord>(part))
                 return;
 
-
-            ApplyTraitChanges(pawn, traitRecipeDef, billDoer);
+            bioRecipe.ApplyChanges(pawn, billDoer);
         }
 
         if (!IsViolationOnPawn(pawn, part, Faction.OfPlayer))
             return;
         ReportViolation(pawn, billDoer, pawn.HomeFaction, -70);
     }
-
-    protected abstract bool CheckIfSurgeryIsPossible(Pawn pawn, TraitDef recipeTrait, int traitDegree);
-
-    protected abstract void ApplyTraitChanges(Pawn pawn, TraitRecipeDef traitRecipeDef, Pawn billDoer);
 }

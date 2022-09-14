@@ -4,12 +4,11 @@ using Verse;
 
 namespace Zlepper.Rimworld.BioExtract;
 
-public class TraitRecipeDef : RecipeDef
+public abstract class BaseTraitRecipeDef : BaseBioRecipeDef
 {
     public TraitDef Trait = null!;
-
     public int TraitDegree;
-    public TraitThingDef TraitThing = null!;
+    public ThingDef TraitThing = null!;
 
     public override IEnumerable<string> ConfigErrors()
     {

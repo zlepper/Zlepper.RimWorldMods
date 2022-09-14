@@ -2,7 +2,7 @@
 <Defs>
     <RecipeDef ParentName="SurgeryRemoveImplantBase">
         <defName>SurgeryExtractBioProperty</defName>
-        <workerClass>Zlepper.Rimworld.BioExtract.Recipe_ExtractBioProperty</workerClass>
+        <workerClass>Zlepper.Rimworld.BioExtract.Recipe_UpdateBioSurgery</workerClass>
         <workAmount>2500</workAmount>
         <isViolation>true</isViolation>
         <skillRequirements>
@@ -33,7 +33,7 @@
     
     <RecipeDef ParentName="SurgeryInstallImplantBase">
         <defName>SurgeryInstallBioProperty</defName>
-        <workerClass>Zlepper.Rimworld.BioExtract.Recipe_InstallBioProperty</workerClass>
+        <workerClass>Zlepper.Rimworld.BioExtract.Recipe_UpdateBioSurgery</workerClass>
         <workAmount>2500</workAmount>
         <isViolation>true</isViolation>
         <skillRequirements>

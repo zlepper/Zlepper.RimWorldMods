@@ -2,7 +2,7 @@
 
     <ThingDef ParentName="BodyPartArchotechBase">
         <defName>SurgeryExtractBioTraitItem</defName>
-        <label>Trait Item Base</label>
+        <label>Bio Extract Item Base</label>
         <description>If you got this item, then you either cheated or there is a bug somewhere</description>
         <statBases>
             <MarketValue>500</MarketValue>
