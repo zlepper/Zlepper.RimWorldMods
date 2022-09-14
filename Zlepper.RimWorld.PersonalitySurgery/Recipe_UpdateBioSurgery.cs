@@ -3,7 +3,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-namespace Zlepper.Rimworld.BioExtract;
+namespace Zlepper.RimWorld.PersonalitySurgery;
 
 public class Recipe_UpdateBioSurgery : Recipe_Surgery
 {
@@ -11,7 +11,7 @@ public class Recipe_UpdateBioSurgery : Recipe_Surgery
     {
         if (recipe is not BaseBioRecipeDef bioRecipe)
         {
-            BioExtractMod.ModLogger.Error(
+            PersonalitySurgeryMod.ModLogger.Error(
                 $"RecipeDef {recipe.defName} is not a {typeof(BaseBioRecipeDef)}, got {recipe.GetType()}");
             return false;
         }
@@ -19,7 +19,7 @@ public class Recipe_UpdateBioSurgery : Recipe_Surgery
 
         if (thing is not Pawn pawn)
         {
-            BioExtractMod.ModLogger.Trace($"Thing {thing.Label} is not a Pawn, got {thing.GetType()}");
+            PersonalitySurgeryMod.ModLogger.Trace($"Thing {thing.Label} is not a Pawn, got {thing.GetType()}");
             return false;
         }
 
@@ -55,7 +55,7 @@ public class Recipe_UpdateBioSurgery : Recipe_Surgery
     {
         if (recipe is not BaseBioRecipeDef bioRecipe)
         {
-            BioExtractMod.ModLogger.Warning(
+            PersonalitySurgeryMod.ModLogger.Warning(
                 $"RecipeDef {recipe.defName} is not a TraitRecipeDef, got {recipe.GetType()}");
             return;
         }

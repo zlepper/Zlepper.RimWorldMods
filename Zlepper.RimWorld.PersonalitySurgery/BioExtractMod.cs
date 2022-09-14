@@ -9,12 +9,12 @@ using Verse;
 using RecipeDefDatabase = Verse.DefDatabase<Verse.RecipeDef>;
 using ThingDefDatabase = Verse.DefDatabase<Verse.ThingDef>;
 
-namespace Zlepper.Rimworld.BioExtract;
+namespace Zlepper.RimWorld.PersonalitySurgery;
 
 [EarlyInit]
-public class BioExtractMod : ModBase
+public class PersonalitySurgeryMod : ModBase
 {
-    public override string ModIdentifier => "Zlepper.RimWorld.BioExtract";
+    public override string ModIdentifier => "Zlepper.RimWorld.PersonalitySurgery";
 
     public override void EarlyInitialize()
     {
@@ -32,9 +32,9 @@ public class BioExtractMod : ModBase
 
         RegisterPassionRecipes();
 
-        RemoveFromDatabase(BioExtractModDefOf.SurgeryExtractBioProperty);
-        RemoveFromDatabase(BioExtractModDefOf.SurgeryInstallBioProperty);
-        RemoveFromDatabase(BioExtractModDefOf.SurgeryExtractBioTraitItem);
+        RemoveFromDatabase(PersonalitySurgeryModDefOf.SurgeryExtractBioProperty);
+        RemoveFromDatabase(PersonalitySurgeryModDefOf.SurgeryInstallBioProperty);
+        RemoveFromDatabase(PersonalitySurgeryModDefOf.SurgeryExtractBioTraitItem);
     }
 
     private void RegisterPassionRecipes()
@@ -49,14 +49,14 @@ public class BioExtractMod : ModBase
                     passion, (int) passion);
 
 
-                var passionItemThing = CreateCopy<ThingDef>(BioExtractModDefOf.SurgeryExtractBioTraitItem);
+                var passionItemThing = CreateCopy<ThingDef>(PersonalitySurgeryModDefOf.SurgeryExtractBioTraitItem);
                 passionItemThing.defName = $"skillPassion{skillDef.defName}OfDegree{passion}";
                 passionItemThing.description = $"Passion{passion}ItemThingDescription".Translate(skillDef.label);
                 passionItemThing.label = $"Passion{passion}ItemThingLabel".Translate(skillDef.label);
                 passionItemThing.BaseMarketValue *= (float) passion;
 
                 var extractPassionRecipe =
-                    CreateCopy<ExtractPassionRecipeDef>(BioExtractModDefOf.SurgeryExtractBioProperty);
+                    CreateCopy<ExtractPassionRecipeDef>(PersonalitySurgeryModDefOf.SurgeryExtractBioProperty);
                 extractPassionRecipe.defName = $"harvestSkillPassion{skillDef.defName}OfDegree{passion}";
                 extractPassionRecipe.label = $"Extract{passion}PassionRecipeLabel".Translate(skillDef.label);
                 extractPassionRecipe.description =
@@ -68,7 +68,7 @@ public class BioExtractMod : ModBase
                 extractPassionRecipe.PassionThing = passionItemThing;
 
                 var installPassionRecipe =
-                    CreateCopy<InstallPassionRecipeDef>(BioExtractModDefOf.SurgeryInstallBioProperty);
+                    CreateCopy<InstallPassionRecipeDef>(PersonalitySurgeryModDefOf.SurgeryInstallBioProperty);
                 installPassionRecipe.defName = $"installSkillPassion{skillDef.defName}OfDegree{passion}";
                 installPassionRecipe.label = $"Install{passion}PassionRecipeLabel".Translate(skillDef.label);
                 installPassionRecipe.description =
@@ -113,14 +113,14 @@ public class BioExtractMod : ModBase
                     degreeData.label);
 
 
-                var traitItemThing = CreateCopy<ThingDef>(BioExtractModDefOf.SurgeryExtractBioTraitItem);
+                var traitItemThing = CreateCopy<ThingDef>(PersonalitySurgeryModDefOf.SurgeryExtractBioTraitItem);
                 traitItemThing.defName = $"trait{traitDef.defName}OfDegree{degreeData.degree}";
                 traitItemThing.description = "TraitItemThingDescription".Translate(degreeData.label);
                 traitItemThing.label = "TraitItemThingLabel".Translate(degreeData.label);
                 traitItemThing.BaseMarketValue *= 1 + degreeData.marketValueFactorOffset;
 
                 var extractTraitRecipe =
-                    CreateCopy<ExtractTraitRecipeDef>(BioExtractModDefOf.SurgeryExtractBioProperty);
+                    CreateCopy<ExtractTraitRecipeDef>(PersonalitySurgeryModDefOf.SurgeryExtractBioProperty);
                 extractTraitRecipe.defName = $"harvestTrait{traitDef.defName}OfDegree{degreeData.degree}";
                 extractTraitRecipe.label = "ExtractTraitRecipeLabel".Translate(degreeData.label);
                 extractTraitRecipe.description = "ExtractTraitRecipeDescription".Translate(degreeData.label);
@@ -131,7 +131,7 @@ public class BioExtractMod : ModBase
                 extractTraitRecipe.TraitThing = traitItemThing;
 
                 var installTraitRecipe =
-                    CreateCopy<InstallTraitRecipeDef>(BioExtractModDefOf.SurgeryInstallBioProperty);
+                    CreateCopy<InstallTraitRecipeDef>(PersonalitySurgeryModDefOf.SurgeryInstallBioProperty);
                 installTraitRecipe.defName = $"installTrait{traitDef.defName}OfDegree{degreeData.degree}";
                 installTraitRecipe.label = "InstallTraitRecipeLabel".Translate(degreeData.label);
                 installTraitRecipe.description = "InstallTraitRecipeDescription".Translate(degreeData.label);
@@ -199,7 +199,7 @@ public class BioExtractMod : ModBase
 
     public static ModLogger ModLogger => _instance.Logger;
 
-    private static BioExtractMod _instance = null!;
+    private static PersonalitySurgeryMod _instance = null!;
 
     /// <summary>
     /// Creates a shallow copy of the specified element for further modification

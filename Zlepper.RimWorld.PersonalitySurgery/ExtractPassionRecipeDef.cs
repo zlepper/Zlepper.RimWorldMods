@@ -1,7 +1,7 @@
 using RimWorld;
 using Verse;
 
-namespace Zlepper.Rimworld.BioExtract;
+namespace Zlepper.RimWorld.PersonalitySurgery;
 
 public class ExtractPassionRecipeDef : BasePassionRecipeDef
 {

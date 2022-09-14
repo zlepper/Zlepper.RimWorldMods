@@ -3,7 +3,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-namespace Zlepper.Rimworld.BioExtract;
+namespace Zlepper.RimWorld.PersonalitySurgery;
 
 public class InstallTraitRecipeDef : BaseTraitRecipeDef
 {
@@ -11,9 +11,6 @@ public class InstallTraitRecipeDef : BaseTraitRecipeDef
     public override bool CheckIfSurgeryIsPossible(Pawn pawn)
     {
         var existing = pawn.story.traits.allTraits.FirstOrDefault(t => t.def == Trait);
-
-        BioExtractMod.ModLogger.Message(
-            $"Checking if installation of trait '{defName}' is available on pawn {pawn}. Found: {existing?.def};{existing?.Degree}");
         return existing?.Degree != TraitDegree;
     }
     

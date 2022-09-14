@@ -1,7 +1,7 @@
 using System.Linq;
 using Verse;
 
-namespace Zlepper.Rimworld.BioExtract;
+namespace Zlepper.RimWorld.PersonalitySurgery;
 
 public class ExtractTraitRecipeDef : BaseTraitRecipeDef
 {

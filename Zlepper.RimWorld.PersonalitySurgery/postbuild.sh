@@ -1,5 +1,5 @@
 RIMWORLD_PATH="C:/Program Files (x86)/Steam/steamapps/common/RimWorld"
-MOD_FOLDER_PATH="${RIMWORLD_PATH}/Mods/Zlepper.RimWorld.BioExtract"
+MOD_FOLDER_PATH="${RIMWORLD_PATH}/Mods/Zlepper.RimWorld.PersonalitySurgery"
 
 rm -rf "${MOD_FOLDER_PATH}"
 mkdir -p "${MOD_FOLDER_PATH}"

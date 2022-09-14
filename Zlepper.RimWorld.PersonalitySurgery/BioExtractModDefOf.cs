@@ -1,17 +1,17 @@
 using RimWorld;
 using Verse;
 
-namespace Zlepper.Rimworld.BioExtract;
+namespace Zlepper.RimWorld.PersonalitySurgery;
 
 [DefOf]
-public static class BioExtractModDefOf
+public static class PersonalitySurgeryModDefOf
 {
     public static RecipeDef SurgeryExtractBioProperty = null!;
     public static RecipeDef SurgeryInstallBioProperty = null!;
     public static ThingDef SurgeryExtractBioTraitItem = null!;
 
-    static BioExtractModDefOf()
+    static PersonalitySurgeryModDefOf()
     {
-        DefOfHelper.EnsureInitializedInCtor(typeof(BioExtractModDefOf));
+        DefOfHelper.EnsureInitializedInCtor(typeof(PersonalitySurgeryModDefOf));
     }
 }

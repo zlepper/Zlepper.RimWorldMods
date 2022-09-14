@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-    <name>Bio Extract</name>
+    <name>Personality Surgery</name>
     <author>Zlepper</author>
-    <packageId>Zlepper.RimWorld.BioExtract</packageId>
+    <packageId>Zlepper.RimWorld.PersonalitySurgery</packageId>
     <supportedVersions>
         <li>1.3</li>
     </supportedVersions>
 
-    <description>Allows extraction of most things in the Bio Tab</description>
+    <description>Allows changing most of your colonists personality through surgery (And a couple of warcrimes)</description>
 
     <modDependencies>
         <li>

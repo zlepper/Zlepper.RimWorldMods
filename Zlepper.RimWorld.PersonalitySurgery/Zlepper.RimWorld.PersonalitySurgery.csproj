@@ -5,6 +5,7 @@
         <Nullable>enable</Nullable>
         <LangVersion>10</LangVersion>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <RootNamespace>Zlepper.RimWorld.PersonalitySurgery</RootNamespace>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
