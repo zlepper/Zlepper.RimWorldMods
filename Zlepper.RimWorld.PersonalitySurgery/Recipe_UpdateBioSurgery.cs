@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using RimWorld;
 using Verse;
+using Zlepper.RimWorld.PersonalitySurgery.Recipes;
 
 namespace Zlepper.RimWorld.PersonalitySurgery;
 

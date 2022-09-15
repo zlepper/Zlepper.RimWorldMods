@@ -6,7 +6,7 @@
         <workAmount>2500</workAmount>
         <isViolation>true</isViolation>
         <skillRequirements>
-            <Medicine>1</Medicine>
+            <Medicine>10</Medicine>
         </skillRequirements>
         <recipeUsers>
             <li>Human</li>
@@ -37,7 +37,7 @@
         <workAmount>2500</workAmount>
         <isViolation>true</isViolation>
         <skillRequirements>
-            <Medicine>1</Medicine>
+            <Medicine>10</Medicine>
         </skillRequirements>
         <recipeUsers>
             <li>Human</li>

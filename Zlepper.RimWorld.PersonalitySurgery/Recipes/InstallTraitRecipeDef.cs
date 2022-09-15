@@ -3,7 +3,7 @@ using System.Linq;
 using RimWorld;
 using Verse;
 
-namespace Zlepper.RimWorld.PersonalitySurgery;
+namespace Zlepper.RimWorld.PersonalitySurgery.Recipes;
 
 public class InstallTraitRecipeDef : BaseTraitRecipeDef
 {

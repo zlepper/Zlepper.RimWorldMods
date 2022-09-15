@@ -1,6 +1,6 @@
 using Verse;
 
-namespace Zlepper.RimWorld.PersonalitySurgery;
+namespace Zlepper.RimWorld.PersonalitySurgery.Recipes;
 
 public class InstallPassionRecipeDef : BasePassionRecipeDef
 {
