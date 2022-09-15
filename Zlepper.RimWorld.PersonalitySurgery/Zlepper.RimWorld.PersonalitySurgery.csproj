@@ -11,9 +11,15 @@
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
         <DebugSymbols>false</DebugSymbols>
     </PropertyGroup>
+    
+    <ItemGroup>
+        <None Include="About\**" CopyToOutputDirectory="Never" />
+        <None Include="Languages\**" CopyToOutputDirectory="Never" />
+        <None Include="Defs\**" CopyToOutputDirectory="Never" />
+    </ItemGroup>
 
     <PropertyGroup>
-        <OutputPath>../Assemblies</OutputPath>
+        <OutputPath>../Output/PersonalitySurgery/Assemblies</OutputPath>
     </PropertyGroup>
 
     <ItemGroup>
