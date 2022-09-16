@@ -1,4 +1,4 @@
-<Project Sdk="Zlepper.RimWorld.ModSdk/0.0.2">
+<Project Sdk="Zlepper.RimWorld.ModSdk/0.0.3">
 
     <PropertyGroup>
         <RootNamespace>Zlepper.RimWorld.PersonalitySurgery</RootNamespace>

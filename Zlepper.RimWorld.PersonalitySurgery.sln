@@ -2,6 +2,10 @@
 Microsoft Visual Studio Solution File, Format Version 12.00
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.PersonalitySurgery", "Zlepper.RimWorld.PersonalitySurgery\Zlepper.RimWorld.PersonalitySurgery.csproj", "{38967860-8205-4B71-849E-8E094840FBEA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.ExtremeTraits", "Zlepper.RimWorld.ExtremeTraits\Zlepper.RimWorld.ExtremeTraits.csproj", "{BC686AA2-313A-4E3A-BEF3-0C0FF80FD78F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.ExtremeTraits.Tests", "Zlepper.RimWorld.ExtremeTraits.Tests\Zlepper.RimWorld.ExtremeTraits.Tests.csproj", "{A88F0AD2-8FE5-46D5-973E-BA7BF300E960}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -12,5 +16,13 @@ Global
 		{38967860-8205-4B71-849E-8E094840FBEA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{38967860-8205-4B71-849E-8E094840FBEA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{38967860-8205-4B71-849E-8E094840FBEA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC686AA2-313A-4E3A-BEF3-0C0FF80FD78F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC686AA2-313A-4E3A-BEF3-0C0FF80FD78F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC686AA2-313A-4E3A-BEF3-0C0FF80FD78F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC686AA2-313A-4E3A-BEF3-0C0FF80FD78F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A88F0AD2-8FE5-46D5-973E-BA7BF300E960}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A88F0AD2-8FE5-46D5-973E-BA7BF300E960}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A88F0AD2-8FE5-46D5-973E-BA7BF300E960}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A88F0AD2-8FE5-46D5-973E-BA7BF300E960}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

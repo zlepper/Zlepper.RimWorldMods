@@ -1,0 +1,11 @@
+<Project Sdk="Zlepper.RimWorld.ModSdk/0.0.3">
+
+    <PropertyGroup>
+        <RootNamespace>Zlepper.RimWorld.ExtremeTraits</RootNamespace>
+        <IncludeHugsLib>true</IncludeHugsLib>
+        <RimWorldModName>Extreme Traits</RimWorldModName>
+        <RimWorldPackageId>Zlepper.RimWorld.ExtremeTraits</RimWorldPackageId>
+    </PropertyGroup>
+
+</Project>
+ 
