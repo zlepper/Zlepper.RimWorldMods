@@ -1,40 +1,11 @@
-<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Zlepper.RimWorld.ModSdk/0.0.2">
 
     <PropertyGroup>
-        <TargetFramework>net472</TargetFramework>
-        <Nullable>enable</Nullable>
-        <LangVersion>10</LangVersion>
-        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <RootNamespace>Zlepper.RimWorld.PersonalitySurgery</RootNamespace>
+        <IncludeHugsLib>true</IncludeHugsLib>
+        <RimWorldModName>Personality Surgery</RimWorldModName>
+        <RimWorldPackageId>Zlepper.RimWorld.PersonalitySurgery</RimWorldPackageId>
     </PropertyGroup>
-
-    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
-        <DebugSymbols>false</DebugSymbols>
-    </PropertyGroup>
-    
-    <ItemGroup>
-        <None Include="About\**" CopyToOutputDirectory="Never" />
-        <None Include="Languages\**" CopyToOutputDirectory="Never" />
-        <None Include="Defs\**" CopyToOutputDirectory="Never" />
-    </ItemGroup>
-
-    <PropertyGroup>
-        <OutputPath>../Output/PersonalitySurgery/Assemblies</OutputPath>
-    </PropertyGroup>
-
-    <ItemGroup>
-        <Reference Include="Assembly-CSharp">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\Assembly-CSharp.dll</HintPath>
-            <Private>False</Private>
-        </Reference>
-        <Reference Include="UnityEngine.CoreModule">
-            <HintPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld\RimWorldWin64_Data\Managed\UnityEngine.CoreModule.dll</HintPath>
-            <Private>False</Private>
-        </Reference>
-    </ItemGroup>
-
-    <ItemGroup>
-      <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="9.0.1" ExcludeAssets="runtime" />
-    </ItemGroup>
 
 </Project>
+ 

@@ -7,3 +7,5 @@ riderModule.iml
 Assemblies/
 *.DotSettings
 *.DotSettings.user
+Publish/
+launchSettings.json
