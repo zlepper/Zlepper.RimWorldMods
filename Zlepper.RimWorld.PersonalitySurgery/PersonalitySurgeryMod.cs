@@ -30,9 +30,18 @@ public class PersonalitySurgeryMod : ModBase
 
         RegisterPassionRecipes();
 
+        foreach (var cat in PersonalitySurgeryModDefOf.SurgeryExtractBioTraitItem.thingCategories)
+        {
+            cat.childThingDefs.Remove(PersonalitySurgeryModDefOf.SurgeryExtractBioTraitItem);
+        }
+        
         RemoveFromDatabase(PersonalitySurgeryModDefOf.SurgeryExtractBioProperty);
         RemoveFromDatabase(PersonalitySurgeryModDefOf.SurgeryInstallBioProperty);
         RemoveFromDatabase(PersonalitySurgeryModDefOf.SurgeryExtractBioTraitItem);
+
+        PersonalitySurgeryModDefOf.PersonalitySurgeryTraitCategory.ResolveReferences();
+        PersonalitySurgeryModDefOf.PersonalitySurgeryPassionCategory.ResolveReferences();
+
     }
 
     private void RegisterPassionRecipes()
@@ -48,6 +57,9 @@ public class PersonalitySurgeryMod : ModBase
                 passionItemThing.description = $"Passion{passion}ItemThingDescription".Translate(skillDef.label);
                 passionItemThing.label = $"Passion{passion}ItemThingLabel".Translate(skillDef.label);
                 passionItemThing.BaseMarketValue *= (float) passion;
+                passionItemThing.thingCategories = passionItemThing.thingCategories.ToList();
+                passionItemThing.thingCategories.Remove(PersonalitySurgeryModDefOf.PersonalitySurgeryTraitCategory);
+                passionItemThing.thingCategories.Add(PersonalitySurgeryModDefOf.PersonalitySurgeryPassionCategory);
 
                 var extractPassionRecipe =
                     CreateCopy<ExtractPassionRecipeDef>(PersonalitySurgeryModDefOf.SurgeryExtractBioProperty);
@@ -96,6 +108,11 @@ public class PersonalitySurgeryMod : ModBase
                 RecipeDefDatabase.Add(extractPassionRecipe);
                 RecipeDefDatabase.Add(installPassionRecipe);
                 ThingDefDatabase.Add(passionItemThing);
+                
+                foreach (var cat in passionItemThing.thingCategories)
+                {
+                    cat.childThingDefs.Add(passionItemThing);
+                }
             }
         }
     }
@@ -164,6 +181,11 @@ public class PersonalitySurgeryMod : ModBase
                 RecipeDefDatabase.Add(extractTraitRecipe);
                 RecipeDefDatabase.Add(installTraitRecipe);
                 ThingDefDatabase.Add(traitItemThing);
+             
+                foreach (var cat in traitItemThing.thingCategories)
+                {
+                    cat.childThingDefs.Add(traitItemThing);
+                }
             }
         }
     }

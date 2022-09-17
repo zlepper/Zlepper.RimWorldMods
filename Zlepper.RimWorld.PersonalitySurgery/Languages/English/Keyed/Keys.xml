@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
     <TraitItemThingDescription>The trait '{0}'.</TraitItemThingDescription>
-    <TraitItemThingLabel>Trait ({0}).</TraitItemThingLabel>
+    <TraitItemThingLabel>Trait ({0})</TraitItemThingLabel>
     
     <ExtractTraitRecipeLabel>Harvest trait ({0})</ExtractTraitRecipeLabel>
     <ExtractTraitRecipeDescription>Harvests the trait '{0}', forcefully.</ExtractTraitRecipeDescription>
@@ -13,7 +13,7 @@
     
     
     <PassionMajorItemThingDescription>Burning passion for the skill {0}.</PassionMajorItemThingDescription>
-    <PassionMajorItemThingLabel>Burning passion for {0}.</PassionMajorItemThingLabel>
+    <PassionMajorItemThingLabel>Burning passion for {0}</PassionMajorItemThingLabel>
     
     <ExtractMajorPassionRecipeLabel>Harvest burning passion for {0}</ExtractMajorPassionRecipeLabel>
     <ExtractMajorPassionRecipeDescription>Harvests burning passion for '{0}', forcefully.</ExtractMajorPassionRecipeDescription>
@@ -25,7 +25,7 @@
     
     
     <PassionMinorItemThingDescription>Passion for the skill {0}.</PassionMinorItemThingDescription>
-    <PassionMinorItemThingLabel>Passion for {0}.</PassionMinorItemThingLabel>
+    <PassionMinorItemThingLabel>Passion for {0}</PassionMinorItemThingLabel>
     
     <ExtractMinorPassionRecipeLabel>Harvest passion for {0}</ExtractMinorPassionRecipeLabel>
     <ExtractMinorPassionRecipeDescription>Harvests passion for '{0}', forcefully.</ExtractMinorPassionRecipeDescription>
