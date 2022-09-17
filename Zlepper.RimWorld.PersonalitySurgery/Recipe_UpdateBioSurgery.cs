@@ -57,7 +57,7 @@ public class Recipe_UpdateBioSurgery : Recipe_Surgery
         if (recipe is not BaseBioRecipeDef bioRecipe)
         {
             PersonalitySurgeryMod.ModLogger.Warning(
-                $"RecipeDef {recipe.defName} is not a TraitRecipeDef, got {recipe.GetType()}");
+                $"RecipeDef {recipe.defName} is not a {typeof(BaseBioRecipeDef)}, got {recipe.GetType()}");
             return;
         }
 

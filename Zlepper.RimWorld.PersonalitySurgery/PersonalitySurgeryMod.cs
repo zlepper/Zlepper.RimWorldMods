@@ -12,15 +12,11 @@ using ThingDefDatabase = Verse.DefDatabase<Verse.ThingDef>;
 
 namespace Zlepper.RimWorld.PersonalitySurgery;
 
-[EarlyInit]
 public class PersonalitySurgeryMod : ModBase
 {
-    public override string ModIdentifier => "Zlepper.RimWorld.PersonalitySurgery";
-
-    public override void EarlyInitialize()
-    {
-        _instance = this;
-    }
+    internal const string ModIdentifierValue = "Zlepper.RimWorld.PersonalitySurgery";
+    
+    public override string ModIdentifier => ModIdentifierValue;
 
     public override void DefsLoaded()
     {
@@ -28,6 +24,7 @@ public class PersonalitySurgeryMod : ModBase
         {
             return;
         }
+        
 
         RegisterTraitRecipes();
 
@@ -46,10 +43,6 @@ public class PersonalitySurgeryMod : ModBase
         {
             foreach (var passion in passionValues)
             {
-                Logger.TraceFormat("Registering recipe for skill {0} of passion {1}, value: {2}", skillDef.defName,
-                    passion, (int) passion);
-
-
                 var passionItemThing = CreateCopy<ThingDef>(PersonalitySurgeryModDefOf.SurgeryExtractBioTraitItem);
                 passionItemThing.defName = $"skillPassion{skillDef.defName}OfDegree{passion}";
                 passionItemThing.description = $"Passion{passion}ItemThingDescription".Translate(skillDef.label);
@@ -97,11 +90,21 @@ public class PersonalitySurgeryMod : ModBase
 
                 HyperlinkAll(passionItemThing, extractPassionRecipe, installPassionRecipe);
 
+                GiveShortHash(passionItemThing);
+                GiveShortHash<RecipeDef>(extractPassionRecipe);
+                GiveShortHash<RecipeDef>(installPassionRecipe);
                 RecipeDefDatabase.Add(extractPassionRecipe);
                 RecipeDefDatabase.Add(installPassionRecipe);
                 ThingDefDatabase.Add(passionItemThing);
             }
         }
+    }
+
+    private void GiveShortHash<TDef>(TDef def)
+        where TDef : Def
+    {
+        InjectedDefHasher.GiveShortHashToDef(def, typeof(TDef));
+        
     }
 
     private void RegisterTraitRecipes()
@@ -110,10 +113,6 @@ public class PersonalitySurgeryMod : ModBase
         {
             foreach (var degreeData in traitDef.degreeDatas)
             {
-                Logger.TraceFormat("Registering recipe for trait {0} of degree {1}", traitDef.defName,
-                    degreeData.label);
-
-
                 var traitItemThing = CreateCopy<ThingDef>(PersonalitySurgeryModDefOf.SurgeryExtractBioTraitItem);
                 traitItemThing.defName = $"trait{traitDef.defName}OfDegree{degreeData.degree}";
                 traitItemThing.description = "TraitItemThingDescription".Translate(degreeData.label);
@@ -159,6 +158,9 @@ public class PersonalitySurgeryMod : ModBase
 
                 HyperlinkAll(traitItemThing, extractTraitRecipe, installTraitRecipe);
 
+                GiveShortHash(traitItemThing);
+                GiveShortHash<RecipeDef>(extractTraitRecipe);
+                GiveShortHash<RecipeDef>(installTraitRecipe);
                 RecipeDefDatabase.Add(extractTraitRecipe);
                 RecipeDefDatabase.Add(installTraitRecipe);
                 ThingDefDatabase.Add(traitItemThing);
@@ -198,9 +200,7 @@ public class PersonalitySurgeryMod : ModBase
         removeMethod.Invoke(null, new object[] {def});
     }
 
-    public static ModLogger ModLogger => _instance.Logger;
-
-    private static PersonalitySurgeryMod _instance = null!;
+    public static ModLogger ModLogger => new(ModIdentifierValue);
 
     /// <summary>
     /// Creates a shallow copy of the specified element for further modification
@@ -220,6 +220,11 @@ public class PersonalitySurgeryMod : ModBase
 
         foreach (var field in fromType.GetFields(BindingFlags.Instance | BindingFlags.Public))
         {
+            if (field.Name == nameof(Def.shortHash))
+            {
+                continue;
+            }
+            
             if (field.IsLiteral || field.IsInitOnly)
             {
                 continue;

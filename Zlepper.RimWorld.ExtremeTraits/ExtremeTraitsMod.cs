@@ -4,7 +4,6 @@ using System.Linq;
 using HugsLib;
 using RimWorld;
 using Verse;
-using Verse.Noise;
 
 namespace Zlepper.RimWorld.ExtremeTraits;
 
@@ -18,7 +17,6 @@ public class ExtremeTraitsMod : ModBase
         {
             return;
         }
-
         RegisterTraits();
     }
 
@@ -29,7 +27,6 @@ public class ExtremeTraitsMod : ModBase
         {
             if (traitDef.degreeDatas.Count <= 1)
             {
-                Logger.Message("Skipping trait " + traitDef.defName + " because it has no degrees");
                 continue;
             }
 
@@ -66,33 +63,11 @@ public class ExtremeTraitsMod : ModBase
 
         if (!canBeScaled)
         {
-            Logger.Message("Trait degree {0} cannot be scaled", extremeDegree.label);
             return;
         }
 
-        var valueProvider = new Dictionary<Def, IStatCreator>();
-        
-        foreach (var factor in extremeDegree.statFactors ?? new())
-        {
-            var values = degrees
-                .Select(d => d.statFactors.FirstOrDefault(f => f.stat == factor.stat)?.value)
-                .Select(v => v.GetValueOrDefault())
-                .ToList();
+        var valueProvider = CreateValueProvider(degrees, extremeDegree);
 
-
-            valueProvider[factor.stat] = StatCalculator.InferStatValues(values);
-        }
-        
-        foreach (var factor in extremeDegree.statOffsets ?? new())
-        {
-            var values = degrees
-                .Select(d => d.statOffsets.FirstOrDefault(f => f.stat == factor.stat)?.value)
-                .Select(v => v.GetValueOrDefault())
-                .ToList();
-
-            valueProvider[factor.stat] = StatCalculator.InferStatValues(values);
-        }
-        
         var offset = extremeDegree.degree > 0 ? 1 : 0;
 
         var number = 1;
@@ -102,6 +77,8 @@ public class ExtremeTraitsMod : ModBase
             var newDegree = Copy(extremeDegree);
             newDegree.degree = actualDegreeNumber;
             newDegree.label += " +" + number++;
+            newDegree.commonality = 0;
+            
             foreach (var factor in newDegree.statFactors ?? new())
             {
                 var calculator = valueProvider[factor.stat];
@@ -112,9 +89,105 @@ public class ExtremeTraitsMod : ModBase
                 var calculator = valueProvider[factor.stat];
                 factor.value = calculator.GetValue(actualDegreeNumber);
             }
+            
+            
+            foreach (var skillGain in extremeDegree.skillGains ?? new())
+            {
+                var calculator = valueProvider[skillGain.Key];
+                
+                newDegree.skillGains[skillGain.Key] = (int)calculator.GetValue(actualDegreeNumber);
+            }
+
+            if (extremeDegree.randomDiseaseMtbDays != 0f)
+            {
+                newDegree.randomDiseaseMtbDays = (float) (Math.Pow(2, 1 - Math.Abs(actualDegreeNumber)) *
+                                                          extremeDegree.randomDiseaseMtbDays);
+            }
+
+            if (valueProvider.TryGetValue(nameof(extremeDegree.socialFightChanceFactor), out var fightChanceCalculator))
+            {
+                newDegree.socialFightChanceFactor = fightChanceCalculator.GetValue(actualDegreeNumber);
+            }
+            
+            if (valueProvider.TryGetValue(nameof(extremeDegree.marketValueFactorOffset), out var marketValueCalculator))
+            {
+                newDegree.marketValueFactorOffset = marketValueCalculator.GetValue(actualDegreeNumber);
+            }
+            
+            if (valueProvider.TryGetValue(nameof(extremeDegree.hungerRateFactor), out var hungerRateCalculator))
+            {
+                newDegree.hungerRateFactor = hungerRateCalculator.GetValue(actualDegreeNumber);
+            }
+            
+            
             traitDef.degreeDatas.Add(newDegree);
         }
         
+    }
+
+    private static Dictionary<object, IStatCreator> CreateValueProvider(List<TraitDegreeData> degrees, TraitDegreeData extremeDegree)
+    {
+        var valueProvider = new Dictionary<object, IStatCreator>();
+
+        foreach (var factor in extremeDegree.statFactors ?? new())
+        {
+            var values = degrees
+                .Select(d => d.statFactors.FirstOrDefault(f => f.stat == factor.stat)?.value)
+                .Select(v => v.GetValueOrDefault())
+                .ToList();
+
+
+            valueProvider[factor.stat] = StatCalculator.InferStatValues(values);
+        }
+
+        foreach (var factor in extremeDegree.statOffsets ?? new())
+        {
+            var values = degrees
+                .Select(d => d.statOffsets.FirstOrDefault(f => f.stat == factor.stat)?.value)
+                .Select(v => v.GetValueOrDefault())
+                .ToList();
+
+            valueProvider[factor.stat] = StatCalculator.InferStatValues(values);
+        }
+
+        foreach (var skillGain in extremeDegree.skillGains ?? new())
+        {
+            var values = degrees
+                .Select(d => d.skillGains.TryGetValue(skillGain.Key, out var v) ? v : 0)
+                .Select(i => (float) i)
+                .ToList();
+
+            valueProvider[skillGain.Key] = StatCalculator.InferStatValues(values);
+        }
+        
+        if(Math.Abs(extremeDegree.socialFightChanceFactor - 1f) > float.Epsilon)
+        {
+            var values = degrees
+                .Select(d => d.socialFightChanceFactor)
+                .ToList();
+
+            valueProvider[nameof(extremeDegree.socialFightChanceFactor)] = StatCalculator.InferStatValues(values);
+        }
+
+        if(Math.Abs(extremeDegree.marketValueFactorOffset - 1f) > float.Epsilon)
+        {
+            var values = degrees
+                .Select(d => d.marketValueFactorOffset)
+                .ToList();
+
+            valueProvider[nameof(extremeDegree.marketValueFactorOffset)] = StatCalculator.InferStatValues(values);
+        }
+
+        if(Math.Abs(extremeDegree.hungerRateFactor - 1f) > float.Epsilon)
+        {
+            var values = degrees
+                .Select(d => d.hungerRateFactor)
+                .ToList();
+
+            valueProvider[nameof(extremeDegree.hungerRateFactor)] = StatCalculator.InferStatValues(values);
+        }
+
+        return valueProvider;
     }
 
     private IEnumerable<int> Range(int end1, int end2)
@@ -172,24 +245,5 @@ public class ExtremeTraitsMod : ModBase
             needs = sample.needs,
             ingestibleModifiers = sample.ingestibleModifiers,
         };
-    }
-}
-
-public class ExtremeTraitsModExtension : DefModExtension
-{
-    public int MaxDegree = 10;
-    public int MinDegree = -10;
-
-    public override IEnumerable<string> ConfigErrors()
-    {
-        if (MaxDegree < 1)
-        {
-            yield return "MaxDegree must be greater than 0";
-        }
-
-        if (MinDegree > -1)
-        {
-            yield return "MinDegree must be less than 0";
-        }
     }
 }
