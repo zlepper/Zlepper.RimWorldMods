@@ -1,0 +1,16 @@
+<Project Sdk="C:\dev\Zlepper.RimWorld.ModSdk\Zlepper.RimWorld.ModSdk">
+
+    <PropertyGroup>
+        <RootNamespace>Zlepper.RimWorld.TraitCrafting</RootNamespace>
+        <IncludeHugsLib>true</IncludeHugsLib>
+        <RimWorldModName>Trait Crafting</RimWorldModName>
+        <RimWorldPackageId>Zlepper.RimWorld.TraitCrafting</RimWorldPackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Zlepper.RimWorld.PersonalitySurgery\Zlepper.RimWorld.PersonalitySurgery.csproj" ExcludeAssets="all" PrivateAssets="all" />
+    </ItemGroup>
+
+    
+</Project>
+ 

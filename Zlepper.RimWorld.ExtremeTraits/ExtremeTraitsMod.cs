@@ -9,7 +9,6 @@ using Verse;
 
 namespace Zlepper.RimWorld.ExtremeTraits;
 
-[EarlyInit]
 public class ExtremeTraitsMod : ModBase
 {
     public override string ModIdentifier => "Zlepper.RimWorld.ExtremeTraits";
@@ -153,7 +152,7 @@ public class ExtremeTraitsMod : ModBase
             
             
             traitDef.degreeDatas.Add(newDegree);
-
+            
             if (mostExtremeThought != null)
             {
                 var newThought = Copy(mostExtremeThought);
@@ -167,7 +166,6 @@ public class ExtremeTraitsMod : ModBase
                 stage.description = stage.description.Replace(extremeDegree.label, newDegree.label);
                 
                 stage.baseMoodEffect = valueProvider[nameof(ThoughtStage.baseMoodEffect)].GetValue(actualDegreeNumber);
-                Logger.Message("Set baseMoodEffect to {0} for trait {1} of degree {2}. source type: {3}", stage.baseMoodEffect, traitDef.defName, actualDegreeNumber, mostExtremeThought.GetType());
                 stage.baseOpinionOffset = valueProvider[nameof(ThoughtStage.baseOpinionOffset)].GetValue(actualDegreeNumber);
                 
                 stage.untranslatedLabel = stage.untranslatedLabel.Replace(extremeDegree.label, newDegree.label);

@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.ExtremeTra
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.ExtremeTraits.Tests", "Zlepper.RimWorld.ExtremeTraits.Tests\Zlepper.RimWorld.ExtremeTraits.Tests.csproj", "{A88F0AD2-8FE5-46D5-973E-BA7BF300E960}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.TraitCrafting", "Zlepper.RimWorld.TraitCrafting\Zlepper.RimWorld.TraitCrafting.csproj", "{2D53B536-7AA2-4778-9209-2DD603F38A88}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,5 +26,9 @@ Global
 		{A88F0AD2-8FE5-46D5-973E-BA7BF300E960}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A88F0AD2-8FE5-46D5-973E-BA7BF300E960}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A88F0AD2-8FE5-46D5-973E-BA7BF300E960}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D53B536-7AA2-4778-9209-2DD603F38A88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D53B536-7AA2-4778-9209-2DD603F38A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D53B536-7AA2-4778-9209-2DD603F38A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D53B536-7AA2-4778-9209-2DD603F38A88}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

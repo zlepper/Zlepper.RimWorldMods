@@ -26,7 +26,7 @@ public class InstallTraitRecipeDef : BaseTraitRecipeDef
         }
 
         var incompatibleTraits = pawn.story.traits.allTraits.Where(t =>
-            Trait.conflictingTraits.Contains(t.def) || t.def.conflictingTraits.Contains(Trait));
+            Trait.ConflictsWith(t)|| t.def.ConflictsWith(Trait));
         traitsToRemove.AddRange(incompatibleTraits);
 
         foreach (var trait in traitsToRemove)

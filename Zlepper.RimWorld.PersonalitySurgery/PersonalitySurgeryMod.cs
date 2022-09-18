@@ -135,6 +135,14 @@ public class PersonalitySurgeryMod : ModBase
                 traitItemThing.description = "TraitItemThingDescription".Translate(degreeData.label);
                 traitItemThing.label = "TraitItemThingLabel".Translate(degreeData.label);
                 traitItemThing.BaseMarketValue *= 1 + degreeData.marketValueFactorOffset;
+                
+                traitItemThing.modExtensions = traitItemThing.modExtensions?.ToList() ?? new();
+                var modExtension = traitItemThing.GetModExtension<PersonalitySurgeryDefModExtension>()?.Copy() ?? new();
+                modExtension.Trait = traitDef;
+                modExtension.TraitDegree = degreeData.degree;
+                traitItemThing.modExtensions.Remove(modExtension);
+                traitItemThing.modExtensions.Add(modExtension);
+                
 
                 var extractTraitRecipe =
                     CreateCopy<ExtractTraitRecipeDef>(PersonalitySurgeryModDefOf.SurgeryExtractBioProperty);
