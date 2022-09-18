@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Defs>
-    <RecipeDef ParentName="SurgeryRemoveImplantBase">
+    <RecipeDef ParentName="SurgeryFlesh">
         <defName>SurgeryExtractBioProperty</defName>
         <workerClass>Zlepper.Rimworld.PersonalitySurgery.Recipe_UpdateBioSurgery</workerClass>
         <workAmount>2500</workAmount>
         <isViolation>true</isViolation>
+        <hideBodyPartNames>true</hideBodyPartNames>
         <skillRequirements>
             <Medicine>10</Medicine>
         </skillRequirements>
@@ -14,9 +15,9 @@
         <ingredients>
             <li>
                 <filter>
-                    <categories>
-                        <li>Medicine</li>
-                    </categories>
+                    <thingDefs>
+                        <li>MedicineIndustrial</li>
+                    </thingDefs>
                 </filter>
                 <count>1</count>
             </li>
@@ -29,13 +30,17 @@
         <appliedOnFixedBodyParts>
             <li>Brain</li>
         </appliedOnFixedBodyParts>
+        <researchPrerequisites>
+            <li>PersonalitySurgery</li>
+        </researchPrerequisites>
     </RecipeDef>
     
-    <RecipeDef ParentName="SurgeryInstallImplantBase">
+    <RecipeDef ParentName="SurgeryFlesh">
         <defName>SurgeryInstallBioProperty</defName>
         <workerClass>Zlepper.Rimworld.PersonalitySurgery.Recipe_UpdateBioSurgery</workerClass>
         <workAmount>2500</workAmount>
         <isViolation>true</isViolation>
+        <hideBodyPartNames>true</hideBodyPartNames>
         <skillRequirements>
             <Medicine>10</Medicine>
         </skillRequirements>
@@ -45,9 +50,9 @@
         <ingredients>
             <li>
                 <filter>
-                    <categories>
-                        <li>Medicine</li>
-                    </categories>
+                    <thingDefs>
+                        <li>MedicineIndustrial</li>
+                    </thingDefs>
                 </filter>
                 <count>1</count>
             </li>
@@ -60,5 +65,24 @@
         <appliedOnFixedBodyParts>
             <li>Brain</li>
         </appliedOnFixedBodyParts>
+        <researchPrerequisites>
+            <li>PersonalitySurgery</li>
+        </researchPrerequisites>
     </RecipeDef>
+
+
+    <ResearchProjectDef>
+        <defName>PersonalitySurgery</defName>
+        <label>personality surgery</label>
+        <description>Extract and install personality from pawns</description>
+        <baseCost>1800</baseCost>
+        <techLevel>Spacer</techLevel>
+        <prerequisites>
+            <li>MedicineProduction</li>
+        </prerequisites>
+        <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+        <researchViewX>12.00</researchViewX>
+        <researchViewY>1.0</researchViewY>
+    </ResearchProjectDef>
+
 </Defs>

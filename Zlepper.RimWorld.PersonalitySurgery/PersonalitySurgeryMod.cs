@@ -142,6 +142,8 @@ public class PersonalitySurgeryMod : ModBase
                 modExtension.TraitDegree = degreeData.degree;
                 traitItemThing.modExtensions.Remove(modExtension);
                 traitItemThing.modExtensions.Add(modExtension);
+                traitItemThing.comps = traitItemThing.comps.ToList();
+                traitItemThing.comps.Add(new CompPropertiesLabel(degreeData.LabelCap));
                 
 
                 var extractTraitRecipe =

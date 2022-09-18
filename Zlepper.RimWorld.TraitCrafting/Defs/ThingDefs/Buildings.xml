@@ -68,7 +68,7 @@
             <li>PlaceWorker_PreventInteractionSpotOverlap</li>
         </placeWorkers>
         <researchPrerequisites>
-            <li>Electricity</li>
+            <li>PersonalitySurgery</li>
         </researchPrerequisites>
     </ThingDef>
 

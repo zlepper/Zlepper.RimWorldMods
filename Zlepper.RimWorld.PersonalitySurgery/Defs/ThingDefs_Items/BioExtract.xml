@@ -4,6 +4,8 @@
         <defName>SurgeryExtractBioTraitItem</defName>
         <label>Bio Extract Item Base</label>
         <description>If you got this item, then you either cheated or there is a bug somewhere</description>
+        <drawGUIOverlay>true</drawGUIOverlay>
+        <drawGUIOverlayQuality>false</drawGUIOverlayQuality>
         <statBases>
             <MarketValue>500</MarketValue>
         </statBases>
