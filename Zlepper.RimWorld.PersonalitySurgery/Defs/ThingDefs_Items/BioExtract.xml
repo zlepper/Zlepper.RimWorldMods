@@ -13,6 +13,7 @@
             <li>PersonalitySurgeryTraitCategory</li>
         </thingCategories>
         <devNote>This thing will be used as the template for all other trait specific items</devNote>
+        <tradeability>Sellable</tradeability>
     </ThingDef>
 
 

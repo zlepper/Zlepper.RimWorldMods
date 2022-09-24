@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
@@ -60,6 +61,7 @@ public class PersonalitySurgeryMod : ModBase
                 passionItemThing.thingCategories = passionItemThing.thingCategories.ToList();
                 passionItemThing.thingCategories.Remove(PersonalitySurgeryModDefOf.PersonalitySurgeryTraitCategory);
                 passionItemThing.thingCategories.Add(PersonalitySurgeryModDefOf.PersonalitySurgeryPassionCategory);
+                passionItemThing.comps.Add(new CompPropertiesLabel(passion + " " + skillDef.skillLabel));
 
                 var extractPassionRecipe =
                     CreateCopy<ExtractPassionRecipeDef>(PersonalitySurgeryModDefOf.SurgeryExtractBioProperty);
@@ -131,7 +133,7 @@ public class PersonalitySurgeryMod : ModBase
             foreach (var degreeData in traitDef.degreeDatas)
             {
                 var traitItemThing = CreateCopy<ThingDef>(PersonalitySurgeryModDefOf.SurgeryExtractBioTraitItem);
-                traitItemThing.defName = $"trait{traitDef.defName}OfDegree{degreeData.degree}";
+                traitItemThing.defName = $"trait{traitDef.defName}OfDegree{degreeData.degree}Item";
                 traitItemThing.description = "TraitItemThingDescription".Translate(degreeData.label);
                 traitItemThing.label = "TraitItemThingLabel".Translate(degreeData.label);
                 traitItemThing.BaseMarketValue *= 1 + degreeData.marketValueFactorOffset;
@@ -142,13 +144,12 @@ public class PersonalitySurgeryMod : ModBase
                 modExtension.TraitDegree = degreeData.degree;
                 traitItemThing.modExtensions.Remove(modExtension);
                 traitItemThing.modExtensions.Add(modExtension);
-                traitItemThing.comps = traitItemThing.comps.ToList();
                 traitItemThing.comps.Add(new CompPropertiesLabel(degreeData.LabelCap));
                 
 
                 var extractTraitRecipe =
                     CreateCopy<ExtractTraitRecipeDef>(PersonalitySurgeryModDefOf.SurgeryExtractBioProperty);
-                extractTraitRecipe.defName = $"harvestTrait{traitDef.defName}OfDegree{degreeData.degree}";
+                extractTraitRecipe.defName = $"harvestTrait{traitDef.defName}OfDegree{degreeData.degree}Recipe";
                 extractTraitRecipe.label = "ExtractTraitRecipeLabel".Translate(degreeData.label);
                 extractTraitRecipe.description = "ExtractTraitRecipeDescription".Translate(degreeData.label);
                 extractTraitRecipe.jobString = "ExtractTraitRecipeJobString".Translate(degreeData.label);
@@ -159,7 +160,7 @@ public class PersonalitySurgeryMod : ModBase
 
                 var installTraitRecipe =
                     CreateCopy<InstallTraitRecipeDef>(PersonalitySurgeryModDefOf.SurgeryInstallBioProperty);
-                installTraitRecipe.defName = $"installTrait{traitDef.defName}OfDegree{degreeData.degree}";
+                installTraitRecipe.defName = $"installTrait{traitDef.defName}OfDegree{degreeData.degree}Recipe";
                 installTraitRecipe.label = "InstallTraitRecipeLabel".Translate(degreeData.label);
                 installTraitRecipe.description = "InstallTraitRecipeDescription".Translate(degreeData.label);
                 installTraitRecipe.jobString = "InstallTraitRecipeJobString".Translate(degreeData.label);
@@ -262,7 +263,20 @@ public class PersonalitySurgeryMod : ModBase
                 continue;
             }
 
-            field.SetValue(newInstance, field.GetValue(from));
+            var value = field.GetValue(from);
+            if (value is IList l)
+            {
+                var copy = (IList) Activator.CreateInstance(l.GetType());
+                foreach (var item in l)
+                {
+                    copy.Add(item);
+                }
+                field.SetValue(newInstance, copy);
+            }
+            else
+            {
+                field.SetValue(newInstance, value);
+            }
         }
 
         if (newInstance is BuildableDef newBuildable && from is BuildableDef fromBuildable)

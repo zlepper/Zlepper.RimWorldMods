@@ -7,6 +7,9 @@ public class CompThingLabel : ThingComp
     
     public override void DrawGUIOverlay()
     {
+        if (Find.CameraDriver.CurrentZoom != CameraZoomRange.Closest)
+            return;
+
         if (props is not CompPropertiesLabel p)
         {
             return;
