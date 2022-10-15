@@ -14,11 +14,10 @@
         <RepositoryUrl>https://github.com/zlepper/RimWorld.ModSdk</RepositoryUrl>
     </PropertyGroup>
     <ItemGroup>
-        <Content Include="Content\Properties\launchSettings.json"/>
-        <None Include="Sdk/*.*" Pack="true" PackagePath="Sdk"/>
+        <None Include="Sdk/*.*" Pack="true" PackagePath="Sdk" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.3.1" PrivateAssets="all" ExcludeAssets="Runtime"/>
+        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.3.1" PrivateAssets="all" ExcludeAssets="Runtime" />
     </ItemGroup>
 
 </Project>

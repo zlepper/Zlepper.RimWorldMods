@@ -42,7 +42,6 @@
     
     <PropertyGroup>
         <RimWorldModName/>
-        <RimWorldVersion>1.4</RimWorldVersion>
         <IncludeHugsLib>false</IncludeHugsLib>
         <HugsLibVersion>9.0.1</HugsLibVersion>
         <RimWorldPackageId/>

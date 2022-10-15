@@ -4,6 +4,8 @@
     <PropertyGroup>
         <RimWorldModPackageFolder>$(RimWorldPath)/Mods/$(RimWorldPackageId)</RimWorldModPackageFolder>
         <RimWorldAssembliesPath>$(RimWorldModPackageFolder)/$(RimWorldVersion)/Assemblies</RimWorldAssembliesPath>
+        <OutputVersionFolder>$(OutputFolder)/$(RimWorldModName)/$(RimWorldVersion)</OutputVersionFolder>
+        <RimWorldVersion Condition="Exists('$(RimWorldPath)')" >$([System.IO.File]::ReadAllText("$(RimWorldPath)/Version.txt").Substring(0, 3))</RimWorldVersion>
     </PropertyGroup>
 
     <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
@@ -13,9 +15,8 @@
 
     <Target Name="ValidateParameters" BeforeTargets="BeforeBuild">
         <Error Condition="'$(RimWorldPath)' == ''" Text="RimWorldPath is not set"/>
+        <Error Condition="!Exists('$(RimWorldPath)')" Text="The configured RimWorldPath '$(RimWorldPath)' was not found"/>
         <Error Condition="'$(RimWorldModName)' == ''" Text="RimWorldModName is not set"/>
-        <Error Condition="'$(RimWorldVersion)' == ''" Text="RimWorldVersion is not set"/>
-        <Error Condition="'$(RimWorldVersion)' != '1.4' " Text="RimWorldVersion must be 1.4, for now"/>
         <Error Condition="'$(RimWorldPackageId)' == ''" Text="RimWorldPackageId is not set"/>
     </Target>
 
@@ -52,7 +53,7 @@
 
 
     <ItemGroup>
-        <RimWorldResourceAbout Include="About\**\*.xml" CopyToOutputDirectory="Never"/>
+        <RimWorldResourceAbout Include="About\**" CopyToOutputDirectory="Never"/>
         <RimWorldResourceLanguages Include="Languages\**\*.xml" CopyToOutputDirectory="Never"/>
         <RimWorldResourceDefs Include="Defs\**\*.xml" CopyToOutputDirectory="Never"/>
         <RimWorldResourcePatches Include="Patches\**\*.xml" CopyToOutputDirectory="Never"/>
