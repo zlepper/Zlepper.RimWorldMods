@@ -20,7 +20,7 @@ public class ExtractPassionRecipeDef : BasePassionRecipeDef
             GenSpawn.Spawn(PassionThing, billDoer.Position, billDoer.Map);
             skill.passion = Passion.None;
     
-            HealthUtility.GiveInjuriesOperationFailureMinor(pawn, pawn.health.hediffSet.GetBrain());
+            HealthUtility.GiveRandomSurgeryInjuries(pawn, 15, pawn.health.hediffSet.GetBrain());
         }
     }
 }

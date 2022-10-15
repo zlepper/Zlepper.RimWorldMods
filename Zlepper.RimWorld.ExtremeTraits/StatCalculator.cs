@@ -27,42 +27,9 @@ public static class StatCalculator
         var distance = values.Zip(values.Skip(1), (a, b) => b - a).Average();
         return new LinearStatCreator(distance, values[0] - distance);
     }
-}
 
-public interface IStatCreator
-{
-    public float GetValue(int degree);
-}
-
-public class LinearStatCreator : IStatCreator
-{
-    private readonly float _valuePerDegree;
-    private readonly float _baseValue;
-
-    public LinearStatCreator(float valuePerDegree, float baseValue)
+    public static void Main(string[] args)
     {
-        _valuePerDegree = valuePerDegree;
-        _baseValue = baseValue;
-    }
-
-    public float GetValue(int degree)
-    {
-        return _baseValue + _valuePerDegree * Math.Abs(degree);
-    }
-}
-
-public class RatioStatCreator : IStatCreator
-{
-    private readonly float _ratio;
-
-    public RatioStatCreator(float ratio)
-    {
-        _ratio = ratio;
-    }
-
-
-    public float GetValue(int degree)
-    {
-        return (float) Math.Pow(_ratio, 0 - Math.Abs(degree));
+        throw new NotImplementedException();
     }
 }

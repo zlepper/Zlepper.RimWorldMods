@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
+
+    <ItemGroup>
+        <ProjectCapability Include="CrossPlatformExecutable" />
+        <AvailableItemName
+                Include="RimWorldResource;RimWorldResourceAbout;RimWorldResourceLanguages;RimWorldResourceDefs;RimWorldResourcePatches;RimWorldResourceSounds;RimWorldResourceTextures;RimWorldAssemblyReference" />
+    </ItemGroup>
+    
+    <PropertyGroup>
+        <_IsExecutable>true</_IsExecutable>
+        <HasRuntimeOutput>true</HasRuntimeOutput>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <UsingZlepperRimWorldSdk>true</UsingZlepperRimWorldSdk>
+    </PropertyGroup>
+
+    <PropertyGroup>
+        <TargetFramework>net472</TargetFramework>
+        <Nullable>enable</Nullable>
+        <LangVersion>10</LangVersion>
+        <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+        <RimWorldPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldPath>
+        <RimWorldManagedPath>$(RimWorldPath)\RimWorldWin64_Data\Managed</RimWorldManagedPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+        <RimWorldPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldPath>
+        <RimWorldManagedPath>$(RimWorldPath)\RimWorldWin64_Data\Managed</RimWorldManagedPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
+        <RimWorldPath>$(HOME)/Library/Application Support/Steam/steamapps/common/RimWorld/RimWorldMac.app/Contents/Resources</RimWorldPath>
+        <RimWorldManagedPath>$(RimWorldPath)/Data/Managed</RimWorldManagedPath>
+    </PropertyGroup>
+    
+    <PropertyGroup>
+        <RimWorldModName/>
+        <RimWorldVersion>1.4</RimWorldVersion>
+        <IncludeHugsLib>false</IncludeHugsLib>
+        <HugsLibVersion>9.0.1</HugsLibVersion>
+        <RimWorldPackageId/>
+        <OutputFolder>../Mods</OutputFolder>
+    </PropertyGroup>
+
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+        <DebugSymbols>false</DebugSymbols>
+    </PropertyGroup>
+
+</Project>

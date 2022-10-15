@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using NUnit.Framework;
-using RimWorld;
-
 namespace Zlepper.RimWorld.ExtremeTraits.Tests;
 
 [TestFixture]

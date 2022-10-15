@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <PropertyGroup>
+        <RimWorldModPackageFolder>$(RimWorldPath)/Mods/$(RimWorldPackageId)</RimWorldModPackageFolder>
+        <RimWorldAssembliesPath>$(RimWorldModPackageFolder)/$(RimWorldVersion)/Assemblies</RimWorldAssembliesPath>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
+        <StartAction>Program</StartAction>
+        <StartProgram>$(RimWorldPath)/RimWorldWin64.exe</StartProgram>
+    </PropertyGroup>
+
+    <Target Name="ValidateParameters" BeforeTargets="BeforeBuild">
+        <Error Condition="'$(RimWorldPath)' == ''" Text="RimWorldPath is not set"/>
+        <Error Condition="'$(RimWorldModName)' == ''" Text="RimWorldModName is not set"/>
+        <Error Condition="'$(RimWorldVersion)' == ''" Text="RimWorldVersion is not set"/>
+        <Error Condition="'$(RimWorldVersion)' != '1.4' " Text="RimWorldVersion must be 1.4, for now"/>
+        <Error Condition="'$(RimWorldPackageId)' == ''" Text="RimWorldPackageId is not set"/>
+    </Target>
+
+    <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk"/>
+
+    <ItemDefinitionGroup>
+        <RimWorldAssemblyReference>
+            <Visible>False</Visible>
+        </RimWorldAssemblyReference>
+    </ItemDefinitionGroup>
+    
+    <ItemGroup>
+        <RimWorldAssemblyReference Include="Assembly-CSharp"/>
+        <RimWorldAssemblyReference Include="UnityEngine.CoreModule"/>
+    </ItemGroup>
+
+    <Target Name="ReferenceRimWorld" BeforeTargets="ResolveAssemblyReferences">
+        <ItemGroup>
+            <Reference Include="@(RimWorldAssemblyReference)">
+                <HintPath>$(RimWorldManagedPath)\%(RimWorldAssemblyReference.Identity).dll</HintPath>
+                <Private>False</Private>
+            </Reference>
+        </ItemGroup>
+    </Target>
+
+    <ItemGroup Condition="'$(IncludeHugsLib)' == 'true'">
+        <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="$(HugsLibVersion)" ExcludeAssets="runtime"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Remove="Publish/**"/>
+        <None Remove="Publish/**"/>
+    </ItemGroup>
+
+
+    <ItemGroup>
+        <RimWorldResourceAbout Include="About\**\*.xml" CopyToOutputDirectory="Never"/>
+        <RimWorldResourceLanguages Include="Languages\**\*.xml" CopyToOutputDirectory="Never"/>
+        <RimWorldResourceDefs Include="Defs\**\*.xml" CopyToOutputDirectory="Never"/>
+        <RimWorldResourcePatches Include="Patches\**\*.xml" CopyToOutputDirectory="Never"/>
+        <RimWorldResourceSounds Include="Sounds\**" CopyToOutputDirectory="Never"/>
+        <RimWorldResourceTextures Include="Textures\**" CopyToOutputDirectory="Never"/>
+        <RimWorldResultAssemblies Include="$(OutputPath)\$(AssemblyName).dll" CopyToOutputDirectory="Never"/>
+        <RimWorldResultAssemblies Include="$(OutputPath)\$(AssemblyName).pdb" CopyToOutputDirectory="Never"/>
+    </ItemGroup>
+
+    <Target Name="CleanupRimWorldFolder" BeforeTargets="Clean">
+        <Message Importance="high" Text="Cleaning up RimWorld folder: $(OutputPath)"/>
+        <RemoveDir Directories="$(RimWorldModPackageFolder)"/>
+    </Target>
+
+    <Target Name="OutputRimWorldResources" BeforeTargets="Build">
+        <Copy SourceFiles="@(RimWorldResourceLanguages)" DestinationFiles="$(RimWorldModPackageFolder)/$(RimWorldVersion)/Languages/%(RecursiveDir)%(Filename)%(Extension)"/>
+        <Copy SourceFiles="@(RimWorldResourceDefs)" DestinationFiles="$(RimWorldModPackageFolder)/$(RimWorldVersion)/Defs/%(RecursiveDir)%(Filename)%(Extension)"/>
+        <Copy SourceFiles="@(RimWorldResourcePatches)" DestinationFiles="$(RimWorldModPackageFolder)/$(RimWorldVersion)/Patches/%(RecursiveDir)%(Filename)%(Extension)"/>
+        <Copy SourceFiles="@(RimWorldResourceSounds)" DestinationFiles="$(RimWorldModPackageFolder)/$(RimWorldVersion)/Sounds/%(RecursiveDir)%(Filename)%(Extension)"/>
+        <Copy SourceFiles="@(RimWorldResourceTextures)" DestinationFiles="$(RimWorldModPackageFolder)/$(RimWorldVersion)/Textures/%(RecursiveDir)%(Filename)%(Extension)"/>
+        <Copy SourceFiles="@(RimWorldResourceAbout)" DestinationFiles="$(RimWorldModPackageFolder)/About/%(RecursiveDir)%(Filename)%(Extension)"/>
+    </Target>
+
+    <Target Name="CopyDlls" AfterTargets="Build">
+        <Copy SourceFiles="@(RimWorldResultAssemblies)" DestinationFiles="$(RimWorldAssembliesPath)/%(Filename)%(Extension)"/>
+    </Target>
+</Project>

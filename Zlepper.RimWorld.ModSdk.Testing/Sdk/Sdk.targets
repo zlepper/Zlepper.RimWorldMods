@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
+
+    <Target Name="ValidateParameters" BeforeTargets="BeforeBuild">
+        <Error Condition="'$(RimWorldPath)' == ''" Text="RimWorldPath is not set" />
+    </Target>
+
+    <ItemDefinitionGroup>
+        <RimWorldAssemblyReference>
+            <Visible>False</Visible>
+        </RimWorldAssemblyReference>
+    </ItemDefinitionGroup>
+
+    <ItemGroup>
+        <RimWorldAssemblyReference Include="Assembly-CSharp"/>
+        <RimWorldAssemblyReference Include="UnityEngine.CoreModule"/>
+    </ItemGroup>
+
+    <Target Name="ReferenceRimWorld" BeforeTargets="ResolveAssemblyReferences">
+        <ItemGroup>
+            <Reference Include="@(RimWorldAssemblyReference)">
+                <HintPath>$(RimWorldManagedPath)\%(RimWorldAssemblyReference.Identity).dll</HintPath>
+                <Private>True</Private>
+            </Reference>
+        </ItemGroup>
+    </Target>
+
+</Project>

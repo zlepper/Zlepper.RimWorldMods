@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-    <name>Extreme Traits</name>
+    <name>Zleppers Perf Fixes</name>
     <author>Zlepper</author>
-    <packageId>Zlepper.RimWorld.ExtremeTraits</packageId>
+    <packageId>Zlepper.RimWorld.PerfFixes</packageId>
     <supportedVersions>
         <li>1.4</li>
     </supportedVersions>
 
-    <description>Adds extreme versions of all traits with multiple degrees, like Neurotic or Pretty, in both directions.</description>
+    <description>Tries to improve game performance by cleaning up some things</description>
 
     <modDependencies>
         <li>
@@ -20,7 +20,4 @@
     <loadAfter>
         <li>UnlimitedHugs.HugsLib</li>
     </loadAfter>
-    <loadBefore>
-        <li>Zlepper.RimWorld.PersonalitySurgery</li>
-    </loadBefore>
 </ModMetaData>

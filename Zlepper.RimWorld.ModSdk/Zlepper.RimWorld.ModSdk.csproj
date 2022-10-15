@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+    <PropertyGroup>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Description>Provides an SDK for easily making RimWorld mods.</Description>
+        <PackageTags>MSBuildSdk RimWorld</PackageTags>
+        <ArtifactsPath>$(BaseArtifactsPath)$(MSBuildProjectName)\</ArtifactsPath>
+        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <PackageType>MSBuildSdk</PackageType>
+        <Nullable>enable</Nullable>
+        <NoWarn>NU5100</NoWarn>
+        <LangVersion>10</LangVersion>
+        <Version>0.0.1</Version>
+        <PackageLicenseExpression>MIT</PackageLicenseExpression>
+        <RepositoryUrl>https://github.com/zlepper/RimWorld.ModSdk</RepositoryUrl>
+    </PropertyGroup>
+    <ItemGroup>
+        <Content Include="Content\Properties\launchSettings.json"/>
+        <None Include="Sdk/*.*" Pack="true" PackagePath="Sdk"/>
+    </ItemGroup>
+    <ItemGroup>
+        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.3.1" PrivateAssets="all" ExcludeAssets="Runtime"/>
+    </ItemGroup>
+
+</Project>

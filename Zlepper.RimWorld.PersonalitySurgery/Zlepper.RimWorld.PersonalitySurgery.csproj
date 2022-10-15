@@ -1,4 +1,4 @@
-<Project Sdk="Zlepper.RimWorld.ModSdk/0.0.3">
+<Project Sdk="$(MSBuildProjectDirectory)\..\Zlepper.RimWorld.ModSdk">
 
     <PropertyGroup>
         <RootNamespace>Zlepper.RimWorld.PersonalitySurgery</RootNamespace>

@@ -9,3 +9,4 @@ Assemblies/
 *.DotSettings.user
 Publish/
 launchSettings.json
+.vs/

@@ -22,7 +22,7 @@ public class ExtractTraitRecipeDef : BaseTraitRecipeDef
             GenSpawn.Spawn(TraitThing, billDoer.Position, billDoer.Map);
             pawn.story.traits.RemoveTrait(trait);
     
-            HealthUtility.GiveInjuriesOperationFailureMinor(pawn, pawn.health.hediffSet.GetBrain());
+            HealthUtility.GiveRandomSurgeryInjuries(pawn, 15, pawn.health.hediffSet.GetBrain());
         }
     }
 
