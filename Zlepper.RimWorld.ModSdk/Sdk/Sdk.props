@@ -4,16 +4,10 @@
     <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
 
     <ItemGroup>
-        <ProjectCapability Include="CrossPlatformExecutable" />
         <AvailableItemName
                 Include="RimWorldResource;RimWorldResourceAbout;RimWorldResourceLanguages;RimWorldResourceDefs;RimWorldResourcePatches;RimWorldResourceSounds;RimWorldResourceTextures;RimWorldAssemblyReference" />
     </ItemGroup>
     
-    <PropertyGroup>
-        <_IsExecutable>true</_IsExecutable>
-        <HasRuntimeOutput>true</HasRuntimeOutput>
-    </PropertyGroup>
-
     <PropertyGroup>
         <UsingZlepperRimWorldSdk>true</UsingZlepperRimWorldSdk>
     </PropertyGroup>
