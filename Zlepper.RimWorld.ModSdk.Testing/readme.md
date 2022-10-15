@@ -22,6 +22,8 @@ Like for the normal ModSdk you have to create a new project, but instead you use
 
 This assumes that you have a project called `MyMod` in the same solution, which is the project you want to test.
 
+Now you can start writing your NUnit tests as you always do. 
+
 ## Configuration
 
 There a fewer configuration than for the normal `ModSdk` since you don't need to run something,

@@ -12,8 +12,10 @@
         <Version>0.0.1</Version>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/zlepper/RimWorld.ModSdk</RepositoryUrl>
+        <PackageReadmeFile>readme.md</PackageReadmeFile>
     </PropertyGroup>
     <ItemGroup>
+        <None Include="readme.md" Pack="true" PackagePath="\"/>
         <None Include="Sdk/*.*" Pack="true" PackagePath="Sdk" />
     </ItemGroup>
     <ItemGroup>
