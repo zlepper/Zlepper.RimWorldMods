@@ -1,5 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+
+    <ItemGroup Condition="'$(RimWorldImplicitUsings)' == 'true' Or '$(RimWorldImplicitUsings)' == 'enable'">
+        <Using Include="Verse"/>
+        <Using Include="RimWorld"/>
+        <Using Include="System"/>
+        <Using Include="System.Collections.Generic"/>
+        <Using Include="System.Linq"/>
+        <Using Include="NUnit.Framework"/>
+    </ItemGroup>
+
     <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk" />
 
     <Target Name="ValidateParameters" BeforeTargets="BeforeBuild">

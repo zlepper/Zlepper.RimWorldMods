@@ -1,7 +1,6 @@
 <Project Sdk="$(MSBuildProjectDirectory)\..\Zlepper.RimWorld.ModSdk">
 
     <PropertyGroup>
-        <RootNamespace>Zlepper.RimWorld.ExtremeTraits</RootNamespace>
         <IncludeHugsLib>true</IncludeHugsLib>
         <RimWorldModName>Extreme Traits</RimWorldModName>
         <RimWorldPackageId>Zlepper.RimWorld.ExtremeTraits</RimWorldPackageId>

@@ -17,6 +17,7 @@
         <LangVersion>10</LangVersion>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <IsPackable>false</IsPackable>
+        <RimWorldImplicitUsings>enable</RimWorldImplicitUsings>
     </PropertyGroup>
 
     <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
