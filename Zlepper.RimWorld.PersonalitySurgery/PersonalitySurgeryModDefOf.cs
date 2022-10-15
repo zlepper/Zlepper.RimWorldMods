@@ -1,6 +1,3 @@
-using RimWorld;
-using Verse;
-
 namespace Zlepper.RimWorld.PersonalitySurgery;
 
 [DefOf]

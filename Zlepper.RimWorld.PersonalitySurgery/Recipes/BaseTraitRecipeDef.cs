@@ -1,7 +1,3 @@
-using System.Collections.Generic;
-using RimWorld;
-using Verse;
-
 namespace Zlepper.RimWorld.PersonalitySurgery.Recipes;
 
 public abstract class BaseTraitRecipeDef : BaseBioRecipeDef

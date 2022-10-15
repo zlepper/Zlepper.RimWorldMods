@@ -1,0 +1,30 @@
+<Defs>
+
+    <RecipeDef>
+        <defName>TraitCraftingBaseRecipe</defName>
+        <workSpeedStat>DrugSynthesisSpeed</workSpeedStat>
+        <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+        <effectWorking>Cook</effectWorking>
+        <soundWorking>Recipe_CookMeal</soundWorking>
+        <allowMixingIngredients>false</allowMixingIngredients>
+        <workAmount>1500</workAmount>
+        <workSkill>Intellectual</workSkill>
+        <ingredients>
+            <li>
+                <filter>
+                    <thingDefs>
+                        <li>Neutroamine</li>
+                    </thingDefs>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <products />
+        <skillRequirements>
+            <Crafting>4</Crafting>
+            <Intellectual>10</Intellectual>
+            <Medicine>10</Medicine>
+        </skillRequirements>
+    </RecipeDef>
+
+</Defs>

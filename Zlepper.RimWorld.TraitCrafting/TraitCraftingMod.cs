@@ -1,12 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
 using HarmonyLib;
 using HugsLib;
 using HugsLib.Utils;
-using RimWorld;
-using Verse;
 using Zlepper.RimWorld.PersonalitySurgery;
 
 namespace Zlepper.RimWorld.TraitCrafting;

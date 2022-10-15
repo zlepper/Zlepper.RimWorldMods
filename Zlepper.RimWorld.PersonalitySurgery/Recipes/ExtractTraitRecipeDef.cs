@@ -1,6 +1,3 @@
-using System.Linq;
-using Verse;
-
 namespace Zlepper.RimWorld.PersonalitySurgery.Recipes;
 
 public class ExtractTraitRecipeDef : BaseTraitRecipeDef

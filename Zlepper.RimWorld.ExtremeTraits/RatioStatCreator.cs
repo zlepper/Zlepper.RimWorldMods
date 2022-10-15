@@ -1,5 +1,3 @@
-using System;
-
 namespace Zlepper.RimWorld.ExtremeTraits;
 
 public class RatioStatCreator : IStatCreator

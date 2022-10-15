@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Collections;
 using System.Reflection;
 using HugsLib;
 using HugsLib.Utils;
-using RimWorld;
-using Verse;
 using Zlepper.RimWorld.PersonalitySurgery.Recipes;
 using RecipeDefDatabase = Verse.DefDatabase<Verse.RecipeDef>;
 using ThingDefDatabase = Verse.DefDatabase<Verse.ThingDef>;

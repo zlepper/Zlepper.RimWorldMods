@@ -2,9 +2,8 @@
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
     <PropertyGroup>
-        <RimWorldVersion Condition="Exists('$(RimWorldPath)')" >$([System.IO.File]::ReadAllText("$(RimWorldPath)/Version.txt").Substring(0, 3))</RimWorldVersion>
+        <RimWorldVersion Condition="'$(RimWorldVersion)' == '' and Exists('$(RimWorldPath)')">$([System.IO.File]::ReadAllText("$(RimWorldPath)/Version.txt").Substring(0, 3))</RimWorldVersion>
         <RimWorldModPackageFolder>$(RimWorldPath)/Mods/$(RimWorldPackageId)</RimWorldModPackageFolder>
-<!--        <RimWorldAssembliesPath>$(RimWorldModPackageFolder)/$(RimWorldVersion)/Assemblies</RimWorldAssembliesPath>-->
         <ModSpecificOutputfolder>$(OutputFolder)/$(RimWorldModName)</ModSpecificOutputfolder>
         <OutputVersionFolder>$(ModSpecificOutputfolder)/$(RimWorldVersion)</OutputVersionFolder>
         <OutputPath>$(OutputVersionFolder)/Assemblies</OutputPath>
@@ -22,14 +21,40 @@
         <Error Condition="'$(RimWorldPackageId)' == ''" Text="RimWorldPackageId is not set"/>
     </Target>
 
+    <ItemGroup Condition="'$(RimWorldImplicitUsings)' == 'true' Or '$(RimWorldImplicitUsings)' == 'enable'">
+        <Using Include="Verse"/>
+        <Using Include="RimWorld"/>
+        <Using Include="System"/>
+        <Using Include="System.Collections.Generic"/>
+        <Using Include="System.Linq"/>
+    </ItemGroup>
+
     <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk"/>
 
     <ItemDefinitionGroup>
         <RimWorldAssemblyReference>
             <Visible>False</Visible>
         </RimWorldAssemblyReference>
+        <RimWorldResourceAbout>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </RimWorldResourceAbout>
+        <RimWorldResourceLanguages>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </RimWorldResourceLanguages>
+        <RimWorldResourceDefs>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </RimWorldResourceDefs>
+        <RimWorldResourcePatches>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </RimWorldResourcePatches>
+        <RimWorldResourceSounds>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </RimWorldResourceSounds>
+        <RimWorldResourceTextures>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </RimWorldResourceTextures>
     </ItemDefinitionGroup>
-    
+
     <ItemGroup>
         <RimWorldAssemblyReference Include="Assembly-CSharp"/>
         <RimWorldAssemblyReference Include="UnityEngine.CoreModule"/>
@@ -55,19 +80,17 @@
 
 
     <ItemGroup>
-        <RimWorldResourceAbout Include="About\**" CopyToOutputDirectory="Never"/>
-        <RimWorldResourceLanguages Include="Languages\**\*.xml" CopyToOutputDirectory="Never"/>
-        <RimWorldResourceDefs Include="Defs\**\*.xml" CopyToOutputDirectory="Never"/>
-        <RimWorldResourcePatches Include="Patches\**\*.xml" CopyToOutputDirectory="Never"/>
-        <RimWorldResourceSounds Include="Sounds\**" CopyToOutputDirectory="Never"/>
-        <RimWorldResourceTextures Include="Textures\**" CopyToOutputDirectory="Never"/>
-<!--        <RimWorldResultAssemblies Include="$(OutputPath)\$(AssemblyName).dll" CopyToOutputDirectory="Never"/>-->
-<!--        <RimWorldResultAssemblies Include="$(OutputPath)\$(AssemblyName).pdb" CopyToOutputDirectory="Never"/>-->
+        <RimWorldResourceAbout Include="About\**"/>
+        <RimWorldResourceLanguages Include="Languages\**\*.xml"/>
+        <RimWorldResourceDefs Include="Defs\**\*.xml"/>
+        <RimWorldResourcePatches Include="Patches\**\*.xml"/>
+        <RimWorldResourceSounds Include="Sounds\**"/>
+        <RimWorldResourceTextures Include="Textures\**"/>
     </ItemGroup>
 
     <Target Name="CleanupRimWorldFolder" BeforeTargets="Clean">
-        <Message Importance="high" Text="Cleaning up RimWorld folder: $(OutputPath)"/>
         <RemoveDir Directories="$(RimWorldModPackageFolder)"/>
+        <RemoveDir Directories="$(OutputVersionFolder)"/>
     </Target>
 
     <Target Name="OutputRimWorldResources" BeforeTargets="Build">
@@ -81,11 +104,9 @@
 
     <Target Name="CopyMod" AfterTargets="Build">
         <ItemGroup>
-            <RimWorldCompilationResult Include="$(ModSpecificOutputfolder)\**" />
+            <RimWorldCompilationResult Include="$(ModSpecificOutputfolder)\**"/>
         </ItemGroup>
-        
-        <Message Text="Copying files: @(RimWorldCompilationResult)" Importance="high"/>
+
         <Copy SourceFiles="@(RimWorldCompilationResult)" DestinationFiles="$(RimWorldModPackageFolder)/%(RecursiveDir)%(Filename)%(Extension)"/>
-<!--        <Copy SourceFiles="@(RimWorldResultAssemblies)" DestinationFiles="$(RimWorldAssembliesPath)/%(Filename)%(Extension)"/>-->
     </Target>
 </Project>

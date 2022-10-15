@@ -1,11 +1,6 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using HarmonyLib;
 using HugsLib;
 using HugsLib.Utils;
-using RimWorld;
-using Verse;
 
 namespace Zlepper.RimWorld.ExtremeTraits;
 

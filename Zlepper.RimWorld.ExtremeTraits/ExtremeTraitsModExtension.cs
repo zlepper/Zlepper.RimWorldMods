@@ -1,6 +1,3 @@
-using System.Collections.Generic;
-using Verse;
-
 namespace Zlepper.RimWorld.ExtremeTraits;
 
 public class ExtremeTraitsModExtension : DefModExtension

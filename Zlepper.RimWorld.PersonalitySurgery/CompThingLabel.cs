@@ -1,5 +1,3 @@
-using Verse;
-
 namespace Zlepper.RimWorld.PersonalitySurgery;
 
 public class CompThingLabel : ThingComp

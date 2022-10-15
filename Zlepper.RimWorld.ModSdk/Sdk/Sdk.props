@@ -17,6 +17,7 @@
         <Nullable>enable</Nullable>
         <LangVersion>10</LangVersion>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
+        <RimWorldImplicitUsings>enable</RimWorldImplicitUsings>
     </PropertyGroup>
 
     <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
