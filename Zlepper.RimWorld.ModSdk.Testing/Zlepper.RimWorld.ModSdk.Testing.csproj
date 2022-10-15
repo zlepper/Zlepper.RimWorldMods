@@ -11,7 +11,7 @@
         <LangVersion>10</LangVersion>
         <Version>0.0.1</Version>
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
-        <RepositoryUrl>https://github.com/zlepper/RimWorld.ModSdk</RepositoryUrl>
+        <RepositoryUrl>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.ModSdk.Testing</RepositoryUrl>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
     </PropertyGroup>
     <ItemGroup>
