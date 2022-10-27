@@ -3,6 +3,19 @@
 
     <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
 
+    <PropertyGroup>
+        <_ModSdkDllPath Condition="Exists('$(MSBuildThisFileDirectory)..\lib\netstandard2.0\Zlepper.RimWorld.ModSdk.dll')">$(MSBuildThisFileDirectory)..\lib\netstandard2.0\Zlepper.RimWorld.ModSdk.dll</_ModSdkDllPath>
+        <_ModSdkDllPath Condition="Exists('$(MSBuildThisFileDirectory)..\bin\Debug\netstandard2.0\Zlepper.RimWorld.ModSdk.dll')">$(MSBuildThisFileDirectory)..\bin\Debug\netstandard2.0\Zlepper.RimWorld.ModSdk.dll</_ModSdkDllPath>
+    </PropertyGroup>
+
+
+    <Target Name="ValidateModSdkPath" BeforeTargets="BeforeBuild">
+        <Error Condition="'$(_ModSdkDllPath)' == ''" Text="ModSdk could not find itself, this is probably a bug."/>
+    </Target>
+
+    <UsingTask Condition="'$(_ModSdkDllPath)' != ''" TaskName="Zlepper.RimWorld.ModSdk.Tasks.GenerateAboutXml"
+               AssemblyFile="$(_ModSdkDllPath)"/>
+    
     <ItemGroup>
         <AvailableItemName
                 Include="RimWorldResource;RimWorldResourceAbout;RimWorldResourceLanguages;RimWorldResourceDefs;RimWorldResourcePatches;RimWorldResourceSounds;RimWorldResourceTextures;RimWorldAssemblyReference" />
@@ -23,22 +36,26 @@
     <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
         <RimWorldPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldPath>
         <RimWorldManagedPath>$(RimWorldPath)\RimWorldWin64_Data\Managed</RimWorldManagedPath>
+        <SteamModContentFolder>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100</SteamModContentFolder>
     </PropertyGroup>
 
     <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
         <RimWorldPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldPath>
         <RimWorldManagedPath>$(RimWorldPath)\RimWorldWin64_Data\Managed</RimWorldManagedPath>
+        <SteamModContentFolder>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100</SteamModContentFolder>
     </PropertyGroup>
 
     <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
         <RimWorldPath>$(HOME)/Library/Application Support/Steam/steamapps/common/RimWorld/RimWorldMac.app/Contents/Resources</RimWorldPath>
         <RimWorldManagedPath>$(RimWorldPath)/Data/Managed</RimWorldManagedPath>
+        <SteamModContentFolder>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100</SteamModContentFolder>
     </PropertyGroup>
-    
+
+
     <PropertyGroup>
         <RimWorldModName/>
         <IncludeHugsLib>false</IncludeHugsLib>
-        <HugsLibVersion>9.0.1</HugsLibVersion>
+        <HugsLibVersion>10.0.1</HugsLibVersion>
         <RimWorldPackageId/>
         <OutputFolder>../Mods</OutputFolder>
     </PropertyGroup>

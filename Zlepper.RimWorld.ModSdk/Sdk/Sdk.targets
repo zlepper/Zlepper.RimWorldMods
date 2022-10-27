@@ -4,7 +4,7 @@
     <PropertyGroup>
         <RimWorldVersion Condition="'$(RimWorldVersion)' == '' and Exists('$(RimWorldPath)')">$([System.IO.File]::ReadAllText("$(RimWorldPath)/Version.txt").Substring(0, 3))</RimWorldVersion>
         <RimWorldModPackageFolder>$(RimWorldPath)/Mods/$(RimWorldPackageId)</RimWorldModPackageFolder>
-        <ModSpecificOutputfolder>$(OutputFolder)/$(RimWorldModName)</ModSpecificOutputfolder>
+        <ModSpecificOutputfolder>$(OutputFolder)/$(RimWorldPackageId)</ModSpecificOutputfolder>
         <OutputVersionFolder>$(ModSpecificOutputfolder)/$(RimWorldVersion)</OutputVersionFolder>
         <OutputPath>$(OutputVersionFolder)/Assemblies</OutputPath>
     </PropertyGroup>
@@ -19,6 +19,7 @@
         <Error Condition="!Exists('$(RimWorldPath)')" Text="The configured RimWorldPath '$(RimWorldPath)' was not found"/>
         <Error Condition="'$(RimWorldModName)' == ''" Text="RimWorldModName is not set"/>
         <Error Condition="'$(RimWorldPackageId)' == ''" Text="RimWorldPackageId is not set"/>
+        <Error Condition="'$(Authors)' == ''" Text="Authors is not set"/>
     </Target>
 
     <ItemGroup Condition="'$(RimWorldImplicitUsings)' == 'true' Or '$(RimWorldImplicitUsings)' == 'enable'">
@@ -53,6 +54,10 @@
         <RimWorldResourceTextures>
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </RimWorldResourceTextures>
+        <RimWorldSteamModDependency>
+            <Visible>False</Visible>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </RimWorldSteamModDependency>
     </ItemDefinitionGroup>
 
     <ItemGroup>
@@ -70,8 +75,19 @@
     </Target>
 
     <ItemGroup Condition="'$(IncludeHugsLib)' == 'true'">
+        <RimWorldSteamModDependency Include="818773962" />
         <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="$(HugsLibVersion)" ExcludeAssets="runtime"/>
     </ItemGroup>
+
+
+<!--    <Target Name="ReferenceMods" BeforeTargets="ResolveAssemblyReferences">-->
+<!--        <ItemGroup>-->
+<!--            <Reference Include="@(RimWorldSteamModDependency)">-->
+<!--                <HintPath>$(SteamModContentFolder)\%(RimWorldAssemblyReference.Identity).dll</HintPath>-->
+<!--                <Private>False</Private>-->
+<!--            </Reference>-->
+<!--        </ItemGroup>-->
+<!--    </Target>-->
 
     <ItemGroup>
         <Content Remove="Publish/**"/>
@@ -91,6 +107,10 @@
     <Target Name="CleanupRimWorldFolder" BeforeTargets="Clean">
         <RemoveDir Directories="$(RimWorldModPackageFolder)"/>
         <RemoveDir Directories="$(OutputVersionFolder)"/>
+    </Target>
+    
+    <Target Name="GenerateAboutXml" BeforeTargets="Build">
+        <GenerateAboutXml ModName="$(RimWorldModName)" ModPackageId="$(RimWorldPackageId)" ModAuthor="$(Authors)" />
     </Target>
 
     <Target Name="OutputRimWorldResources" BeforeTargets="Build">

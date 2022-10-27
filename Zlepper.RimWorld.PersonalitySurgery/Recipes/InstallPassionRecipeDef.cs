@@ -7,7 +7,7 @@ public class InstallPassionRecipeDef : BasePassionRecipeDef
         var skill = pawn.skills.GetSkill(Skill);
         
         
-        return !skill.TotallyDisabled && skill.passion != Passion;
+        return !skill.TotallyDisabled && skill.passion < Passion;
     }
 
     public override void ApplyChanges(Pawn pawn, Pawn billDoer)

@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <PackageType>Template</PackageType>
+        <PackageVersion>0.0.1</PackageVersion>
+        <PackageId>Zlepper.RimWorld.ModTemplate</PackageId>
+        <Title>RimWorld mod template</Title>
+        <Authors>Zlepper</Authors>
+        <Description>Provides an easy template for getting started with making mods for RimWorld</Description>
+        <PackageTags>dotnet-new templates RimWorld</PackageTags>
+        <TargetFramework>netstandard2.0</TargetFramework>
+
+        <IncludeContentInPack>true</IncludeContentInPack>
+        <IncludeBuildOutput>false</IncludeBuildOutput>
+        <ContentTargetFolders>content</ContentTargetFolders>
+        <LangVersion>10</LangVersion>
+    </PropertyGroup>
+    
+    <ItemGroup>
+        <Content Include=".template.config/*.*" />
+        <Content Include="templates\RimWorldMod\.template.config\template.json" />
+        <Content Include="templates\RimWorldMod\RimWorldMod.csproj" />
+    </ItemGroup>
+</Project>

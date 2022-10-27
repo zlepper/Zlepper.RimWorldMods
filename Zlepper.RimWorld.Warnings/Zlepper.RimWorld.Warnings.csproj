@@ -2,8 +2,8 @@
 
     <PropertyGroup>
         <IncludeHugsLib>true</IncludeHugsLib>
-        <RimWorldModName>Personality Surgery</RimWorldModName>
-        <RimWorldPackageId>Zlepper.RimWorld.PersonalitySurgery</RimWorldPackageId>
+        <RimWorldModName>Zlepper's Warnings</RimWorldModName>
+        <RimWorldPackageId>Zlepper.RimWorld.Warnings</RimWorldPackageId>
     </PropertyGroup>
 
     <ItemGroup>

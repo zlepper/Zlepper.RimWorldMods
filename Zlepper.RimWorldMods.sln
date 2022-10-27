@@ -14,6 +14,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.ModSdk", "
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.ModSdk.Testing", "Zlepper.RimWorld.ModSdk.Testing\Zlepper.RimWorld.ModSdk.Testing.csproj", "{9B44FF3D-F012-4194-8034-0350B5DDA4F9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.ModTemplate", "Zlepper.RimWorld.ModTemplate\Zlepper.RimWorld.ModTemplate.csproj", "{99669BBB-2C04-4C06-AD45-3BA158C77211}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.Warnings", "Zlepper.RimWorld.Warnings\Zlepper.RimWorld.Warnings.csproj", "{03DDA2E5-C8ED-4A93-A53B-826AFC02459B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -48,5 +52,13 @@ Global
 		{9B44FF3D-F012-4194-8034-0350B5DDA4F9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9B44FF3D-F012-4194-8034-0350B5DDA4F9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9B44FF3D-F012-4194-8034-0350B5DDA4F9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{99669BBB-2C04-4C06-AD45-3BA158C77211}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{99669BBB-2C04-4C06-AD45-3BA158C77211}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{99669BBB-2C04-4C06-AD45-3BA158C77211}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{99669BBB-2C04-4C06-AD45-3BA158C77211}.Release|Any CPU.Build.0 = Release|Any CPU
+		{03DDA2E5-C8ED-4A93-A53B-826AFC02459B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{03DDA2E5-C8ED-4A93-A53B-826AFC02459B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{03DDA2E5-C8ED-4A93-A53B-826AFC02459B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{03DDA2E5-C8ED-4A93-A53B-826AFC02459B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

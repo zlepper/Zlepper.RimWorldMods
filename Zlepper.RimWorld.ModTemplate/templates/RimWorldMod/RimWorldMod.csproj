@@ -1,0 +1,10 @@
+<Project Sdk="Zlepper.RimWorld.ModSdk/0.0.5">
+
+    <PropertyGroup>
+        <IncludeHugsLib>false</IncludeHugsLib>
+        <RimWorldModName>RimWorld Mod</RimWorldModName>
+        <RimWorldPackageId>RimWorldMod</RimWorldPackageId>
+    </PropertyGroup>
+
+</Project>
+ 

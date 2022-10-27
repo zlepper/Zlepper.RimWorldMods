@@ -3,6 +3,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Zlepper.RimWorld.ExtremeTraits\Zlepper.RimWorld.ExtremeTraits.csproj" />
+        <ProjectReference Include="..\Zlepper.RimWorld.ModSdk.Testing\Zlepper.RimWorld.ModSdk.Testing.csproj" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
 </Project>

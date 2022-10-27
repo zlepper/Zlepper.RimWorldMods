@@ -6,7 +6,7 @@ public class ExtractTraitRecipeDef : BaseTraitRecipeDef
     public override bool CheckIfSurgeryIsPossible(Pawn pawn)
     {
         var matches = pawn.story.traits.allTraits.FirstOrDefault(t =>
-            t.def == Trait && t.Degree == TraitDegree);
+            t.def == Trait && t.Degree == TraitDegree && t.sourceGene == null && !t.Suppressed);
         return matches != null;
     }
     
