@@ -2,7 +2,7 @@ using HarmonyLib;
 
 namespace Zlepper.RimWorld.Warnings;
 
-[HarmonyPatch(typeof(Messages), nameof(Messages.Message), new []{typeof(Message), typeof(bool)})]
+[HarmonyPatch(typeof(Messages), nameof(Messages.Message), typeof(Message), typeof(bool))]
 public static class Messages_Message_Patch
 {
 
@@ -20,6 +20,8 @@ public static class Messages_Message_Patch
         }
 
         if (letterDef == null) return true;
+        
+        ZleppersWarningsMod.Logger.Trace($"Converting message to letter: '{msg.text}'. DefName: '{msg.def.defName}'. Label: '{msg.def.label}'.");
 
         var label = string.IsNullOrWhiteSpace(msg.def.label) ? msg.text : msg.def.label;
             

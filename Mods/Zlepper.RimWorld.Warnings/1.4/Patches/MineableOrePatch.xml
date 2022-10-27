@@ -1,0 +1,25 @@
+<Patch>
+    <Operation Class="PatchOperationConditional">
+        <xpath>Defs/ThingDef/building[isResourceRock="true"]/parent::ThingDef/comps</xpath>
+        
+        <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef/building[isResourceRock="true"]/parent::ThingDef</xpath>
+            <value>
+                <comps>
+                    <li>
+                        <compClass>Zlepper.RimWorld.Warnings.ThingComp_LastOreMined</compClass>
+                    </li>
+                </comps>
+            </value>
+        </nomatch>
+        
+        <match Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef/building[isResourceRock="true"]/parent::ThingDef/comps</xpath>
+            <value>
+                <li>
+                    <compClass>Zlepper.RimWorld.Warnings.ThingComp_LastOreMined</compClass>
+                </li>
+            </value>
+        </match>
+    </Operation>
+</Patch>

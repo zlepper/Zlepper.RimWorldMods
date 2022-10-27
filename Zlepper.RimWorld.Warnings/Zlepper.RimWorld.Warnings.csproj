@@ -10,5 +10,11 @@
         <ProjectReference Include="..\Zlepper.RimWorld.ModSdk\Zlepper.RimWorld.ModSdk.csproj" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
+    <ItemGroup>
+      <RimWorldResourceLanguages Update="Languages\English\Keyed\Keys.xml">
+        <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+      </RimWorldResourceLanguages>
+    </ItemGroup>
+
 </Project>
  
