@@ -1,34 +1,35 @@
 using HarmonyLib;
+using Verse.AI.Group;
 
 namespace Zlepper.RimWorld.Warnings;
 
-[HarmonyPatch(typeof(Messages), nameof(Messages.Message), typeof(Message), typeof(bool))]
-public static class Messages_Message_Patch
+[HarmonyPatch(typeof(LordJob_StageThenAttack), nameof(LordJob_StageThenAttack.CreateGraph))]
+public static class LordJob_StageThenAttack_CreateGraph_Patch
 {
-
-    [HarmonyPrefix]
-    public static bool LogMessageInfo(Message msg)
+    [HarmonyPostfix]
+    public static void Postfix(ref StateGraph __result)
     {
-        LetterDef? letterDef = null;
-
-        if (msg.def.defName == MessageTypeDefOf.ThreatBig.defName)
+        var attackTransition = __result.transitions.FirstOrDefault(IsAttackTransition);
+        if (attackTransition == null)
         {
-            letterDef = LetterDefOf.ThreatBig;
-        } else if (msg.def.defName == MessageTypeDefOf.ThreatSmall.defName)
-        {
-            letterDef = LetterDefOf.ThreatSmall;
+            ZleppersWarningsMod.Logger.Warning("Could not find attack transition.");
+            return;
         }
-
-        if (letterDef == null) return true;
         
-        ZleppersWarningsMod.Logger.Trace($"Converting message to letter: '{msg.text}'. DefName: '{msg.def.defName}'. Label: '{msg.def.label}'.");
+        var message = attackTransition.preActions.OfType<TransitionAction_Message>().First();
+        
+        attackTransition.AddPreAction(new TransitionAction_Custom(() =>
+        {
+            var label = string.IsNullOrWhiteSpace(message.type.label) ? message.message : message.type.label;
 
-        var label = string.IsNullOrWhiteSpace(msg.def.label) ? msg.text : msg.def.label;
-            
-        var letter = LetterMaker.MakeLetter(label, msg.text, letterDef, msg.lookTargets, null, msg.quest);
-        Find.LetterStack.ReceiveLetter(letter);
-        return false;
-
+            var lookTargets = message.lookTargetGetter?.Invoke() ?? message.lookTarget;
+            var letter = LetterMaker.MakeLetter(label, message.message, LetterDefOf.ThreatBig, lookTargets);
+            Find.LetterStack.ReceiveLetter(letter);
+        }));
     }
-    
+
+    private static bool IsAttackTransition(Transition transition)
+    {
+        return transition.preActions.Any(a => a is TransitionAction_Message) && transition.triggers.Any(trigger => trigger is Trigger_TicksPassed) && transition.triggers.Any(trigger => trigger is Trigger_FractionPawnsLost);
+    }
 }

@@ -2,13 +2,14 @@
 
     <PropertyGroup>
         <IncludeHugsLib>true</IncludeHugsLib>
-        <RimWorldModName>Zlepper's Warnings</RimWorldModName>
-        <RimWorldPackageId>Zlepper.RimWorld.Warnings</RimWorldPackageId>
+        <RimWorldModName>Zlepper's BioTech Improvements</RimWorldModName>
+        <RimWorldPackageId>Zlepper.RimWorld.BioTechImprovements</RimWorldPackageId>
     </PropertyGroup>
 
     <ItemGroup>
         <ProjectReference Include="..\Zlepper.RimWorld.ModSdk\Zlepper.RimWorld.ModSdk.csproj" ReferenceOutputAssembly="false" />
     </ItemGroup>
+
 
 </Project>
  

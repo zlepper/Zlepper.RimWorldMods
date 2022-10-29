@@ -3,7 +3,7 @@
     <RecipeDef>
         <defName>TraitCraftingBaseRecipe</defName>
         <workSpeedStat>DrugSynthesisSpeed</workSpeedStat>
-        <requiredGiverWorkType>Cooking</requiredGiverWorkType>
+        <requiredGiverWorkType>Research</requiredGiverWorkType>
         <effectWorking>Cook</effectWorking>
         <soundWorking>Recipe_CookMeal</soundWorking>
         <allowMixingIngredients>false</allowMixingIngredients>
@@ -16,7 +16,7 @@
                         <li>Neutroamine</li>
                     </thingDefs>
                 </filter>
-                <count>1</count>
+                <count>8</count>
             </li>
         </ingredients>
         <products />

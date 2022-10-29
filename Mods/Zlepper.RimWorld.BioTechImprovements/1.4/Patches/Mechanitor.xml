@@ -1,0 +1,24 @@
+<Patch>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>/Defs/WorkTypeDef[defName="Smithing"]/description</xpath>
+        <value>
+            <description>Create weapons and tools from raw materials, either as a blacksmith or by machining.</description>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>/Defs/WorkGiverDef[defName="RepairMech" or  defName="DoBillsMechGestator" or defName="DoBillsSubcoreEncoder"]/workType</xpath>
+        <value>
+            <workType>Mechanitor</workType>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationReplace">
+        <xpath>/Defs/WorkGiverDef[defName="DoBillsCremate"]/canBeDoneByMechs</xpath>
+        <value>
+            <canBeDoneByMechs>true</canBeDoneByMechs>
+        </value>
+    </Operation>
+
+</Patch>

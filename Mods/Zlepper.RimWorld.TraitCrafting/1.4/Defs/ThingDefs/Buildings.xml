@@ -75,9 +75,9 @@
 
     <WorkGiverDef>
         <defName>DoTraitCombine</defName>
-        <label>combines traits</label>
+        <label>combine traits</label>
         <giverClass>WorkGiver_DoBill</giverClass>
-        <workType>Cooking</workType>
+        <workType>Research</workType>
         <priorityInType>100</priorityInType>
         <fixedBillGiverDefs>
             <li>TraitCombiner</li>

@@ -18,6 +18,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.ModTemplat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.Warnings", "Zlepper.RimWorld.Warnings\Zlepper.RimWorld.Warnings.csproj", "{03DDA2E5-C8ED-4A93-A53B-826AFC02459B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.BioTechImprovements", "Zlepper.RimWorld.BioTechImprovements\Zlepper.RimWorld.BioTechImprovements.csproj", "{523F494B-90B6-4598-8A5A-E289CB97F452}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +62,9 @@ Global
 		{03DDA2E5-C8ED-4A93-A53B-826AFC02459B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{03DDA2E5-C8ED-4A93-A53B-826AFC02459B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{03DDA2E5-C8ED-4A93-A53B-826AFC02459B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{523F494B-90B6-4598-8A5A-E289CB97F452}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{523F494B-90B6-4598-8A5A-E289CB97F452}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{523F494B-90B6-4598-8A5A-E289CB97F452}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{523F494B-90B6-4598-8A5A-E289CB97F452}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
