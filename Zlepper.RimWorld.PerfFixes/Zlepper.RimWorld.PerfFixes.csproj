@@ -4,6 +4,7 @@
         <IncludeHugsLib>true</IncludeHugsLib>
         <RimWorldModName>Zleppers Perf Fixes</RimWorldModName>
         <RimWorldPackageId>Zlepper.RimWorld.PerfFixes</RimWorldPackageId>
+        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
     <ItemGroup>
