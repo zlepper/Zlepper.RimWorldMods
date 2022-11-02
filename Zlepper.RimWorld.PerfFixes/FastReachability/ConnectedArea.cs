@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Zlepper.RimWorld.PerfFixes;
+namespace Zlepper.RimWorld.PerfFixes.FastReachability;
 
 public sealed class ConnectedArea : IPoolable
 {

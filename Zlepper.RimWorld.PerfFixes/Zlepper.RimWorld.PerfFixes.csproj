@@ -7,6 +7,10 @@
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     </PropertyGroup>
 
+    <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
+      <DebugSymbols>true</DebugSymbols>
+    </PropertyGroup>
+
     <ItemGroup>
         <ProjectReference Include="..\Zlepper.RimWorld.ModSdk\Zlepper.RimWorld.ModSdk.csproj" ReferenceOutputAssembly="false" />
     </ItemGroup>

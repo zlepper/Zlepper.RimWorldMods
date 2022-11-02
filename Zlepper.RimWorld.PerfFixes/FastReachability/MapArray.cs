@@ -1,6 +1,6 @@
 using System.Runtime.CompilerServices;
 
-namespace Zlepper.RimWorld.PerfFixes;
+namespace Zlepper.RimWorld.PerfFixes.FastReachability;
 
 public sealed class MapArray<T>
 {
@@ -44,22 +44,23 @@ public sealed class MapArray<T>
         _array[index] = value;
         if (index < _minIndex)
             _minIndex = index;
-        if (index > _maxIndex) 
-            _maxIndex = index;
+        if (index >= _maxIndex) 
+            _maxIndex = index + 1;
     }
 
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
     private int GetIndex(int x, int z)
     {
-        return z * _sizeX + +x;
+        return z * _sizeX + x;
     }
     
     public void ResetAll(T value)
     {
-        for (var i = _minIndex; i < _maxIndex; i++)
+        var a = _array;
+        for (var i = _minIndex; i < _maxIndex && i < a.Length; i++)
         {
-            _array[i] = value;
+            a[i] = value;
         }
 
         _minIndex = int.MaxValue;

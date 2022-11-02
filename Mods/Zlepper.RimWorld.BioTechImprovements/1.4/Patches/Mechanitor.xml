@@ -14,11 +14,4 @@
         </value>
     </Operation>
 
-    <Operation Class="PatchOperationReplace">
-        <xpath>/Defs/WorkGiverDef[defName="DoBillsCremate"]/canBeDoneByMechs</xpath>
-        <value>
-            <canBeDoneByMechs>true</canBeDoneByMechs>
-        </value>
-    </Operation>
-
 </Patch>
