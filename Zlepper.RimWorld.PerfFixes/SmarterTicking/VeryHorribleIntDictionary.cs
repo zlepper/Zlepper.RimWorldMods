@@ -1,6 +1,8 @@
+using System.Runtime.CompilerServices;
+
 namespace Zlepper.RimWorld.PerfFixes.SmarterTicking;
 
-public class VeryHorribleIntDictionary<TValue>
+public sealed class VeryHorribleIntDictionary<TValue>
     where TValue : notnull
 {
     private TValue?[] _values;
@@ -10,6 +12,7 @@ public class VeryHorribleIntDictionary<TValue>
         _values = new TValue[initialCapacity];
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public bool TryGetValue(int key, out TValue value)
     {
         var v = _values;
@@ -27,6 +30,7 @@ public class VeryHorribleIntDictionary<TValue>
         return false;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public void Set(int key, TValue value)
     {
         if (key >= _values.Length)

@@ -1,6 +1,6 @@
 namespace Zlepper.RimWorld.PerfFixes.SmarterTicking;
 
-internal class CachedValue<T>
+internal sealed class CachedValue<T>
 {
     public int TicksLeft;
     public T Value;

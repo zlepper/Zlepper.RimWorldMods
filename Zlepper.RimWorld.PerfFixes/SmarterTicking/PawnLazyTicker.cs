@@ -1,7 +1,9 @@
 
+using System.Runtime.CompilerServices;
+
 namespace Zlepper.RimWorld.PerfFixes.SmarterTicking;
 
-public class PawnLazyTicker<TValue>
+public sealed class PawnLazyTicker<TValue>
 {
     private readonly VeryHorribleIntDictionary<CachedValue<TValue>> _cache = new();
 
@@ -15,6 +17,7 @@ public class PawnLazyTicker<TValue>
         _maxTicketsBetweenChecks = maxTicketsBetweenChecks;
     }
 
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
     public TValue TickAndCalculate(Pawn pawn, Func<TValue> calculate)
     {
         var id = pawn.thingIDNumber;
