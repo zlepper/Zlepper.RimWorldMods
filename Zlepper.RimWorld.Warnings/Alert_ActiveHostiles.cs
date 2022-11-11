@@ -20,7 +20,7 @@ public class Alert_ActiveHostiles : Alert
         {
             foreach (var pawn in map.mapPawns.AllPawns)
             {
-                if (!pawn.Downed && pawn.HostileTo(playerFaction))
+                if (!pawn.Downed && pawn.Spawned && pawn.HostileTo(playerFaction))
                 {
                     hostiles.Add(pawn);
                 }
@@ -28,7 +28,7 @@ public class Alert_ActiveHostiles : Alert
 
             foreach (var building in map.listerBuildings.allBuildingsNonColonist)
             {
-                if (building.HostileTo(playerFaction))
+                if (building.Spawned && building.HostileTo(playerFaction))
                 {
                     if (building.GetComp<CompCanBeDormant>() is {Awake: false})
                     {
@@ -39,7 +39,7 @@ public class Alert_ActiveHostiles : Alert
                     {
                         continue;
                     }
-
+                    
                     hostiles.Add(building);
                 }
             }

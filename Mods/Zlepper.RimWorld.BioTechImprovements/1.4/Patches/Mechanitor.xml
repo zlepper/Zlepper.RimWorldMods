@@ -14,4 +14,11 @@
         </value>
     </Operation>
 
+    <Operation Class="PatchOperationReplace">
+        <xpath>/Defs/WorkGiverDef[defName="CarryToGeneExtractor" or  defName="HaulMechsToCharger"]/canBeDoneByMechs</xpath>
+        <value>
+            <canBeDoneByMechs>true</canBeDoneByMechs>
+        </value>
+    </Operation>
+
 </Patch>

@@ -1,0 +1,14 @@
+<!-- //li[@Class='ThinkNode_ConditionalPlayerControlledMech']/subNodes/li[@Class='ThinkNode_Tagger' and tagToGive='Idle']//li[@Class='JobGiver_WanderColony'] -->
+<Patch>
+
+    <Operation Class="PatchOperationAdd">
+        <xpath>//li[@Class='ThinkNode_ConditionalWorkMode' and workMode='Work']/subNodes</xpath>
+        <value>
+            <li Class="JobGiver_GetEnergy_SelfShutdown">
+                <forced>true</forced>
+            </li>
+        </value>
+    </Operation>
+
+
+</Patch>

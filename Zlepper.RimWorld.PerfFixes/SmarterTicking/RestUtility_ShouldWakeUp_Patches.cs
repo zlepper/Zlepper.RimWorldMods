@@ -11,7 +11,7 @@ public static class RestUtility_ShouldWakeUp_Patches
     [HarmonyPrefix]
     public static bool ShouldWakeUp_Patch(Pawn pawn, out bool __result)
     {
-        __result = _cache.TickAndCalculate(pawn, () => RestUtility.ShouldWakeUp(pawn));
+        __result = _cache.TickAndCalculate(pawn, () => ShouldWakeUp_Original(pawn));
 
         return false;
     }
