@@ -7,7 +7,11 @@
         <li>1.4</li>
     </supportedVersions>
 
-    <description>Allows pawns to keep ownership of their bed while out traveling</description>
+    <description>Allows pawns to keep ownership of their bed while out traveling.
+    
+All credits goes to Dhultgren, from who i have platantly stolen the code and tweaked 
+very slightly: https://github.com/dhultgren/rimworld-keep-bed-ownership
+    </description>
 
     <modDependencies>
         <li>
