@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace Zlepper.RimWorld.KeepBedOwnerShip;
+namespace Zlepper.RimWorld.KeepBedOwnership;
 
 /// Normally the game removes ownership of beds if pawn.ownership doesn't reflect the ownership. This patch stops that.
 [HarmonyPatch(typeof(CompAssignableToPawn_Bed), nameof(CompAssignableToPawn_Bed.PostExposeData))]

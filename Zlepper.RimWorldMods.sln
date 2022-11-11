@@ -20,7 +20,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.Warnings",
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.BioTechImprovements", "Zlepper.RimWorld.BioTechImprovements\Zlepper.RimWorld.BioTechImprovements.csproj", "{523F494B-90B6-4598-8A5A-E289CB97F452}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.KeepBedOwnerShip", "Zlepper.RimWorld.KeepBedOwnerShip\Zlepper.RimWorld.KeepBedOwnerShip.csproj", "{1529E759-753C-456E-ACF0-847EA50E09B6}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.KeepBedOwnership", "Zlepper.RimWorld.KeepBedOwnership\Zlepper.RimWorld.KeepBedOwnership.csproj", "{1529E759-753C-456E-ACF0-847EA50E09B6}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

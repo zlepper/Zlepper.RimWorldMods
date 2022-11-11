@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace Zlepper.RimWorld.KeepBedOwnerShip;
+namespace Zlepper.RimWorld.KeepBedOwnership;
 
 /// Make sure pawns pick their current beds when looking for a normal bed to sleep
 [HarmonyPatch(typeof(RestUtility), nameof(RestUtility.FindBedFor), typeof(Pawn), typeof(Pawn), typeof(bool), typeof(bool), typeof(GuestStatus?))]

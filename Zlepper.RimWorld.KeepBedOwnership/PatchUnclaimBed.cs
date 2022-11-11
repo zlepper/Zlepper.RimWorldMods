@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace Zlepper.RimWorld.KeepBedOwnerShip;
+namespace Zlepper.RimWorld.KeepBedOwnership;
 
 /// Temporarily replace pawns owned bed on their map with the bed owned on the current map in order to
 /// unclaim the correct bed

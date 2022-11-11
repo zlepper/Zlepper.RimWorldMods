@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace Zlepper.RimWorld.KeepBedOwnerShip;
+namespace Zlepper.RimWorld.KeepBedOwnership;
 
 [HarmonyPatch(typeof(Pawn_Ownership), nameof(Pawn_Ownership.ClaimBedIfNonMedical))]
 internal class PatchClaimBedIfNonMedical

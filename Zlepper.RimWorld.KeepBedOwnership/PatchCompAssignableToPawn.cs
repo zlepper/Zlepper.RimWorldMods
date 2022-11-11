@@ -1,6 +1,6 @@
 using HarmonyLib;
 
-namespace Zlepper.RimWorld.KeepBedOwnerShip;
+namespace Zlepper.RimWorld.KeepBedOwnership;
 
 [HarmonyPatch(typeof(CompAssignableToPawn), nameof(CompAssignableToPawn.AssigningCandidates), MethodType.Getter)]
 internal class PatchCompAssignableToPawn

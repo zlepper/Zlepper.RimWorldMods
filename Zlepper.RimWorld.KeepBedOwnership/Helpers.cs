@@ -1,4 +1,4 @@
-namespace Zlepper.RimWorld.KeepBedOwnerShip;
+namespace Zlepper.RimWorld.KeepBedOwnership;
 
 internal static class Helpers
 {
