@@ -1,0 +1,14 @@
+<Project Sdk="$(MSBuildProjectDirectory)\..\Zlepper.RimWorld.ModSdk">
+
+    <PropertyGroup>
+        <IncludeHugsLib>true</IncludeHugsLib>
+        <RimWorldModName>Keep bed Ownership</RimWorldModName>
+        <RimWorldPackageId>Zlepper.RimWorld.KeepBedOwnerShip</RimWorldPackageId>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Zlepper.RimWorld.ModSdk\Zlepper.RimWorld.ModSdk.csproj" ReferenceOutputAssembly="false" />
+    </ItemGroup>
+
+</Project>
+ 
