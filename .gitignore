@@ -4,7 +4,6 @@ obj/
 riderModule.iml
 /_ReSharper.Caches/
 .idea/
-Assemblies/
 *.DotSettings
 *.DotSettings.user
 Publish/
