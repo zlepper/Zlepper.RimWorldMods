@@ -4,10 +4,12 @@
         <IncludeHugsLib>true</IncludeHugsLib>
         <RimWorldModName>Extreme Traits</RimWorldModName>
         <RimWorldPackageId>Zlepper.RimWorld.ExtremeTraits</RimWorldPackageId>
+        <Description>Adds extreme versions of all traits with multiple degrees, like Neurotic or Pretty, in both directions.</Description>
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Zlepper.RimWorld.ModSdk\Zlepper.RimWorld.ModSdk.csproj" ReferenceOutputAssembly="false" />
+        <ProjectReference Include="..\Zlepper.RimWorld.ModSdk\Zlepper.RimWorld.ModSdk.csproj" ReferenceOutputAssembly="false" />
+        <RimWorldLoadBefore Include="Zlepper.RimWorld.PersonalitySurgery" />
     </ItemGroup>
 
 </Project>

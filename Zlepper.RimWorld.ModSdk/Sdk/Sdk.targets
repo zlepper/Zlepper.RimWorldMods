@@ -19,7 +19,8 @@
         <Error Condition="!Exists('$(RimWorldPath)')" Text="The configured RimWorldPath '$(RimWorldPath)' was not found"/>
         <Error Condition="'$(RimWorldModName)' == ''" Text="RimWorldModName is not set"/>
         <Error Condition="'$(RimWorldPackageId)' == ''" Text="RimWorldPackageId is not set"/>
-        <Error Condition="'$(Authors)' == ''" Text="Authors is not set"/>
+        <Error Condition="'$(Authors)' == ''" Text="Authors is not set" />
+        <Error Condition="'$(Description)' == ''" Text="Description is not set" />
     </Target>
 
     <ItemGroup Condition="'$(RimWorldImplicitUsings)' == 'true' Or '$(RimWorldImplicitUsings)' == 'enable'">
@@ -54,6 +55,10 @@
         <RimWorldResourceTextures>
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </RimWorldResourceTextures>
+        <RimWorldLoadBefore>
+            <Visible>False</Visible>
+            <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+        </RimWorldLoadBefore>
         <RimWorldSteamModDependency>
             <Visible>False</Visible>
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
@@ -75,19 +80,9 @@
     </Target>
 
     <ItemGroup Condition="'$(IncludeHugsLib)' == 'true'">
-        <RimWorldSteamModDependency Include="818773962" />
+        <RimWorldSteamModDependency Include="UnlimitedHugs.HugsLib" />
         <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="$(HugsLibVersion)" ExcludeAssets="runtime"/>
     </ItemGroup>
-
-
-<!--    <Target Name="ReferenceMods" BeforeTargets="ResolveAssemblyReferences">-->
-<!--        <ItemGroup>-->
-<!--            <Reference Include="@(RimWorldSteamModDependency)">-->
-<!--                <HintPath>$(SteamModContentFolder)\%(RimWorldAssemblyReference.Identity).dll</HintPath>-->
-<!--                <Private>False</Private>-->
-<!--            </Reference>-->
-<!--        </ItemGroup>-->
-<!--    </Target>-->
 
     <ItemGroup>
         <Content Remove="Publish/**"/>
@@ -106,11 +101,24 @@
 
     <Target Name="CleanupRimWorldFolder" BeforeTargets="Clean">
         <RemoveDir Directories="$(RimWorldModPackageFolder)"/>
-        <RemoveDir Directories="$(OutputVersionFolder)"/>
+        <RemoveDir Directories="$(OutputVersionFolder)" />
     </Target>
-    
-    <Target Name="GenerateAboutXml" BeforeTargets="Build">
-        <GenerateAboutXml ModName="$(RimWorldModName)" ModPackageId="$(RimWorldPackageId)" ModAuthor="$(Authors)" />
+
+    <Target Name="GenerateAboutXml" BeforeTargets="Build" Inputs="@(RimWorldSteamModDependency)" Outputs="$(AboutXmlFileNameOutput)/about.xml">
+        <GenerateAboutXml 
+                ModName="$(RimWorldModName)" 
+                ModPackageId="$(RimWorldPackageId)" 
+                ModAuthors="$(Authors)" 
+                ModDependencies="@(RimWorldSteamModDependency)" 
+                SteamModContentFolder="$(SteamModContentFolder)" 
+                Description="$(Description)" 
+                CurrentRimWorldVersion="$(RimWorldVersion)"
+                ModOutputFolder="$(ModSpecificOutputfolder)"
+                LoadBeforeMods="@(RimWorldLoadBefore)"
+                ProjectReferences="@(ProjectReference)"
+        >
+            <Output TaskParameter="AboutXmlFileName" PropertyName="AboutXmlFileNameOutput"/>
+        </GenerateAboutXml>
     </Target>
 
     <Target Name="OutputRimWorldResources" BeforeTargets="Build">
@@ -120,6 +128,17 @@
         <Copy SourceFiles="@(RimWorldResourceSounds)" DestinationFiles="$(OutputVersionFolder)/Sounds/%(RecursiveDir)%(Filename)%(Extension)"/>
         <Copy SourceFiles="@(RimWorldResourceTextures)" DestinationFiles="$(OutputVersionFolder)/Textures/%(RecursiveDir)%(Filename)%(Extension)"/>
         <Copy SourceFiles="@(RimWorldResourceAbout)" DestinationFiles="$(ModSpecificOutputfolder)/About/%(RecursiveDir)%(Filename)%(Extension)"/>
+    </Target>
+
+    <PropertyGroup>
+        <_FinalPublishedFileIdDotTxtPath>$(RimWorldModPackageFolder)/About/PublishedFileId.txt</_FinalPublishedFileIdDotTxtPath>
+        <_LocalPublishedFileIdDotTxtPath>About/PublishedFileId.txt</_LocalPublishedFileIdDotTxtPath>
+    </PropertyGroup>
+    
+    <Target Name="CopyPublishedFileIdDotTxt" AfterTargets="Build" BeforeTargets="CleanupRimWorldFolder" Condition="Exists('$(_FinalPublishedFileIdDotTxtPath)') and !Exists('$(_LocalPublishedFileIdDotTxtPath)')">
+        <Message Text="Copying PublishedFileId.txt file to source, as you will need it in the future." Importance="high" />
+        
+        <Copy SourceFiles="$(_FinalPublishedFileIdDotTxtPath)" DestinationFiles="$(_LocalPublishedFileIdDotTxtPath)"/>
     </Target>
 
     <Target Name="CopyMod" AfterTargets="Build">

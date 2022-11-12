@@ -18,7 +18,7 @@
     
     <ItemGroup>
         <AvailableItemName
-                Include="RimWorldResource;RimWorldResourceAbout;RimWorldResourceLanguages;RimWorldResourceDefs;RimWorldResourcePatches;RimWorldResourceSounds;RimWorldResourceTextures;RimWorldAssemblyReference" />
+                Include="RimWorldResource;RimWorldResourceAbout;RimWorldResourceLanguages;RimWorldResourceDefs;RimWorldResourcePatches;RimWorldResourceSounds;RimWorldResourceTextures;RimWorldAssemblyReference;RimWorldSteamModDependency;RimWorldLoadBefore" />
     </ItemGroup>
     
     <PropertyGroup>

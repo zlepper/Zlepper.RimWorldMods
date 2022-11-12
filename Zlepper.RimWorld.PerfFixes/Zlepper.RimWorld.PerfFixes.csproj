@@ -5,6 +5,7 @@
         <RimWorldModName>Zleppers Perf Fixes</RimWorldModName>
         <RimWorldPackageId>Zlepper.RimWorld.PerfFixes</RimWorldPackageId>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Description>Tries to improve game performance by cleaning up some things</Description>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

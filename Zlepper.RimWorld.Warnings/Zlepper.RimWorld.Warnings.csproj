@@ -4,6 +4,7 @@
         <IncludeHugsLib>true</IncludeHugsLib>
         <RimWorldModName>Zlepper's Warnings</RimWorldModName>
         <RimWorldPackageId>Zlepper.RimWorld.Warnings</RimWorldPackageId>
+        <Description>Adds some warnings that i was missing.</Description>
     </PropertyGroup>
 
     <ItemGroup>

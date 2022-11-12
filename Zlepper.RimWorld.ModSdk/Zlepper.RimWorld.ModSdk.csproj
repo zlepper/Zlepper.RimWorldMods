@@ -13,27 +13,14 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.ModSdk</RepositoryUrl>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
-<!--        <GenerateDependencyFile>true</GenerateDependencyFile>-->
     </PropertyGroup>
     <ItemGroup>
         <None Include="readme.md" Pack="true" PackagePath="\" />
         <None Include="Sdk/*.*" Pack="true" PackagePath="Sdk" />
     </ItemGroup>
     <ItemGroup>
-        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.3.1" PrivateAssets="all" ExcludeAssets="Runtime" />
+        <PackageReference Include="Microsoft.Build.Utilities.Core" Version="17.4.0" PrivateAssets="all" ExcludeAssets="Runtime">
+          <IncludeAssets>compile; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+        </PackageReference>
     </ItemGroup>
-<!--    -->
-<!--    <Target-->
-<!--            Name="AddBuildDependencyFileToBuiltProjectOutputGroupOutput"-->
-<!--            BeforeTargets="BuiltProjectOutputGroup"-->
-<!--            Condition=" '$(GenerateDependencyFile)' == 'true'">-->
-
-<!--        <ItemGroup>-->
-<!--            <BuiltProjectOutputGroupOutput-->
-<!--                    Include="$(ProjectDepsFilePath)"-->
-<!--                    TargetPath="$(ProjectDepsFileName)"-->
-<!--                    FinalOutputPath="$(ProjectDepsFilePath)" />-->
-<!--        </ItemGroup>-->
-<!--    </Target>-->
-<!--    -->
 </Project>
