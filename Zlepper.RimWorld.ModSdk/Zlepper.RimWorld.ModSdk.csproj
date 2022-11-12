@@ -4,7 +4,7 @@
         <Description>Provides an SDK for easily making RimWorld mods.</Description>
         <PackageTags>MSBuildSdk RimWorld</PackageTags>
         <ArtifactsPath>$(BaseArtifactsPath)$(MSBuildProjectName)\</ArtifactsPath>
-        <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+        <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
         <PackageType>MSBuildSdk</PackageType>
         <Nullable>enable</Nullable>
         <NoWarn>NU5100</NoWarn>
