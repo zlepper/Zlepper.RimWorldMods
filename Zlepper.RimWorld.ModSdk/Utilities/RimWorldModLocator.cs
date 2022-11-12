@@ -5,9 +5,8 @@ using System.Linq;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
 using Zlepper.RimWorld.ModSdk.Models;
-using Zlepper.RimWorld.ModSdk.Utilities;
 
-namespace Zlepper.RimWorld.ModSdk.Tasks;
+namespace Zlepper.RimWorld.ModSdk.Utilities;
 
 public class RimWorldModLocator
 {
