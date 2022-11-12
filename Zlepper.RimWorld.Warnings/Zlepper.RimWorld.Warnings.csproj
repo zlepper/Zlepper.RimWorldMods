@@ -5,6 +5,7 @@
         <IncludeHarmony>true</IncludeHarmony>
         <RimWorldModName>Zlepper's Warnings</RimWorldModName>
         <RimWorldPackageId>Zlepper.RimWorld.Warnings</RimWorldPackageId>
+        <Authors>Zlepper</Authors>
         <Description>Adds some warnings that i was missing.</Description>
     </PropertyGroup>
 

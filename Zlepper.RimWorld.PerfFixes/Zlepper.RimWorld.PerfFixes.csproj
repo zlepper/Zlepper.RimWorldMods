@@ -5,7 +5,7 @@
         <IncludeHarmony>true</IncludeHarmony>
         <RimWorldModName>Zleppers Perf Fixes</RimWorldModName>
         <RimWorldPackageId>Zlepper.RimWorld.PerfFixes</RimWorldPackageId>
-        <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+        <Authors>Zlepper</Authors>
         <Description>Tries to improve game performance by cleaning up some things</Description>
     </PropertyGroup>
 

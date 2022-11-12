@@ -5,6 +5,7 @@
         <IncludeHarmony>true</IncludeHarmony>
         <RimWorldModName>Trait Crafting</RimWorldModName>
         <RimWorldPackageId>Zlepper.RimWorld.TraitCrafting</RimWorldPackageId>
+        <Authors>Zlepper</Authors>
         <Description>Allows combining lower level traits to get better traits, e.g., combine 2 Pretty traits for a Beautiful trait. </Description>
     </PropertyGroup>
 

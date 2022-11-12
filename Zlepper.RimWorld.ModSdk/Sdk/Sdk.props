@@ -3,27 +3,38 @@
 
     <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
 
-    <PropertyGroup>
-        <_ModSdkDllPath Condition="Exists('$(MSBuildThisFileDirectory)..\lib\netstandard2.0\Zlepper.RimWorld.ModSdk.dll')">$(MSBuildThisFileDirectory)..\lib\netstandard2.0\Zlepper.RimWorld.ModSdk.dll</_ModSdkDllPath>
-        <_ModSdkDllPath Condition="Exists('$(MSBuildThisFileDirectory)..\bin\Debug\netstandard2.0\Zlepper.RimWorld.ModSdk.dll')">$(MSBuildThisFileDirectory)..\bin\Debug\netstandard2.0\Zlepper.RimWorld.ModSdk.dll</_ModSdkDllPath>
+    <PropertyGroup Condition="Exists('$(MSBuildThisFileDirectory)..\lib\netstandard2.0\Zlepper.RimWorld.ModSdk.dll')">
+        <_ModSdkDllPath>$(MSBuildThisFileDirectory)..\lib\netstandard2.0\Zlepper.RimWorld.ModSdk.dll</_ModSdkDllPath>
+        <_UsingDevModSdkDll>false</_UsingDevModSdkDll>
+    </PropertyGroup>
+
+    <PropertyGroup Condition="Exists('$(MSBuildThisFileDirectory)..\bin\$(Configuration)\netstandard2.0\Zlepper.RimWorld.ModSdk.dll')">
+        <_ModSdkDllPath>$(MSBuildThisFileDirectory)..\bin\$(Configuration)\netstandard2.0\Zlepper.RimWorld.ModSdk.dll</_ModSdkDllPath>
+        <_UsingDevModSdkDll>true</_UsingDevModSdkDll>
     </PropertyGroup>
 
 
     <Target Name="ValidateModSdkPath" BeforeTargets="BeforeBuild">
-        <Error Condition="'$(_ModSdkDllPath)' == ''" Text="ModSdk could not find itself, this is probably a bug."/>
+        <Error Condition="'$(_ModSdkDllPath)' == ''" Text="ModSdk could not find itself, this is probably a bug in the Zlepper.RimWorld.ModSdk."/>
     </Target>
+    
+    <UsingTask Condition="'$(_ModSdkDllPath)' != '' and '$(_UsingDevModSdkDll)' == 'true'" TaskName="Zlepper.RimWorld.ModSdk.Tasks.GenerateAboutXml"
+               AssemblyFile="$(_ModSdkDllPath)" TaskFactory="TaskHostFactory"/>
 
-    <UsingTask Condition="'$(_ModSdkDllPath)' != ''" TaskName="Zlepper.RimWorld.ModSdk.Tasks.GenerateAboutXml"
+    <UsingTask Condition="'$(_ModSdkDllPath)' != '' and '$(_UsingDevModSdkDll)' == 'true'" TaskName="Zlepper.RimWorld.ModSdk.Tasks.CreateModAssemblyReferences"
+               AssemblyFile="$(_ModSdkDllPath)" TaskFactory="TaskHostFactory"/>
+
+    <UsingTask Condition="'$(_ModSdkDllPath)' != '' and '$(_UsingDevModSdkDll)' == 'false'" TaskName="Zlepper.RimWorld.ModSdk.Tasks.GenerateAboutXml"
                AssemblyFile="$(_ModSdkDllPath)"/>
-    
-    <UsingTask Condition="'$(_ModSdkDllPath)' != ''" TaskName="Zlepper.RimWorld.ModSdk.Tasks.CreateModAssemblyReferences"
+
+    <UsingTask Condition="'$(_ModSdkDllPath)' != '' and '$(_UsingDevModSdkDll)' == 'false'" TaskName="Zlepper.RimWorld.ModSdk.Tasks.CreateModAssemblyReferences"
                AssemblyFile="$(_ModSdkDllPath)"/>
-    
+
     <ItemGroup>
         <AvailableItemName
-                Include="RimWorldResource;RimWorldResourceAbout;RimWorldResourceLanguages;RimWorldResourceDefs;RimWorldResourcePatches;RimWorldResourceSounds;RimWorldResourceTextures;RimWorldAssemblyReference;RimWorldSteamModDependency;RimWorldLoadBefore" />
+                Include="RimWorldResource;RimWorldResourceAbout;RimWorldResourceLanguages;RimWorldResourceDefs;RimWorldResourcePatches;RimWorldResourceSounds;RimWorldResourceTextures;RimWorldAssemblyReference;RimWorldSteamModDependency;RimWorldLoadBefore"/>
     </ItemGroup>
-    
+
     <PropertyGroup>
         <UsingZlepperRimWorldSdk>true</UsingZlepperRimWorldSdk>
     </PropertyGroup>

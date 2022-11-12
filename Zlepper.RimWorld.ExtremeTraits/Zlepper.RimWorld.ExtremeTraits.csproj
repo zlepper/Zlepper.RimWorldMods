@@ -5,6 +5,7 @@
         <IncludeHarmony>true</IncludeHarmony>
         <RimWorldModName>Extreme Traits</RimWorldModName>
         <RimWorldPackageId>Zlepper.RimWorld.ExtremeTraits</RimWorldPackageId>
+        <Authors>Zlepper</Authors>
         <Description>Adds extreme versions of all traits with multiple degrees, like Neurotic or Pretty, in both directions.</Description>
     </PropertyGroup>
 

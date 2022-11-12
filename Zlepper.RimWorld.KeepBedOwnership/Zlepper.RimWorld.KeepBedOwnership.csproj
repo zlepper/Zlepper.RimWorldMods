@@ -5,13 +5,13 @@
         <IncludeHarmony>true</IncludeHarmony>
         <RimWorldModName>Keep bed Ownership</RimWorldModName>
         <RimWorldPackageId>Zlepper.RimWorld.KeepBedOwnership</RimWorldPackageId>
+        <Authors>Zlepper</Authors>
         <Description>
             Allows pawns to keep ownership of their bed while out traveling.
 
             All credits goes to Dhultgren, from who i have platantly stolen the code and tweaked
             very slightly: https://github.com/dhultgren/rimworld-keep-bed-ownership
         </Description>
-        <Authors>Zlepper</Authors>
     </PropertyGroup>
 
     <ItemGroup>
