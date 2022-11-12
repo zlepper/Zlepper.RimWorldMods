@@ -3,6 +3,7 @@
 <ModMetaData>
   <name>Zleppers Perf Fixes</name>
   <author>Zlepper</author>
+  <url>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.PerfFixes</url>
   <packageId>Zlepper.RimWorld.PerfFixes</packageId>
   <description>Tries to improve game performance by cleaning up some things</description>
   <supportedVersions>

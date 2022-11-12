@@ -3,6 +3,7 @@
 <ModMetaData>
   <name>Personality Surgery</name>
   <author>Zlepper</author>
+  <url>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.PersonalitySurgery</url>
   <packageId>Zlepper.RimWorld.PersonalitySurgery</packageId>
   <description>Allows changing most of your colonists personality through surgery (And a couple of warcrimes)</description>
   <supportedVersions>

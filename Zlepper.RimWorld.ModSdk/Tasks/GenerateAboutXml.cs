@@ -23,10 +23,14 @@ public class GenerateAboutXml : Task
     [Required] public string CurrentRimWorldVersion { get; set; } = null!;
 
     [Required] public string ModOutputFolder { get; set; } = null!;
+    
+    public string? ModUrl { get; set; }
 
     [Required] public ITaskItem[] ModDependencies { get; set; } = null!;
 
     [Required] public ITaskItem[] LoadBeforeMods { get; set; } = null!;
+    [Required] public ITaskItem[] LoadAfterMods { get; set; } = null!;
+    [Required] public ITaskItem[] IncompatibleWithMods { get; set; } = null!;
     
     [Required] public ITaskItem[] ProjectReferences { get; set; } = null!;
 
@@ -39,6 +43,7 @@ public class GenerateAboutXml : Task
             Name = ModName,
             PackageId = ModPackageId,
             Description = DescriptionTrimmer.TrimDescription(Description),
+            Url = ModUrl,
         };
         
         AddModAuthors(about);
@@ -118,7 +123,7 @@ public class GenerateAboutXml : Task
             }
 
             var publishedFileIdPath = Path.Combine(projectFolder, "About", "PublishedFileId.txt");
-            var publishedFileId = "-1";
+            var publishedFileId = "";
             if (File.Exists(publishedFileIdPath))
             {
                 publishedFileId = File.ReadAllText(publishedFileIdPath).Trim();
@@ -131,8 +136,12 @@ public class GenerateAboutXml : Task
                 PackageId = projectMetaData.PackageId,
                 DisplayName = projectMetaData.Name,
                 DownloadUrl = projectMetaData.Url,
-                SteamWorkshopUrl = $"steam://url/CommunityFilePage/{publishedFileId}"
             };
+
+            if (!string.IsNullOrWhiteSpace(publishedFileId))
+            {
+                dep.SteamWorkshopUrl = $"steam://url/CommunityFilePage/{publishedFileId}";
+            }
             
             about.AddModDependency(dep);
         }
@@ -142,6 +151,20 @@ public class GenerateAboutXml : Task
             var packageId = loadBeforeMod.GetMetadata("Identity");
             
             about.LoadBefore.Add(packageId);
+        }
+        
+        foreach (var loadAfterMod in LoadAfterMods)
+        {
+            var packageId = loadAfterMod.GetMetadata("Identity");
+            
+            about.LoadAfter.Add(packageId);
+        }
+        
+        foreach (var incompatibleWithMod in IncompatibleWithMods)
+        {
+            var packageId = incompatibleWithMod.GetMetadata("Identity");
+            
+            about.IncompatibleWith.Add(packageId);
         }
     }
 

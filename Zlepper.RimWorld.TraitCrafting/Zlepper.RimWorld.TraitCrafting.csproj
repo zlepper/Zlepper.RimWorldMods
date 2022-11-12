@@ -7,6 +7,7 @@
         <RimWorldPackageId>Zlepper.RimWorld.TraitCrafting</RimWorldPackageId>
         <Authors>Zlepper</Authors>
         <Description>Allows combining lower level traits to get better traits, e.g., combine 2 Pretty traits for a Beautiful trait. </Description>
+        <RimWorldModUrl>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.TraitCrafting</RimWorldModUrl>
     </PropertyGroup>
 
     <ItemGroup>

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
 
+    <!-- A bunch of reuseable variables   -->
     <PropertyGroup>
         <RimWorldVersion Condition="'$(RimWorldVersion)' == '' and Exists('$(RimWorldPath)')">$([System.IO.File]::ReadAllText("$(RimWorldPath)/Version.txt").Substring(0, 3))</RimWorldVersion>
         <RimWorldModPackageFolder>$(RimWorldPath)/Mods/$(RimWorldPackageId)</RimWorldModPackageFolder>
@@ -9,11 +10,13 @@
         <OutputPath>$(OutputVersionFolder)/Assemblies</OutputPath>
     </PropertyGroup>
 
+    <!-- Make it possible to Start RimWorld directly from the IDE  -->
     <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
         <StartAction>Program</StartAction>
         <StartProgram>$(RimWorldPath)/RimWorldWin64.exe</StartProgram>
     </PropertyGroup>
 
+    <!-- Yell at people if they forgot to set some parameters, or the values are very wrong.  -->
     <Target Name="ValidateParameters" BeforeTargets="BeforeBuild">
         <Error Condition="'$(RimWorldPath)' == ''" Text="RimWorldPath is not set"/>
         <Error Condition="!Exists('$(RimWorldPath)')" Text="The configured RimWorldPath '$(RimWorldPath)' was not found"/>
@@ -23,6 +26,7 @@
         <Error Condition="'$(Description)' == ''" Text="Description is not set" />
     </Target>
 
+    <!-- Add the implicit usings. -->
     <ItemGroup Condition="'$(RimWorldImplicitUsings)' == 'true' Or '$(RimWorldImplicitUsings)' == 'enable'">
         <Using Include="Verse"/>
         <Using Include="RimWorld"/>
@@ -33,6 +37,7 @@
 
     <Import Project="Sdk.targets" Sdk="Microsoft.NET.Sdk"/>
 
+    <!-- Hide custom item types from the IDE and make sure using them doesn't resolve in more files being pulled in than necessary -->
     <ItemDefinitionGroup>
         <RimWorldAssemblyReference>
             <Visible>False</Visible>
@@ -65,11 +70,13 @@
         </RimWorldSteamModDependency>
     </ItemDefinitionGroup>
 
+    <!-- Basic references for RimWorld itself  -->
     <ItemGroup>
         <RimWorldAssemblyReference Include="Assembly-CSharp"/>
         <RimWorldAssemblyReference Include="UnityEngine.CoreModule"/>
     </ItemGroup>
 
+    <!-- Add Harmony and HugsLib if so desired. -->
     <ItemGroup Condition="'$(IncludeHarmony)' == 'true'">
         <RimWorldSteamModDependency Include="brrainz.harmony">
             <MainDllName>0Harmony</MainDllName>
@@ -80,11 +87,13 @@
         <RimWorldSteamModDependency Include="UnlimitedHugs.HugsLib" />
     </ItemGroup>
 
+    <!-- Ensure stuff in the Publish folder is not considered when building -->
     <ItemGroup>
         <Content Remove="Publish/**"/>
         <None Remove="Publish/**"/>
     </ItemGroup>
 
+    <!-- Actually add references to RimWorld and any mod dependencies -->
     <Target Name="ReferenceRimWorld" BeforeTargets="ResolveAssemblyReferences">
         <ItemGroup>
             <Reference Include="@(RimWorldAssemblyReference)">
@@ -103,6 +112,7 @@
     </Target>
 
 
+    <!--  Figure out which files should be copied by MSBuild  -->
     <ItemGroup>
         <RimWorldResourceAbout Include="About\**"/>
         <RimWorldResourceLanguages Include="Languages\**\*.xml"/>
@@ -112,11 +122,13 @@
         <RimWorldResourceTextures Include="Textures\**"/>
     </ItemGroup>
 
+    <!-- Ensure the "Clean" command actually cleans all the expected places    -->
     <Target Name="CleanupRimWorldFolder" BeforeTargets="Clean">
         <RemoveDir Directories="$(RimWorldModPackageFolder)"/>
         <RemoveDir Directories="$(OutputVersionFolder)" />
     </Target>
 
+    <!-- Generate the About.xml files when we build -->
     <Target Name="GenerateAboutXml" BeforeTargets="Build" Inputs="@(RimWorldSteamModDependency)" Outputs="$(AboutXmlFileNameOutput)/about.xml">
         <GenerateAboutXml 
                 ModName="$(RimWorldModName)" 
@@ -127,13 +139,17 @@
                 Description="$(Description)" 
                 CurrentRimWorldVersion="$(RimWorldVersion)"
                 ModOutputFolder="$(ModSpecificOutputfolder)"
-                LoadBeforeMods="@(RimWorldLoadBefore)"
                 ProjectReferences="@(ProjectReference)"
+                LoadBeforeMods="@(RimWorldLoadBefore)"
+                LoadAfterMods="@(RimWorldLoadAfter)"
+                IncompatibleWithMods="@(RimWorldIncompatibleWith)"
+                ModUrl="$(RimWorldModUrl)"
         >
             <Output TaskParameter="AboutXmlFileName" PropertyName="AboutXmlFileNameOutput"/>
         </GenerateAboutXml>
     </Target>
 
+    <!--  Ensure MSBuild actually copies the required files  -->
     <Target Name="OutputRimWorldResources" BeforeTargets="Build">
         <Copy SourceFiles="@(RimWorldResourceLanguages)" DestinationFiles="$(OutputVersionFolder)/Languages/%(RecursiveDir)%(Filename)%(Extension)"/>
         <Copy SourceFiles="@(RimWorldResourceDefs)" DestinationFiles="$(OutputVersionFolder)/Defs/%(RecursiveDir)%(Filename)%(Extension)"/>
@@ -143,6 +159,7 @@
         <Copy SourceFiles="@(RimWorldResourceAbout)" DestinationFiles="$(ModSpecificOutputfolder)/About/%(RecursiveDir)%(Filename)%(Extension)"/>
     </Target>
 
+    <!-- Ensure the PublishedFileId.txt files actually gets moved back to the project for future publishing -->
     <PropertyGroup>
         <_FinalPublishedFileIdDotTxtPath>$(RimWorldModPackageFolder)/About/PublishedFileId.txt</_FinalPublishedFileIdDotTxtPath>
         <_LocalPublishedFileIdDotTxtPath>About/PublishedFileId.txt</_LocalPublishedFileIdDotTxtPath>
@@ -154,6 +171,7 @@
         <Copy SourceFiles="$(_FinalPublishedFileIdDotTxtPath)" DestinationFiles="$(_LocalPublishedFileIdDotTxtPath)"/>
     </Target>
 
+    <!-- Copy the build output to the Mods folder in the RimWorld installation -->
     <Target Name="CopyMod" AfterTargets="Build">
         <ItemGroup>
             <RimWorldCompilationResult Include="$(ModSpecificOutputfolder)\**"/>

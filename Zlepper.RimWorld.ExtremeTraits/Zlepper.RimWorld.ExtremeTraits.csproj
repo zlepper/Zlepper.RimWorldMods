@@ -7,6 +7,7 @@
         <RimWorldPackageId>Zlepper.RimWorld.ExtremeTraits</RimWorldPackageId>
         <Authors>Zlepper</Authors>
         <Description>Adds extreme versions of all traits with multiple degrees, like Neurotic or Pretty, in both directions.</Description>
+        <RimWorldModUrl>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.ExtremeTraits</RimWorldModUrl>
     </PropertyGroup>
 
     <ItemGroup>

@@ -7,6 +7,7 @@
         <RimWorldPackageId>Zlepper.RimWorld.PerfFixes</RimWorldPackageId>
         <Authors>Zlepper</Authors>
         <Description>Tries to improve game performance by cleaning up some things</Description>
+        <RimWorldModUrl>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.PerfFixes</RimWorldModUrl>
     </PropertyGroup>
 
     <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">

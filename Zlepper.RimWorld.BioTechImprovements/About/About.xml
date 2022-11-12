@@ -3,6 +3,7 @@
 <ModMetaData>
   <name>Zlepper's BioTech Improvements</name>
   <author>Zlepper</author>
+  <url>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.BioTechImprovements</url>
   <packageId>Zlepper.RimWorld.BioTechImprovements</packageId>
   <description>Improves various things around BioTech that i find dissatisfying.</description>
   <supportedVersions>

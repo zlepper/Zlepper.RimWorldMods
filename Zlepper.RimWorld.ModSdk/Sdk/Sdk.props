@@ -3,6 +3,7 @@
 
     <Import Project="Sdk.props" Sdk="Microsoft.NET.Sdk"/>
 
+    <!-- Locate the dll files for this SDK, so we can extract and use the tasks defined inside. -->
     <PropertyGroup Condition="Exists('$(MSBuildThisFileDirectory)..\lib\netstandard2.0\Zlepper.RimWorld.ModSdk.dll')">
         <_ModSdkDllPath>$(MSBuildThisFileDirectory)..\lib\netstandard2.0\Zlepper.RimWorld.ModSdk.dll</_ModSdkDllPath>
         <_UsingDevModSdkDll>false</_UsingDevModSdkDll>
@@ -17,7 +18,7 @@
     <Target Name="ValidateModSdkPath" BeforeTargets="BeforeBuild">
         <Error Condition="'$(_ModSdkDllPath)' == ''" Text="ModSdk could not find itself, this is probably a bug in the Zlepper.RimWorld.ModSdk."/>
     </Target>
-    
+
     <UsingTask Condition="'$(_ModSdkDllPath)' != '' and '$(_UsingDevModSdkDll)' == 'true'" TaskName="Zlepper.RimWorld.ModSdk.Tasks.GenerateAboutXml"
                AssemblyFile="$(_ModSdkDllPath)" TaskFactory="TaskHostFactory"/>
 
@@ -30,15 +31,20 @@
     <UsingTask Condition="'$(_ModSdkDllPath)' != '' and '$(_UsingDevModSdkDll)' == 'false'" TaskName="Zlepper.RimWorld.ModSdk.Tasks.CreateModAssemblyReferences"
                AssemblyFile="$(_ModSdkDllPath)"/>
 
+    <!-- Different item types the SDK uses to track things   -->
     <ItemGroup>
         <AvailableItemName
-                Include="RimWorldResource;RimWorldResourceAbout;RimWorldResourceLanguages;RimWorldResourceDefs;RimWorldResourcePatches;RimWorldResourceSounds;RimWorldResourceTextures;RimWorldAssemblyReference;RimWorldSteamModDependency;RimWorldLoadBefore"/>
+                Include="RimWorldResource;RimWorldResourceAbout;RimWorldResourceLanguages;RimWorldResourceDefs;RimWorldResourcePatches;RimWorldResourceSounds;RimWorldResourceTextures" />
+        <AvailableItemName Include="RimWorldAssemblyReference;RimWorldSteamModDependency" />
+        <AvailableItemName Include="RimWorldLoadBefore;RimWorldLoadAfter;RimWorldIncompatibleWith" />
     </ItemGroup>
 
+    <!-- Ensure other stuff can recognize that this sdk is being used if other tools need to overload something. -->
     <PropertyGroup>
         <UsingZlepperRimWorldSdk>true</UsingZlepperRimWorldSdk>
     </PropertyGroup>
 
+    <!-- Default properties to control most of the code that is generated -->
     <PropertyGroup>
         <TargetFramework>net472</TargetFramework>
         <Nullable>enable</Nullable>
@@ -47,6 +53,7 @@
         <RimWorldImplicitUsings>enable</RimWorldImplicitUsings>
     </PropertyGroup>
 
+    <!-- Find RimWorld and some special steam locations for RimWorld mods. These aren't perfect, and only really works for Windows right now -->
     <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
         <RimWorldPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldPath>
         <RimWorldManagedPath>$(RimWorldPath)\RimWorldWin64_Data\Managed</RimWorldManagedPath>
@@ -65,12 +72,11 @@
         <SteamModContentFolder>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100</SteamModContentFolder>
     </PropertyGroup>
 
-
+    <!-- Default values for what people can override in their settings. -->
     <PropertyGroup>
         <RimWorldModName/>
         <IncludeHugsLib>false</IncludeHugsLib>
         <IncludeHarmony>false</IncludeHarmony>
-        <HugsLibVersion>10.0.1</HugsLibVersion>
         <RimWorldPackageId/>
         <OutputFolder>../Mods</OutputFolder>
     </PropertyGroup>

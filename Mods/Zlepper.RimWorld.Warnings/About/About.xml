@@ -3,6 +3,7 @@
 <ModMetaData>
   <name>Zlepper's Warnings</name>
   <author>Zlepper</author>
+  <url>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.Warnings</url>
   <packageId>Zlepper.RimWorld.Warnings</packageId>
   <description>Adds some warnings that i was missing.</description>
   <supportedVersions>

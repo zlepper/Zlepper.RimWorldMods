@@ -12,6 +12,7 @@
             All credits goes to Dhultgren, from who i have platantly stolen the code and tweaked
             very slightly: https://github.com/dhultgren/rimworld-keep-bed-ownership
         </Description>
+        <RimWorldModUrl>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.KeepBedOwnership</RimWorldModUrl>
     </PropertyGroup>
 
     <ItemGroup>

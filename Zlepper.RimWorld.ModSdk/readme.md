@@ -4,20 +4,21 @@ This is a dotnet sdk that allows you to create mods for RimWorld with less messi
 
 ## Features
 
-* Provides support for C# 10 (At least the feature .NetFramework can support).
+* Provides support for C# 10 (At least the features .NetFramework can support).
 * Allows multiple RimWorld versions to be supported at the same time.
 * Automatically references common RimWorld assemblies.
   * Provides an easy hook for referencing more assemblies.
-* Easily reference HugsLib and Harmony if wanted.
+* Easily reference other Steam mods for your mod.
+  * Harmony and HugsLib have special support, to make them even easier to reference.
+  * Other local mods for development can are automatically referenced in an msbuild `<ProjectReference>` is created.
 * Automatically copies the mod to the RimWorld mods folder.
 * Support for Rider + Visual Studio run buttons without additional configuration.
   * Debugging is not yet magically supported and does require additional manual configuration.
 * Implicit `using`s for `RimWorld`, `Verse`, `System`, `System.Collections.Generic` and `System.Linq`.
+* Fully automatically generated `About.xml` file.
+* The `PublishedFileId.txt` is automatically back into the project when the mod is build the mod has been published to Steam.
 
 ## Installation
-
-This guide enables and uses HugsLib as I personally find it very useful. If you don't want to use it, you can 
-replace the relevant parts with the standard RimWorld modding way of doing things: https://rimworldwiki.com/wiki/Modding_Tutorials.
 
 A word of warning: I develop on Windows and have only tested this on Windows. It should be possible to tweak enough
 settings to get it working on other platforms, but I have not done so. If you are using Linux or Mac, 
@@ -27,64 +28,40 @@ please let me know if you want to help get it working for those platforms.
 2. Open your IDE and create a new project, the specific project type does not matter, but I recommend a class library.
 3. Open the .csproj file and replace the content with the following:
 ```xml
-<Project Sdk="Zlepper.RimWorld.ModSdk/0.0.4">
+<Project Sdk="Zlepper.RimWorld.ModSdk/0.0.6">
 
     <PropertyGroup>
-        <IncludeHugsLib>true</IncludeHugsLib>
         <RimWorldModName>Your mod name</RimWorldModName>
         <RimWorldPackageId>Your.Mod.PackageId</RimWorldPackageId>
+        <Authors>Your Name</Authors>
+        <Description>
+          This is a good description.
+          
+          It can even be multiline.
+        </Description>
     </PropertyGroup>
 
 </Project>
 ```
 4. Create a new class and add the following code:
 ```csharp
-using HugsLib;
-
 namespace MyName.MyFancyMod;
 
-public class MyMod : ModBase
+[StaticConstructorOnStartup]
+public static class MyMod
 {
-    public override string ModIdentifier => " MyName.MyFancyMod";
-
-    public override void StaticInitialize()
+    static MyMod()
     {
-        Logger.Message("Hello from My fancy Mod!");
+        Log.Message("Hello World from MyMod!");
     }
 }
 ```
 5. If you get compile errors at this point, the SDK might not be able to locate your RimWorld installation, please see the "Optional configuration" section
      and try setting `<RimWorldPath>` to the path to your RimWorld installation.
-5. A file to your project called `About/About.xml`, with the following content:
-```xml
-<?xml version="1.0" encoding="utf-8"?>
-<ModMetaData>
-    <name>Your mod name</name>
-    <author>Your name</author>
-    <packageId>Your.Mod.PackageId</packageId>
-    <supportedVersions>
-        <li>1.4</li>
-    </supportedVersions>
-
-    <description>This mod has a very good description, please make it even better</description>
-
-    <modDependencies>
-        <li>
-            <packageId>UnlimitedHugs.HugsLib</packageId>
-            <displayName>HugsLib</displayName>
-            <downloadUrl>https://github.com/UnlimitedHugs/RimworldHugsLib/releases/latest</downloadUrl>
-            <steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl>
-        </li>
-    </modDependencies>
-    <loadAfter>
-        <li>UnlimitedHugs.HugsLib</li>
-    </loadAfter>
-</ModMetaData>
-```
-7. Run the project and wait for RimWorld to load.
-8. Go into mod settings and enable your mod.
-9. Check the RimWorld dev tools for a message from your mod.
-10. Now, go and implement your mod! (Tip: Read the Tips and Tricks section)
+6. Run the project and wait for RimWorld to load.
+7. Go into mod settings and enable your mod.
+8. Check the RimWorld dev tools for a message from your mod.
+9. Now, go and implement your mod! (Tip: Read the Tips and Tricks section)
 
 
 ## Tip and tricks
@@ -116,6 +93,24 @@ set, while others are optional.
       It should be unique and follow the same rules as a C# namespace.
    -->
   <RimWorldPackageId>My.Mod</RimWorldPackageId>
+  
+  <!-- 
+    The name of the authors of the mod. If there are multiple authors, separate their names with semicolon ';', 
+    e.g. <Authors>Me;MyFriend</Authors>
+   -->
+  
+  <Authors>My Name</Authors>
+
+  <!--
+    A description of the mod. Indentation and prefix/suffix of whitespace will be stripped before
+    the description is included in the About.xml file. 
+  -->
+
+  <Description>
+    This is a good description.
+
+    It can even be multiline.
+  </Description>
 </PropertyGroup>
 ```
 
@@ -137,14 +132,14 @@ to tweak them.
   <LangVersion>10</LangVersion>
   
   <!-- 
-      If true, the SDK will automatically add a reference to HugsLib and Harmony.
-      You still have to add a reference in the About.xml file.
+      If true, the SDK will automatically add a reference to HugsLib.
    -->
   <IncludeHugsLib>false</IncludeHugsLib>
-  <!--
-   The version of HugsLib to pull from Nuget and link against. 
-  -->
-  <HugsLibVersion>9.0.1</HugsLibVersion>
+  
+  <!-- 
+      If true, the SDK will automatically add a reference to Harmony.
+   -->
+  <IncludeHarmony>false</IncludeHarmony>
   
   <!--
     The folder that contains the build output of the mod. This is used to copy the mod to the RimWorld mods folder.
@@ -175,6 +170,11 @@ to tweak them.
   
   <RimWorldVersion>(infered based on your installation)</RimWorldVersion>
   
+  <!--  
+    A url to your mod. Doesn't have to be set. If provided it will be included in the About.xml file.
+  -->
+  <RimWorldModUrl></RimWorldModUrl>
+  
 </PropertyGroup>
 ```
 
@@ -183,7 +183,38 @@ By default the SDK references `Assembly-CSharp` and `UnityEngine.CoreModule` for
 another assembly, you can do so by adding a reference to it in the project file. For example, if you want to
 reference `UnityEngine.IMGUIModule`, you can add the following to your project file:
 ```xml
-  <ItemGroup>
-    <RimWorldAssemblyReference Include="UnityEngine.IMGUIModule" />
-  </ItemGroup>
+<ItemGroup>
+  <RimWorldAssemblyReference Include="UnityEngine.IMGUIModule" />
+</ItemGroup>
 ```
+
+### Adding a reference to another mod
+The sdk makes it very easy to reference and use other mods in your mod. For example, if you want to reference
+the VanillaExpanded framework, you can do this:
+```xml
+<ItemGroup>
+  <RimWorldSteamModDependency Include="OskarPotocki.VanillaFactionsExpanded.Core" />
+</ItemGroup>
+```
+This will add a reference to the mod in the `About.xml` file, and also add a reference to the mod's assembly
+in your project. You can then use the mod's API in your mod.
+
+This does require that you actually subscribe to the mod in Steam, and it has been downloaded. 
+If you don't have the mod installed, you will get a compile error.
+
+### Controlling mod loading order
+The following project item tags are available to control mod loading order if you don't have an explicit
+dependency to the given mod:
+```xml
+<ItemGroup>
+  <RimWorldLoadBefore Include="Some.Mod" />
+  <RimWorldLoadAfter Include="Some.Mod" />
+  <RimWorldIncompatibleWith Include="Some.Mod" />
+</ItemGroup>
+```
+
+These tags works like their counterparts in the `About.xml` file, and will be added to the `About.xml` file
+when you build your project.
+
+If you already reference the mod using `<RimWorldSteamModDependency>`, then you do not need to add `<RimWorldLoadAfter>`,
+that is done automatically.

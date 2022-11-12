@@ -3,6 +3,7 @@
 <ModMetaData>
   <name>Trait Crafting</name>
   <author>Zlepper</author>
+  <url>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.TraitCrafting</url>
   <packageId>Zlepper.RimWorld.TraitCrafting</packageId>
   <description>Allows combining lower level traits to get better traits, e.g., combine 2 Pretty traits for a Beautiful trait. </description>
   <supportedVersions>
@@ -25,6 +26,7 @@
       <packageId>Zlepper.RimWorld.PersonalitySurgery</packageId>
       <displayName>Personality Surgery</displayName>
       <steamWorkshopUrl>steam://url/CommunityFilePage/2862976153</steamWorkshopUrl>
+      <downloadUrl>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.PersonalitySurgery</downloadUrl>
     </li>
   </modDependencies>
   <loadAfter>

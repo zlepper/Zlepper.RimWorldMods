@@ -25,6 +25,9 @@ public class ModMetaData
     [XmlElement("loadBefore")] public RimWorldXmlList<string> LoadBefore { get; set; } = new();
     public bool ShouldSerializeLoadBefore() => LoadBefore.ListItems.Count > 0;
 
+    [XmlElement("incompatibleWith")] public RimWorldXmlList<string> IncompatibleWith { get; set; } = new();
+    public bool ShouldSerializeIncompatibleWith() => IncompatibleWith.ListItems.Count > 0;
+
     public void AddModDependency(ModDependencyItem dep)
     {
         ModDependencies.Add(dep);

@@ -7,6 +7,7 @@
         <RimWorldPackageId>Zlepper.RimWorld.BioTechImprovements</RimWorldPackageId>
         <Authors>Zlepper</Authors>
         <Description>Improves various things around BioTech that i find dissatisfying.</Description>
+        <RimWorldModUrl>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.BioTechImprovements</RimWorldModUrl>
     </PropertyGroup>
 
     <ItemGroup>

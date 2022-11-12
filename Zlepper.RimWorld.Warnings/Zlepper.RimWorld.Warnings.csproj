@@ -7,6 +7,7 @@
         <RimWorldPackageId>Zlepper.RimWorld.Warnings</RimWorldPackageId>
         <Authors>Zlepper</Authors>
         <Description>Adds some warnings that i was missing.</Description>
+        <RimWorldModUrl>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.Warnings</RimWorldModUrl>
     </PropertyGroup>
 
     <ItemGroup>
