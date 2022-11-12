@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 
 namespace Zlepper.RimWorld.ModSdk.Utilities;
 
-public class DescriptionTrimmer
+public static class DescriptionTrimmer
 {
     
     public static string TrimDescription(string original)
