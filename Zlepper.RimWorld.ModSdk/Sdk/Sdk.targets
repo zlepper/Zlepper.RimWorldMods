@@ -70,14 +70,14 @@
         <RimWorldAssemblyReference Include="UnityEngine.CoreModule"/>
     </ItemGroup>
 
-    <ItemGroup Condition="'$(IncludeHugsLib)' == 'true'">
-        <RimWorldSteamModDependency Include="UnlimitedHugs.HugsLib" />
-    </ItemGroup>
-
     <ItemGroup Condition="'$(IncludeHarmony)' == 'true'">
         <RimWorldSteamModDependency Include="brrainz.harmony">
             <MainDllName>0Harmony</MainDllName>
         </RimWorldSteamModDependency>
+    </ItemGroup>
+    
+    <ItemGroup Condition="'$(IncludeHugsLib)' == 'true'">
+        <RimWorldSteamModDependency Include="UnlimitedHugs.HugsLib" />
     </ItemGroup>
 
     <ItemGroup>
