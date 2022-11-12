@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <IncludeHugsLib>true</IncludeHugsLib>
+        <IncludeHarmony>true</IncludeHarmony>
         <RimWorldModName>Zleppers Perf Fixes</RimWorldModName>
         <RimWorldPackageId>Zlepper.RimWorld.PerfFixes</RimWorldPackageId>
         <AllowUnsafeBlocks>true</AllowUnsafeBlocks>

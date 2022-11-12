@@ -70,6 +70,21 @@
         <RimWorldAssemblyReference Include="UnityEngine.CoreModule"/>
     </ItemGroup>
 
+    <ItemGroup Condition="'$(IncludeHugsLib)' == 'true'">
+        <RimWorldSteamModDependency Include="UnlimitedHugs.HugsLib" />
+    </ItemGroup>
+
+    <ItemGroup Condition="'$(IncludeHarmony)' == 'true'">
+        <RimWorldSteamModDependency Include="brrainz.harmony">
+            <MainDllName>0Harmony</MainDllName>
+        </RimWorldSteamModDependency>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Remove="Publish/**"/>
+        <None Remove="Publish/**"/>
+    </ItemGroup>
+
     <Target Name="ReferenceRimWorld" BeforeTargets="ResolveAssemblyReferences">
         <ItemGroup>
             <Reference Include="@(RimWorldAssemblyReference)">
@@ -77,17 +92,15 @@
                 <Private>False</Private>
             </Reference>
         </ItemGroup>
+
+        <CreateModAssemblyReferences
+                ModDependencies="@(RimWorldSteamModDependency)"
+                SteamModContentFolder="$(SteamModContentFolder)"
+                CurrentRimWorldVersion="$(RimWorldVersion)"
+        >
+            <Output TaskParameter="MatchedReferences" ItemName="Reference"/>
+        </CreateModAssemblyReferences>
     </Target>
-
-    <ItemGroup Condition="'$(IncludeHugsLib)' == 'true'">
-        <RimWorldSteamModDependency Include="UnlimitedHugs.HugsLib" />
-        <PackageReference Include="UnlimitedHugs.Rimworld.HugsLib" Version="$(HugsLibVersion)" ExcludeAssets="runtime"/>
-    </ItemGroup>
-
-    <ItemGroup>
-        <Content Remove="Publish/**"/>
-        <None Remove="Publish/**"/>
-    </ItemGroup>
 
 
     <ItemGroup>

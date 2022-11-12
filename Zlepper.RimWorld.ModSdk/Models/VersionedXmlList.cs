@@ -26,12 +26,17 @@ where T: class
         }
     }
 
-    public XmlSchema? GetSchema()
+    public bool TryGet(Version key, out List<T> options)
+    {
+        return _values.TryGetValue(key, out options);
+    }
+
+    XmlSchema? IXmlSerializable.GetSchema()
     {
         return null;
     }
 
-    public void ReadXml(XmlReader reader)
+    void IXmlSerializable.ReadXml(XmlReader reader)
     {
         var doc = new XmlDocument();
         doc.Load(reader);
@@ -71,7 +76,7 @@ where T: class
         }
 
     }
-    public void WriteXml(XmlWriter writer)
+    void IXmlSerializable.WriteXml(XmlWriter writer)
     {
         foreach (var pair in _values)
         {

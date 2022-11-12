@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <IncludeHugsLib>true</IncludeHugsLib>
+        <IncludeHarmony>true</IncludeHarmony>
         <RimWorldModName>Keep bed Ownership</RimWorldModName>
         <RimWorldPackageId>Zlepper.RimWorld.KeepBedOwnership</RimWorldPackageId>
         <Description>

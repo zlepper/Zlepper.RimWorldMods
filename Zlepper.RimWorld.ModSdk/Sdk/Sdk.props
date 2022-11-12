@@ -16,6 +16,9 @@
     <UsingTask Condition="'$(_ModSdkDllPath)' != ''" TaskName="Zlepper.RimWorld.ModSdk.Tasks.GenerateAboutXml"
                AssemblyFile="$(_ModSdkDllPath)"/>
     
+    <UsingTask Condition="'$(_ModSdkDllPath)' != ''" TaskName="Zlepper.RimWorld.ModSdk.Tasks.CreateModAssemblyReferences"
+               AssemblyFile="$(_ModSdkDllPath)"/>
+    
     <ItemGroup>
         <AvailableItemName
                 Include="RimWorldResource;RimWorldResourceAbout;RimWorldResourceLanguages;RimWorldResourceDefs;RimWorldResourcePatches;RimWorldResourceSounds;RimWorldResourceTextures;RimWorldAssemblyReference;RimWorldSteamModDependency;RimWorldLoadBefore" />
@@ -55,6 +58,7 @@
     <PropertyGroup>
         <RimWorldModName/>
         <IncludeHugsLib>false</IncludeHugsLib>
+        <IncludeHarmony>false</IncludeHarmony>
         <HugsLibVersion>10.0.1</HugsLibVersion>
         <RimWorldPackageId/>
         <OutputFolder>../Mods</OutputFolder>

@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <IncludeHugsLib>true</IncludeHugsLib>
+        <IncludeHarmony>true</IncludeHarmony>
         <RimWorldModName>Zlepper's BioTech Improvements</RimWorldModName>
         <RimWorldPackageId>Zlepper.RimWorld.BioTechImprovements</RimWorldPackageId>
         <Description>Improves various things around BioTech that i find dissatisfying.</Description>

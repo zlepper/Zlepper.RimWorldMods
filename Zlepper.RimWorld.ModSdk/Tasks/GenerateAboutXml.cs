@@ -83,7 +83,7 @@ public class GenerateAboutXml : Task
 
     private void AddDependencies(ModMetaData about)
     {
-        var modLocator = new RimWorldModLocator(SteamModContentFolder, CurrentRimWorldVersion, Log);
+        var modLocator = new RimWorldModLocator(SteamModContentFolder, Log);
         
         foreach (var modDependency in ModDependencies)
         {
