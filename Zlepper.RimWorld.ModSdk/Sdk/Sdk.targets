@@ -179,4 +179,8 @@
 
         <Copy SourceFiles="@(RimWorldCompilationResult)" DestinationFiles="$(RimWorldModPackageFolder)/%(RecursiveDir)%(Filename)%(Extension)"/>
     </Target>
+    
+    <Target Name="GenerateDefXsds" AfterTargets="Build">
+        <GenerateXdsFilesForDefs References="@(Reference)" />
+    </Target>
 </Project>
