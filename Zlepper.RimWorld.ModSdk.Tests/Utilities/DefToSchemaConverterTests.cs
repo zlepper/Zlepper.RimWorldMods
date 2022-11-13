@@ -1,65 +1,105 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Text;
+using System.Xml;
+using System.Xml.Schema;
 using Zlepper.RimWorld.ModSdk.Utilities;
+using VerifyNUnit;
 
 namespace Zlepper.RimWorld.ModSdk.Tests.Utilities;
 
 [TestFixture]
 public class DefToSchemaConverterTests
 {
-    private DefToSchemaConverter _converter = new DefToSchemaConverter(typeof(MyDefRoot));
-    
-    [Test]
-    public void GeneratesSchemaForSimpleDef()
+    private DefToSchemaConverter _converter = new DefToSchemaConverter(typeof(Def));
+
+    private string GetSchemaFor(params Type[] types)
     {
-        var result = _converter.CreateSchema(new List<Type>{typeof(SimpleChildDef)});
+        var schema = _converter.CreateSchema(new List<Type> {typeof(WorkTypeDef), typeof(Def)});
+        return GetSchemaAsString(schema);
+    }
+
+    [Test]
+    public Task GeneratesSchemaForSimpleDef()
+    {
+        var result = GetSchemaFor(typeof(Def), typeof(WorkTypeDef));
+
+        return VerifyXml(result).UseDirectory("../Snapshots");
+    }
 
 
-        //language=xsd
-        var expected = """
-<?xml version="1.0" encoding="utf-16"?>
-<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+    private string GetSchemaAsString(XmlSchema schema)
+    {
+        var schemaSet = new XmlSchemaSet();
+        schemaSet.Add(schema);
+        schemaSet.Compile();
 
-    <xs:element name="Defs">
-        <xs:complexType>
-            <xs:all>
-                <xs:element name="MyDefRoot" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.MyDefRoot"
-                            minOccurs='0' maxOccurs='unbounded'/>
-                <xs:element name="SimpleChildDef" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.SimpleChildDef"
-                            minOccurs='0' maxOccurs='unbounded'/>
-            </xs:all>
-        </xs:complexType>
-    </xs:element>
+        XmlSchema compiledSchema = null!;
 
-    <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.MyDefRoot">
-        <xs:all>
-            <xs:element name='testField' type='xs:string'/>
-        </xs:all>
-    </xs:complexType>
+        foreach (XmlSchema schema1 in schemaSet.Schemas())
+        {
+            compiledSchema = schema1;
+        }
 
-    <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.SimpleChildDef">
-        <xs:complexContent>
-            <xs:extension base="Zlepper.RimWorld.ModSdk.Tests.Utilities.MyDefRoot">
-                <xs:all>
-                    <xs:element name='intField' type='xs:integer'/>
-                </xs:all>
-            </xs:extension>
-        </xs:complexContent>
-    </xs:complexType>
-
-</xs:schema>
-""";
-        
-        Assert.That(result, Is.EqualTo(expected));
+        var nsmgr = new XmlNamespaceManager(new NameTable());
+        nsmgr.AddNamespace("xs", DefToSchemaConverter.XMLSchemaNamespace);
+        using var memStream = new StringWriter();
+        using var xmlWriter = XmlWriter.Create(memStream, new XmlWriterSettings()
+        {
+            Encoding = Encoding.UTF8,
+            Indent = true,
+            NewLineChars = "\n"
+        });
+        compiledSchema.Write(xmlWriter, nsmgr);
+        return memStream.ToString();
     }
 }
 
-public class MyDefRoot
+public class Def
 {
+    
+    [Description("The name of this Def. It is used as an identifier by the game code.")]
+    public string defName = "UnnamedDef";
+    
+    [Description("A human-readable label used to identify this in game.")]
+    public string label = null!;
     public string testField = null!;
+    
+    [Unsaved(false)]
+    public string fileName = null!;
 }
 
-public class SimpleChildDef : MyDefRoot
+public class WorkTypeDef : Def
 {
     public int intField;
+    
+    public WorkTags workTags;
+}
+
+[AttributeUsage(AttributeTargets.Field)]
+public class DescriptionAttribute : Attribute
+{
+    public string description;
+
+    public DescriptionAttribute(string description)
+    {
+        this.description = description;
+    }
+}
+[AttributeUsage(AttributeTargets.Field)]
+public class UnsavedAttribute : Attribute
+{
+    
+    public bool allowLoading;
+
+    public UnsavedAttribute(bool allowLoading = false) => this.allowLoading = allowLoading;
+}
+
+[Flags]
+public enum WorkTags
+{
+    None = 0,
+    ManualDumb = 2,
+    ManualSkilled = 4,
 }

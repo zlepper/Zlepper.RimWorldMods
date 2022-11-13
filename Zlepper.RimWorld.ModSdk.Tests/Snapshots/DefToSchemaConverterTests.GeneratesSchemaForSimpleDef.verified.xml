@@ -1,0 +1,76 @@
+﻿<xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:element name="Defs">
+    <xs:complexType>
+      <xs:choice minOccurs="0" maxOccurs="unbounded">
+        <xs:element name="WorkTypeDef" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.WorkTypeDef" />
+        <xs:element name="Def" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.Def" />
+      </xs:choice>
+    </xs:complexType>
+  </xs:element>
+  <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.WorkTypeDef">
+    <xs:all>
+      <xs:element name="intField" type="xs:int" />
+      <xs:element name="workTags">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li">
+              <xs:simpleType>
+                <xs:restriction base="xs:string">
+                  <xs:enumeration value="None" />
+                  <xs:enumeration value="ManualDumb" />
+                  <xs:enumeration value="ManualSkilled" />
+                </xs:restriction>
+              </xs:simpleType>
+            </xs:element>
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element name="defName">
+        <xs:annotation>
+          <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="^[a-zA-Z0-9\-_]*$" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="label">
+        <xs:annotation>
+          <xs:documentation>A human-readable label used to identify this in game.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="^[^\[\]\{\}]*$" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="testField" type="xs:string" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.Def">
+    <xs:all>
+      <xs:element name="defName">
+        <xs:annotation>
+          <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="^[a-zA-Z0-9\-_]*$" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="label">
+        <xs:annotation>
+          <xs:documentation>A human-readable label used to identify this in game.</xs:documentation>
+        </xs:annotation>
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:pattern value="^[^\[\]\{\}]*$" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element name="testField" type="xs:string" />
+    </xs:all>
+  </xs:complexType>
+</xs:schema>
