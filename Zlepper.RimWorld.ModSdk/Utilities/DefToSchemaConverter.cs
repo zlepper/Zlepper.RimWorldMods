@@ -141,27 +141,58 @@ public class DefToSchemaConverter
             return existing;
         }
 
-        var fields = new XmlSchemaAll();
-        var type = new XmlSchemaComplexType
+        if (HasCustomLoadMethod(defType))
         {
-            Name = typeName,
-            Namespaces = rimWorldXmlSerializerNamespaces,
-            Particle = fields
-        };
-        schema.Items.Add(type);
-
-        foreach (var fieldInfo in GetDefFieldsForDefType(defType))
-        {
-            var fieldElement = GetFieldElement(fieldInfo, schema, depth);
-            if (fieldElement == null)
+            var type = new XmlSchemaComplexType()
             {
-                continue;
+                Name = typeName,
+                Namespaces = rimWorldXmlSerializerNamespaces,
+                Particle = new XmlSchemaSequence()
+                {
+                    Items =
+                    {
+                        new XmlSchemaAny()
+                        {
+                            ProcessContents = XmlSchemaContentProcessing.Skip,
+                            MinOccurs = 0,
+                        }
+                    }
+                },
+            };
+            schema.Items.Add(type);
+            return type;
+        }
+        else
+        {
+
+            var fields = new XmlSchemaAll();
+            var type = new XmlSchemaComplexType
+            {
+                Name = typeName,
+                Namespaces = rimWorldXmlSerializerNamespaces,
+                Particle = fields
+            };
+            schema.Items.Add(type);
+
+            foreach (var fieldInfo in GetDefFieldsForDefType(defType))
+            {
+                var fieldElement = GetFieldElement(fieldInfo, schema, depth);
+                if (fieldElement == null)
+                {
+                    continue;
+                }
+
+                fields.Items.Add(fieldElement);
             }
 
-            fields.Items.Add(fieldElement);
+            return type;
         }
+    }
 
-        return type;
+    private static bool HasCustomLoadMethod(Type defType)
+    {
+        return defType.GetMethod("LoadDataFromXmlCustom",
+            BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic) != null;
     }
 
     private static bool IsEntity(Type defType)
@@ -341,13 +372,13 @@ public class DefToSchemaConverter
             {
                 var innerType = type.GetGenericArguments()[0];
 
+
                 var innerSchema = InferXmlSchemaElement(field, innerType, schema, depth);
                 if (innerSchema == null)
                 {
                     return null;
                 }
-
-                return WrapInList(innerSchema);
+                return HasCustomLoadMethod(innerType) ? innerSchema : WrapInList(innerSchema);
             }
             else if (genericTypeDefinitionFullName == typeof(Dictionary<,>).FullName)
             {

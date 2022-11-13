@@ -27,10 +27,6 @@ public class GenerateXdsFilesForDefs : Task
 
             var defs = GetDefTypes(assemblies);
 
-            Log.LogMessage(MessageImportance.High,
-                $"Found {defs.Count} def classes across {assemblies.Count} assemblies.");
-
-
             var schema = _converter.CreateSchema(defs);
 
             XmlUtilities.WriteSchemaToFile(XmlSchemaFileName, schema);

@@ -7,4 +7,6 @@ public class WorkTypeDef : Def
     public WorkTags workTags;
     
     public List<SkillDef> relevantSkills = new List<SkillDef>();
+
+    public StatModifier statModifier = null!;
 }

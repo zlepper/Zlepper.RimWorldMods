@@ -14,12 +14,12 @@
   </xs:element>
   <xs:simpleType name="defName">
     <xs:restriction base="xs:string">
-      <xs:pattern value="^[a-zA-Z0-9\-_]*$" />
+      <xs:pattern value="[a-zA-Z0-9\-_]*" />
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="defLabel">
     <xs:restriction base="xs:string">
-      <xs:pattern value="^[^\[\]\{\}]*$" />
+      <xs:pattern value="[^\[\]\{\}]*" />
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.BackstoryDef">
