@@ -5,110 +5,106 @@ using System.Linq;
 using System.Reflection;
 using Microsoft.Build.Framework;
 using Microsoft.Build.Utilities;
+using Zlepper.RimWorld.ModSdk.Utilities;
 
 namespace Zlepper.RimWorld.ModSdk.Tasks;
 
 public class GenerateXdsFilesForDefs : Task
 {
     public ITaskItem[] References { get; set; } = null!;
-
+    
+    [Output] public string XmlSchemaFileName { get; set; } = "Defs/DefsSchema.xsd";
+    
+    private readonly DefToSchemaConverter _converter = new();
 
     public override bool Execute()
     {
-        var assemblies = GetReferencedAssemblies();
-
-        var defs = GetDefTypes(assemblies);
-
-        Log.LogMessage(MessageImportance.High, $"Found {defs.Count} def classes across {assemblies.Count} assemblies.: {string.Join("\n", defs.Select(t =>t.Name))}");
-        
-        return !Log.HasLoggedErrors;
-    }
-    
-    private List<Type> GetDefTypes(IEnumerable<Assembly> assemblies)
-    {
-        return assemblies.SelectMany(a =>
-        {
-            try
-            {
-                return a.GetTypes();
-            }
-            catch (ReflectionTypeLoadException e)
-            {
-                return e.Types.Where(t => t != null);
-            }
-            catch (Exception e)
-            {
-                Log.LogError("Failed to get types in assembly " + a.FullName + ". " + e);
-                return Enumerable.Empty<Type>();
-            }
-        }).Where(IsDef).ToList();
-    }
-
-    private List<Assembly> GetReferencedAssemblies()
-    {
-        var assemblies = new List<Assembly>();
-
-
-        foreach (var reference in References)
-        {
-            try
-            {
-                var fullPath = reference.GetMetadata("FullPath");
-                var hintPath = reference.GetMetadata("HintPath");
-
-                string assemblyPath;
-                if (File.Exists(fullPath))
-                    assemblyPath = fullPath;
-                else if (File.Exists(hintPath))
-                    assemblyPath = hintPath;
-                else
-                    continue;
-
-
-                var assemblyBytes = File.ReadAllBytes(assemblyPath);
-                Assembly assembly;
-                try
-                {
-                    assembly = Assembly.ReflectionOnlyLoad(assemblyBytes);
-                }
-                catch (Exception e)
-                {
-                    Log.LogWarning($"Failed to load assembly: {assemblyPath}. {e}");
-                    continue;
-                }
-
-                assemblies.Add(assembly);
-            }
-            catch (Exception e)
-            {
-                Log.LogError("Something went wrong when generating xsd files for defs. " + e);
-            }
-        }
-
-        return assemblies;
-    }
-
-    private bool IsDef(Type type)
-    {
         try
         {
-            return type.IsClass && !type.IsAbstract &&
-                   GetBaseTypes(type).Any(t => t is {Name: "Def", Namespace: "Verse"});
+            using var context = GetReferencedAssemblies();
+
+            var assemblies = context.GetAssemblies().ToList();
+
+            var defs = GetDefTypes(assemblies);
+
+            Log.LogMessage(MessageImportance.High,
+                $"Found {defs.Count} def classes across {assemblies.Count} assemblies.");
+
+
+            var schema = _converter.CreateSchema(defs);
+
+            XmlUtilities.WriteSchemaToFile(XmlSchemaFileName, schema);
         }
         catch (Exception e)
         {
-            Log.LogError($"Failed to check if type {type.Name} is def subclass. " + e);
-            return false;
+            Log.LogErrorFromException(e, true, true, null);
         }
+
+        return !Log.HasLoggedErrors;
     }
 
-    private static IEnumerable<Type> GetBaseTypes(Type type)
+    private List<Type> GetDefTypes(IEnumerable<Assembly> assemblies)
     {
-        if (type.BaseType == null || type.BaseType == typeof(object))
-        {
-            return Enumerable.Empty<Type>();
-        }
+        return assemblies
+            .SelectMany(a =>
+            {
+                try
+                {
+                    return a.GetTypes();
+                }
+                catch (ReflectionTypeLoadException e)
+                {
+                    Log.LogError("Failed to get some types in assembly " + a.FullName + ". " + e);
+                    return e.Types.Where(t => t != null);
+                }
+                catch (Exception e)
+                {
+                    Log.LogError("Failed to get types in assembly " + a.FullName + ". " + e);
+                    return Enumerable.Empty<Type>();
+                }
+            })
+            .Where(_converter.IsDef)
+            .ToList();
+    }
 
-        return Enumerable.Repeat(type.BaseType, 1).Concat(GetBaseTypes(type.BaseType!));
+    private MetadataLoadContext GetReferencedAssemblies()
+    {
+        var coreAssembly = typeof(string).Assembly;
+        var assemblyPaths = References
+            .Select(reference =>
+            {
+                var fullPath = reference.GetMetadata("FullPath");
+                if (File.Exists(fullPath))
+                    return fullPath;
+
+                var hintPath = reference.GetMetadata("HintPath");
+                if (File.Exists(hintPath))
+                    return hintPath;
+
+                return null;
+            })
+            .OfType<string>()
+            .Prepend(coreAssembly.Location)
+            .ToList();
+
+        var resolver = new PathAssemblyResolver(assemblyPaths);
+
+        var context = new MetadataLoadContext(resolver, coreAssembly.GetName().Name);
+
+        foreach (var assemblyPath in assemblyPaths)
+        {
+            var assemblyBytes = File.ReadAllBytes(assemblyPath);
+            try
+            {
+                context.LoadFromByteArray(assemblyBytes);
+            }
+            catch (Exception e)
+            {
+                Log.LogWarning($"Failed to load assembly: {assemblyPath}. {e}");
+            }
+        }
+        
+
+        return context;
     }
 }

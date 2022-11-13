@@ -1,6 +1,7 @@
 using System.IO;
 using System.Text;
 using System.Xml;
+using System.Xml.Schema;
 using System.Xml.Serialization;
 
 namespace Zlepper.RimWorld.ModSdk.Utilities;
@@ -99,5 +100,47 @@ public static class XmlUtilities
         var ser = new XmlSerializer(typeof(T));
         return ser.Deserialize(stm) as T;
     }
+    
+    public static string GetSchemaAsString(XmlSchema schema)
+    {
+        using var memStream = new StringWriter();
+        using var xmlWriter = XmlWriter.Create(memStream, new XmlWriterSettings()
+        {
+            Encoding = Encoding.UTF8,
+            Indent = true,
+            NewLineChars = "\n"
+        });
+        WriteCompiledSchema(schema, xmlWriter);
+        return memStream.ToString();
+    }
 
+    public static void WriteSchemaToFile(string filePath, XmlSchema schema)
+    {
+        FileUtilities.EnsureDirectory(Path.GetDirectoryName(filePath)!);
+        using var xmlWriter = XmlWriter.Create(filePath, new XmlWriterSettings()
+        {
+            Encoding = Encoding.UTF8,
+            Indent = true,
+            NewLineChars = "\n"
+        });
+        WriteCompiledSchema(schema, xmlWriter);
+    }
+
+    private static void WriteCompiledSchema(XmlSchema schema, XmlWriter xmlWriter)
+    {
+        var schemaSet = new XmlSchemaSet();
+        schemaSet.Add(schema);
+        schemaSet.Compile();
+
+        XmlSchema compiledSchema = null!;
+
+        foreach (XmlSchema schema1 in schemaSet.Schemas())
+        {
+            compiledSchema = schema1;
+        }
+
+        var nsmgr = new XmlNamespaceManager(new NameTable());
+        nsmgr.AddNamespace("xs", DefToSchemaConverter.XMLSchemaNamespace);
+        compiledSchema.Write(xmlWriter, nsmgr);
+    }
 }

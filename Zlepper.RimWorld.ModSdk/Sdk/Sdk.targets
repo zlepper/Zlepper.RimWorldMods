@@ -39,9 +39,6 @@
 
     <!-- Hide custom item types from the IDE and make sure using them doesn't resolve in more files being pulled in than necessary -->
     <ItemDefinitionGroup>
-        <RimWorldAssemblyReference>
-            <Visible>False</Visible>
-        </RimWorldAssemblyReference>
         <RimWorldResourceAbout>
             <CopyToOutputDirectory>Never</CopyToOutputDirectory>
         </RimWorldResourceAbout>
@@ -70,12 +67,6 @@
         </RimWorldSteamModDependency>
     </ItemDefinitionGroup>
 
-    <!-- Basic references for RimWorld itself  -->
-    <ItemGroup>
-        <RimWorldAssemblyReference Include="Assembly-CSharp"/>
-        <RimWorldAssemblyReference Include="UnityEngine.CoreModule"/>
-    </ItemGroup>
-
     <!-- Add Harmony and HugsLib if so desired. -->
     <ItemGroup Condition="'$(IncludeHarmony)' == 'true'">
         <RimWorldSteamModDependency Include="brrainz.harmony">
@@ -92,16 +83,16 @@
         <Content Remove="Publish/**"/>
         <None Remove="Publish/**"/>
     </ItemGroup>
-
+    
+    <!-- Reference all DLLs RimWorld ships with  -->
+    <ItemGroup>
+        <Reference Include="$(RimWorldManagedPath)\*.dll">
+            <Private>False</Private>
+        </Reference>
+    </ItemGroup>
+    
     <!-- Actually add references to RimWorld and any mod dependencies -->
-    <Target Name="ReferenceRimWorld" BeforeTargets="ResolveAssemblyReferences">
-        <ItemGroup>
-            <Reference Include="@(RimWorldAssemblyReference)">
-                <HintPath>$(RimWorldManagedPath)\%(RimWorldAssemblyReference.Identity).dll</HintPath>
-                <Private>False</Private>
-            </Reference>
-        </ItemGroup>
-
+    <Target Name="ReferenceRimWorldMods" BeforeTargets="ResolveAssemblyReferences">
         <CreateModAssemblyReferences
                 ModDependencies="@(RimWorldSteamModDependency)"
                 SteamModContentFolder="$(SteamModContentFolder)"
