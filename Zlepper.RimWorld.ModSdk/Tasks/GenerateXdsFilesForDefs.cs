@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -11,11 +12,13 @@ namespace Zlepper.RimWorld.ModSdk.Tasks;
 
 public class GenerateXdsFilesForDefs : Task
 {
-    public ITaskItem[] References { get; set; } = null!;
-    
-    [Output] public string XmlSchemaFileName { get; set; } = "Defs/DefsSchema.xsd";
-    
-    private readonly DefToSchemaConverter _converter = new();
+    [Required] public ITaskItem[] References { get; set; } = null!;
+
+    [Required] public ITaskItem[] RimWorldDefFiles { get; set; } = null!;
+
+    public string XmlSchemaFileName { get; set; } = "Defs/DefsSchema.xsd";
+
+    private readonly DefContext _defContext = new();
 
     public override bool Execute()
     {
@@ -27,7 +30,12 @@ public class GenerateXdsFilesForDefs : Task
 
             var defs = GetDefTypes(assemblies);
 
-            var schema = _converter.CreateSchema(defs);
+            var currentlyDefinedDefs = GetCurrentDefinedDefs(defs);
+
+            var converter = new DefToSchemaConverter(_defContext, currentlyDefinedDefs);
+
+            var schema = converter.CreateSchema(defs);
+
 
             XmlUtilities.WriteSchemaToFile(XmlSchemaFileName, schema);
         }
@@ -37,6 +45,19 @@ public class GenerateXdsFilesForDefs : Task
         }
 
         return !Log.HasLoggedErrors;
+    }
+
+    private IReadOnlyDictionary<Type, List<string>> GetCurrentDefinedDefs(List<Type> defClasses)
+    {
+        var files = RimWorldDefFiles
+            .Select(item => item.GetMetadata("FullPath"))
+            .Where(p => p != null)
+            .Where(File.Exists);
+
+
+        var defReader = new DefReader(defClasses, _defContext);
+
+        return defReader.ReadAllDefFiles(files, Log);
     }
 
     private List<Type> GetDefTypes(IEnumerable<Assembly> assemblies)
@@ -59,7 +80,7 @@ public class GenerateXdsFilesForDefs : Task
                     return Enumerable.Empty<Type>();
                 }
             })
-            .Where(_converter.IsDef)
+            .Where(_defContext.IsDef)
             .ToList();
     }
 
@@ -99,7 +120,7 @@ public class GenerateXdsFilesForDefs : Task
                 Log.LogWarning($"Failed to load assembly: {assemblyPath}. {e}");
             }
         }
-        
+
 
         return context;
     }

@@ -6,19 +6,30 @@ namespace Zlepper.RimWorld.ModSdk.Tests.Utilities;
 [TestFixture]
 public class DefToSchemaConverterTests
 {
-    private readonly DefToSchemaConverter _converter = new(typeof(Def));
-
-    private string GetSchemaFor(params Type[] types)
+    private static readonly List<Type> _allDefTypes = new()
     {
-        var schema = _converter.CreateSchema(types.ToList());
-        return XmlUtilities.GetSchemaAsString(schema);
-    }
-
+        typeof(Def), typeof(WorkTypeDef), typeof(SkillDef), typeof(InteractionDef), typeof(BackstoryDef),
+        typeof(BodyTypeDef), typeof(DefWithWorkerClass)
+    };
+    
     [Test]
-    public Task GeneratesSchemaForSimpleDef()
+    public async Task GeneratesSchemaForSimpleDef()
     {
-        var result = GetSchemaFor(typeof(Def), typeof(WorkTypeDef), typeof(SkillDef), typeof(InteractionDef), typeof(BackstoryDef), typeof(BodyTypeDef), typeof(DefWithWorkerClass));
+        
+        var defContext = new DefContext(typeof(Def));
+        var _defReader = new DefReader(_allDefTypes, defContext);
+        
+        var defContent = await File.ReadAllTextAsync("Utilities/RimWorldVerseCopy/SampleDefFile.xml");
+        var defined = _defReader.ParseDefContent(defContent);
 
-        return VerifyXml(result).UseDirectory("../Snapshots");
+        await Verify(defined).UseDirectory("../Snapshots").UseMethodName("ParseDefContent");
+        
+        
+        var _converter = new DefToSchemaConverter(defContext, defined);
+
+        var schema = _converter.CreateSchema(_allDefTypes);
+        var result = XmlUtilities.GetSchemaAsString(schema);
+
+        await VerifyXml(result).UseDirectory("../Snapshots").UseMethodName("CreateSchema");
     }
 }

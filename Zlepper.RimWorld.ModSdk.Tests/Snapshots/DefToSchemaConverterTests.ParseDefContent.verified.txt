@@ -1,0 +1,8 @@
+﻿{
+  DefWithWorkerClass: [
+    MyDefWithAWorker
+  ],
+  SkillDef: [
+    MySkill
+  ]
+}

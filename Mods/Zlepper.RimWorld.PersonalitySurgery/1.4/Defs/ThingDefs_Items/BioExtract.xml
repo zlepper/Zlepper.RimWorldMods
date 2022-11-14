@@ -1,4 +1,4 @@
-<Defs>
+<Defs xmlns="rimworld">
 
     <ThingDef ParentName="BodyPartArchotechBase">
         <defName>SurgeryExtractBioTraitItem</defName>

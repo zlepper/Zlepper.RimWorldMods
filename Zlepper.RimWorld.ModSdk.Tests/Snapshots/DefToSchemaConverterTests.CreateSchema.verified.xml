@@ -30,7 +30,7 @@
             <xs:element name="li">
               <xs:complexType>
                 <xs:sequence>
-                  <xs:element name="key" type="xs:string" />
+                  <xs:element name="key" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.SkillDef.Enumeration" />
                   <xs:element name="value" type="xs:int" />
                 </xs:sequence>
               </xs:complexType>
@@ -41,6 +41,11 @@
       <xs:element minOccurs="0" name="selectionWeight" type="xs:string" />
     </xs:all>
   </xs:complexType>
+  <xs:simpleType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.SkillDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="MySkill" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.BodyTypeDef">
     <xs:all>
       <xs:element minOccurs="0" name="woundAnchors">
@@ -142,7 +147,7 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
-      <xs:element minOccurs="0" name="lessonInteraction" type="xs:string" />
+      <xs:element minOccurs="0" name="lessonInteraction" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.InteractionDef.Enumeration" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -156,6 +161,9 @@
       <xs:element minOccurs="0" name="testField" type="xs:string" />
     </xs:all>
   </xs:complexType>
+  <xs:simpleType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.InteractionDef.Enumeration">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
   <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.WorkTypeDef">
     <xs:all>
       <xs:element minOccurs="0" name="intField" type="xs:int" />
@@ -177,7 +185,7 @@
       <xs:element minOccurs="0" name="relevantSkills">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="xs:string" />
+            <xs:element name="li" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.SkillDef.Enumeration" />
           </xs:choice>
         </xs:complexType>
       </xs:element>

@@ -31,5 +31,12 @@
     <ItemGroup>
         <Content Include="Snapshots/**" />
     </ItemGroup>
+    
+    <ItemGroup>
+      <None Remove="Utilities\RimWorldVerseCopy\*.xml" />
+      <Content Include="Utilities\RimWorldVerseCopy\*.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
 
 </Project>

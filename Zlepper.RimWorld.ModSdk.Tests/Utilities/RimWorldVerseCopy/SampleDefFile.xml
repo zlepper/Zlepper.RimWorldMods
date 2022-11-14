@@ -1,0 +1,13 @@
+<Defs>
+    <DefWithWorkerClass>
+        <defName>MyDefWithAWorker</defName>
+        <label>A def with a worker as an example</label>
+    </DefWithWorkerClass>
+    
+    <SkillDef>
+        <defName>MySkill</defName>
+        <label>An example skill</label>
+    </SkillDef>
+    
+    
+</Defs>

@@ -17,6 +17,7 @@ public class CreateModAssemblyReferences : Task
 
 
     [Output] public ITaskItem[] MatchedReferences { get; set; } = null!;
+    [Output] public ITaskItem[] ModDefFiles { get; set; } = null!;
 
     public override bool Execute()
     {
@@ -82,6 +83,25 @@ public class CreateModAssemblyReferences : Task
                 });
             })
             .ToArray();
+
+        ModDefFiles = ModDependencies.SelectMany(modDependency =>
+        {
+            var steamModPackageId = modDependency.GetMetadata("Identity");
+            var modMetadata = modLocator.FindMod(steamModPackageId);
+
+            if (modMetadata == null)
+            {
+                return Enumerable.Empty<ITaskItem>();
+            }
+
+            return modMetadata.FindModDefFiles(rimWorldVersion, Log)
+                .Select(defPath => new TaskItem(defPath, new Dictionary<string, string>
+            {
+                {"HintPath", defPath},
+                {"Private", "false"}
+            }));
+
+        }).ToArray();
 
         return !Log.HasLoggedErrors;
     }

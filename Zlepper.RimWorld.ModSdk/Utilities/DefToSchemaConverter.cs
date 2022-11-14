@@ -1,9 +1,7 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -12,17 +10,13 @@ namespace Zlepper.RimWorld.ModSdk.Utilities;
 
 public class DefToSchemaConverter
 {
-    private readonly string _rootDefTypeClassName = "Def";
-    private readonly string _rootDefTypeClassNamespace = "Verse";
+    private readonly DefContext _defContext;
+    private readonly IReadOnlyDictionary<Type, List<string>> _currentlyDefinedDefs;
 
-    public DefToSchemaConverter(Type rootDefType)
+    public DefToSchemaConverter(DefContext defContext, IReadOnlyDictionary<Type, List<string>> currentlyDefinedDefs)
     {
-        _rootDefTypeClassName = rootDefType.Name;
-        _rootDefTypeClassNamespace = rootDefType.Namespace!;
-    }
-
-    public DefToSchemaConverter()
-    {
+        _defContext = defContext;
+        _currentlyDefinedDefs = currentlyDefinedDefs;
     }
 
     private const string defNameSchemaTypeName = "defName";
@@ -96,11 +90,9 @@ public class DefToSchemaConverter
         {
             try
             {
-                var type = CreateXmlSchemaForClass(defType, schema, 1);
+                CreateXmlSchemaForClass(defType, schema, 1);
 
-                var elementName = defType.Namespace == _rootDefTypeClassNamespace || defType.Namespace == "RimWorld"
-                    ? defType.Name
-                    : type.Name;
+                var elementName = _defContext.GetDefElementName(defType);
                 defsRootElementList.Items.Add(new XmlSchemaElement()
                 {
                     Name = elementName,
@@ -195,9 +187,9 @@ public class DefToSchemaConverter
             BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic) != null;
     }
 
-    private static bool IsEntity(Type defType)
+    private bool IsEntity(Type defType)
     {
-        return GetBaseTypes(defType).Any(t => t.FullName == "Verse.Entity");
+        return _defContext.GetBaseTypes(defType).Any(t => t.FullName == "Verse.Entity");
     }
 
     public const string XMLSchemaNamespace = "http://www.w3.org/2001/XMLSchema";
@@ -241,7 +233,7 @@ public class DefToSchemaConverter
                 var attributeTypeName = attribute.AttributeType.Name;
                 var attributeTypeNamespace = attribute.AttributeType.Namespace;
 
-                if (attributeTypeNamespace != _rootDefTypeClassNamespace)
+                if (attributeTypeNamespace != _defContext.RootDefTypeClassNamespace)
                 {
                     continue;
                 }
@@ -286,14 +278,14 @@ public class DefToSchemaConverter
 
         switch (field.Name)
         {
-            case "defName" when field.DeclaringType?.Name == _rootDefTypeClassName &&
-                                field.DeclaringType?.Namespace == _rootDefTypeClassNamespace:
+            case "defName" when field.DeclaringType?.Name == _defContext.RootDefTypeClassName &&
+                                field.DeclaringType?.Namespace == _defContext.RootDefTypeClassNamespace:
             {
                 xmlSchemaElement.SchemaTypeName = new XmlQualifiedName(defNameSchemaTypeName, rimWorldXmlNamespace);
                 break;
             }
-            case "label" when field.DeclaringType?.Name == _rootDefTypeClassName &&
-                              field.DeclaringType?.Namespace == _rootDefTypeClassNamespace:
+            case "label" when field.DeclaringType?.Name == _defContext.RootDefTypeClassName &&
+                              field.DeclaringType?.Namespace == _defContext.RootDefTypeClassNamespace:
             {
                 xmlSchemaElement.SchemaTypeName = new XmlQualifiedName(defLabelSchemaTypeName, rimWorldXmlNamespace);
                 break;
@@ -380,7 +372,8 @@ public class DefToSchemaConverter
                 }
                 return HasCustomLoadMethod(innerType) ? innerSchema : WrapInList(innerSchema);
             }
-            else if (genericTypeDefinitionFullName == typeof(Dictionary<,>).FullName)
+
+            if (genericTypeDefinitionFullName == typeof(Dictionary<,>).FullName)
             {
                 var keyType = type.GetGenericArguments()[0];
                 var valueType = type.GetGenericArguments()[1];
@@ -394,36 +387,39 @@ public class DefToSchemaConverter
 
                 return WrapInDictionary(keySchema, valueSchema);
             }
-            else if (genericTypeDefinitionFullName == "RimWorld.QuestGen.SlateRef`1")
+            
+            if (genericTypeDefinitionFullName == "RimWorld.QuestGen.SlateRef`1")
             {
                 return new XmlSchemaElement
                 {
                     SchemaTypeName = _wellKnownFieldTypes[typeof(string).FullName]
                 };
             }
-            else if (genericTypeDefinitionFullName == typeof(Nullable<>).FullName)
+            
+            if (genericTypeDefinitionFullName == typeof(Nullable<>).FullName)
             {
                 var innerType = type.GetGenericArguments()[0];
 
                 return InferXmlSchemaElement(field, innerType, schema, depth);
             }
-            else if (genericTypeDefinitionFullName == typeof(Predicate<>).FullName ||
-                     genericTypeDefinitionFullName == typeof(Func<,>).FullName)
+            
+            if (genericTypeDefinitionFullName == typeof(Predicate<>).FullName ||
+                genericTypeDefinitionFullName == typeof(Func<,>).FullName)
             {
                 return null;
             }
-            else
-            {
-                throw new NotImplementedException(
-                    $"Can't handle field {field.Name} of type {type} on class {field.DeclaringType}. Full field type: {field.FieldType}. Base base type: {type.BaseType}");
-            }
+            
+            throw new NotImplementedException(
+                $"Can't handle field {field.Name} of type {type} on class {field.DeclaringType}. Full field type: {field.FieldType}. Base base type: {type.BaseType}");
         }
 
-        if (IsDef(type))
+        if (_defContext.IsDef(type))
         {
+            var defOptionsType = CreateDefOptionsType(type, schema);
+            
             return new XmlSchemaElement
             {
-                SchemaTypeName = _wellKnownFieldTypes[typeof(string).FullName]
+                SchemaTypeName = new XmlQualifiedName(defOptionsType.Name, rimWorldXmlNamespace)
             };
         }
 
@@ -456,6 +452,44 @@ public class DefToSchemaConverter
                 $"Can't handle field {field.Name} of type {type} on class {field.DeclaringType}. Full field type: {field.FieldType}. Base base type: {type.BaseType}",
                 e);
         }
+    }
+
+    private XmlSchemaSimpleType CreateDefOptionsType(Type defType, XmlSchema schema)
+    {
+        var optionsTypeName = defType.FullName!.Replace("+", ".") + ".Enumeration";
+        
+        var existing = schema.Items.OfType<XmlSchemaSimpleType>().FirstOrDefault(type => type.Name == optionsTypeName);
+        if(existing != null)
+        {
+            return existing;
+        }
+        
+        var optionsType = new XmlSchemaSimpleType()
+        {
+            Name = optionsTypeName,
+            Namespaces = rimWorldXmlSerializerNamespaces
+        };
+        
+        var restriction = new XmlSchemaSimpleTypeRestriction()
+        {
+            BaseTypeName = _wellKnownFieldTypes[typeof(string).FullName],
+        };
+        
+        if (_currentlyDefinedDefs.TryGetValue(defType, out var knownDefs))
+        {
+            foreach (var defName in knownDefs)
+            {
+                restriction.Facets.Add(new XmlSchemaEnumerationFacet()
+                {
+                    Value = defName
+                });
+            }
+        }
+        
+        optionsType.Content = restriction;
+        schema.Items.Add(optionsType);
+        
+        return optionsType;
     }
 
     private XmlSchemaElement WrapInDictionary(XmlSchemaElement keySchema, XmlSchemaElement valueSchema)
@@ -517,22 +551,6 @@ public class DefToSchemaConverter
     }
 
 
-    public bool IsDef(Type type)
-    {
-        return type.IsClass && !type.IsAbstract &&
-               GetBaseTypes(type).Any(t =>
-                   t.Namespace == _rootDefTypeClassNamespace && t.Name == _rootDefTypeClassName);
-    }
-
-    private static IEnumerable<Type> GetBaseTypes(Type type)
-    {
-        if (type.BaseType == null || type.BaseType.FullName == typeof(object).FullName)
-        {
-            return Enumerable.Empty<Type>();
-        }
-
-        return Enumerable.Repeat(type.BaseType, 1).Concat(GetBaseTypes(type.BaseType!));
-    }
 }
 
 public class UnwindingStackOverflowException : Exception

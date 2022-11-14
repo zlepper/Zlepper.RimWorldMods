@@ -99,6 +99,7 @@
                 CurrentRimWorldVersion="$(RimWorldVersion)"
         >
             <Output TaskParameter="MatchedReferences" ItemName="Reference"/>
+            <Output TaskParameter="ModDefFiles" ItemName="RimWorldDefFiles"/>
         </CreateModAssemblyReferences>
     </Target>
 
@@ -111,6 +112,8 @@
         <RimWorldResourcePatches Include="Patches\**\*.xml"/>
         <RimWorldResourceSounds Include="Sounds\**"/>
         <RimWorldResourceTextures Include="Textures\**"/>
+        <RimWorldDefFiles Include="$(RimWorldPath)\Data\*\Defs\**\*.xml" />
+        <RimWorldDefFiles Include="@(RimWorldResourceDefs)" />
     </ItemGroup>
 
     <!-- Ensure the "Clean" command actually cleans all the expected places    -->
@@ -171,7 +174,11 @@
         <Copy SourceFiles="@(RimWorldCompilationResult)" DestinationFiles="$(RimWorldModPackageFolder)/%(RecursiveDir)%(Filename)%(Extension)"/>
     </Target>
     
-    <Target Name="GenerateDefXsds" AfterTargets="Build">
-        <GenerateXdsFilesForDefs References="@(Reference)" />
+    <PropertyGroup>
+        <DefsXsdFileName>Defs/DefsSchema.xsd</DefsXsdFileName>
+    </PropertyGroup>
+    
+    <Target Name="GenerateDefXsds" AfterTargets="Build" Inputs="@(RimWorldDefFiles);@(Reference)" Outputs="$(DefsXsdFileName)">
+        <GenerateXdsFilesForDefs References="@(Reference)" RimWorldDefFiles="@(RimWorldDefFiles)" XmlSchemaFileName="$(DefsXsdFileName)" />
     </Target>
 </Project>
