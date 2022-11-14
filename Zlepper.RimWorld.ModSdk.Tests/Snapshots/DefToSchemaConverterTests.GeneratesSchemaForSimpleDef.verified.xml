@@ -181,6 +181,7 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="statModifier" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.StatModifier" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -193,5 +194,10 @@
       </xs:element>
       <xs:element minOccurs="0" name="testField" type="xs:string" />
     </xs:all>
+  </xs:complexType>
+  <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.StatModifier">
+    <xs:sequence>
+      <xs:any minOccurs="0" processContents="skip" />
+    </xs:sequence>
   </xs:complexType>
 </xs:schema>
