@@ -181,4 +181,8 @@
     <Target Name="GenerateDefXsds" AfterTargets="Build" Inputs="@(RimWorldDefFiles);@(Reference)" Outputs="$(DefsXsdFileName)">
         <GenerateXdsFilesForDefs References="@(Reference)" RimWorldDefFiles="@(RimWorldDefFiles)" XmlSchemaFileName="$(DefsXsdFileName)" />
     </Target>
+    
+    <Target Name="LinkXsds" AfterTargets="GenerateDefXsds" Condition="Exists('$(DefsXsdFileName)')">
+        <AddXmlSchemaToDefFiles DefFiles="@(RimWorldResourceDefs)" SchemaLocation="$(DefsXsdFileName)"  />
+    </Target>
 </Project>

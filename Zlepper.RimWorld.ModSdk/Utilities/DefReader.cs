@@ -83,7 +83,7 @@ public class DefReader
         {
             if (defElement.NodeType == XmlNodeType.Element)
             {
-                var defName = defElement.Descendants("defName").FirstOrDefault()?.Value;
+                var defName = defElement.Descendants().FirstOrDefault(e => e.Name.LocalName == "defName")?.Value;
                 
                 if(string.IsNullOrEmpty(defName))
                     continue;

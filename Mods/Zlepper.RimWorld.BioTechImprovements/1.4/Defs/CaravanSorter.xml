@@ -1,5 +1,5 @@
-<Defs xmlns="rimworld" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-      xsi:schemaLocation="rimworld DefsSchema.xsd">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Defs xmlns="rimworld" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="rimworld DefsSchema.xsd">
 
     
     <TransferableSorterDef>

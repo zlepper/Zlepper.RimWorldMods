@@ -1,4 +1,4 @@
-<Defs>
+<Defs xmlns="rimworld" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="rimworld ../DefsSchema.xsd">
     <DefWithWorkerClass>
         <defName>MyDefWithAWorker</defName>
         <label>A def with a worker as an example</label>

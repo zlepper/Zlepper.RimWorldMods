@@ -28,6 +28,9 @@
     <UsingTask Condition="'$(_ModSdkDllPath)' != '' and '$(_UsingDevModSdkDll)' == 'true'" TaskName="Zlepper.RimWorld.ModSdk.Tasks.GenerateXdsFilesForDefs"
                AssemblyFile="$(_ModSdkDllPath)" TaskFactory="TaskHostFactory"/>
 
+    <UsingTask Condition="'$(_ModSdkDllPath)' != '' and '$(_UsingDevModSdkDll)' == 'true'" TaskName="Zlepper.RimWorld.ModSdk.Tasks.AddXmlSchemaToDefFiles"
+               AssemblyFile="$(_ModSdkDllPath)" TaskFactory="TaskHostFactory"/>
+
     <UsingTask Condition="'$(_ModSdkDllPath)' != '' and '$(_UsingDevModSdkDll)' == 'false'" TaskName="Zlepper.RimWorld.ModSdk.Tasks.GenerateAboutXml"
                AssemblyFile="$(_ModSdkDllPath)"/>
 
@@ -35,6 +38,9 @@
                AssemblyFile="$(_ModSdkDllPath)"/>
 
     <UsingTask Condition="'$(_ModSdkDllPath)' != '' and '$(_UsingDevModSdkDll)' == 'false'" TaskName="Zlepper.RimWorld.ModSdk.Tasks.GenerateXdsFilesForDefs"
+               AssemblyFile="$(_ModSdkDllPath)"/>
+
+    <UsingTask Condition="'$(_ModSdkDllPath)' != '' and '$(_UsingDevModSdkDll)' == 'false'" TaskName="Zlepper.RimWorld.ModSdk.Tasks.AddXmlSchemaToDefFiles"
                AssemblyFile="$(_ModSdkDllPath)"/>
 
     <!-- Different item types the SDK uses to track things   -->

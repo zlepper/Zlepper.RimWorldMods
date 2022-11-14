@@ -10013,6 +10013,7 @@
       <xs:enumeration value="Hauling" />
       <xs:enumeration value="Cleaning" />
       <xs:enumeration value="Research" />
+      <xs:enumeration value="Mechanitor" />
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="Verse.PawnCapacityDef.Enumeration">
