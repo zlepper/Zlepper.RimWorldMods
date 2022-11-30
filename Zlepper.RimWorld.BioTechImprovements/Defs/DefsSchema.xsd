@@ -1994,6 +1994,7 @@
       <xs:enumeration value="Gun_BeamGraser" />
       <xs:enumeration value="Gun_ToxicNeedle" />
       <xs:enumeration value="Bullet_ToxicNeedleGun" />
+      <xs:enumeration value="Gun_NeedleLauncher" />
       <xs:enumeration value="Plant_Toxipotato" />
       <xs:enumeration value="Plant_TreePolux" />
       <xs:enumeration value="ChoppedStump_Polux" />
@@ -4080,6 +4081,7 @@
       <xs:enumeration value="PrisonerExecution" />
       <xs:enumeration value="GuiltyColonistExecution" />
       <xs:enumeration value="StudyBuilding" />
+      <xs:enumeration value="PlantSeed" />
       <xs:enumeration value="Dance" />
       <xs:enumeration value="GotoAndBeSociallyActive" />
       <xs:enumeration value="PrepareSkylantern" />
@@ -4110,7 +4112,6 @@
       <xs:enumeration value="SlaveEmancipation" />
       <xs:enumeration value="SlaveExecution" />
       <xs:enumeration value="Hack" />
-      <xs:enumeration value="PlantSeed" />
       <xs:enumeration value="CreateAndEnterCocoon" />
       <xs:enumeration value="CreateAndEnterHealingPod" />
       <xs:enumeration value="ReturnToGauranlenTree" />
@@ -4145,6 +4146,7 @@
   </xs:simpleType>
   <xs:simpleType name="RimWorld.MemeDef.Enumeration">
     <xs:restriction base="xs:string">
+      <xs:enumeration value="Bloodfeeding" />
       <xs:enumeration value="MaleSupremacy" />
       <xs:enumeration value="FemaleSupremacy" />
       <xs:enumeration value="Supremacist" />
@@ -5463,6 +5465,10 @@
       <xs:element minOccurs="0" name="toleranceHediff" type="Verse.HediffDef.Enumeration" />
       <xs:element minOccurs="0" name="canBinge" type="xs:boolean" />
       <xs:element minOccurs="0" name="generateAddictionGenes" type="xs:boolean" />
+      <xs:element minOccurs="0" name="geneOverdoseChanceFactorResist" type="xs:float" />
+      <xs:element minOccurs="0" name="geneOverdoseChanceFactorImmune" type="xs:float" />
+      <xs:element minOccurs="0" name="geneToleranceBuildupFactorResist" type="xs:float" />
+      <xs:element minOccurs="0" name="geneToleranceBuildupFactorImmune" type="xs:float" />
       <xs:element minOccurs="0" name="onGeneratedAddictedToleranceChance" type="xs:float" />
       <xs:element minOccurs="0" name="onGeneratedAddictedEvents">
         <xs:complexType>
@@ -7431,6 +7437,7 @@
       <xs:enumeration value="ChildLabor_Encouraged_ChildAssignedWork" />
       <xs:enumeration value="GrowthVat_Essential_Pregnant" />
       <xs:enumeration value="GrowthVat_Essential_ChildNotInGrowthVat" />
+      <xs:enumeration value="GrowthVat_Prohibited_ChildNotInGrowthVat" />
       <xs:enumeration value="GrowthVat_Prohibited_GrowthVatInColony" />
       <xs:enumeration value="GrowthVat_Prohibited_ChildInGrowthVat" />
       <xs:enumeration value="PreferredXenotype" />
@@ -8583,6 +8590,13 @@
       <xs:element minOccurs="0" name="displayCategory" type="Verse.GeneCategoryDef.Enumeration" />
       <xs:element minOccurs="0" name="displayOrderOffset" type="xs:int" />
       <xs:element minOccurs="0" name="selectionWeight" type="xs:float" />
+      <xs:element minOccurs="0" name="chemicalBiostatOverrides">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="RimWorld.GeneTemplateDef.ChemicalBiostatOverride" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="labelShortAdj" type="xs:string" />
       <xs:element minOccurs="0" name="iconPath" type="xs:string" />
       <xs:element minOccurs="0" name="exclusionTagPrefix" type="xs:string" />
@@ -8643,6 +8657,25 @@
       <xs:enumeration value="Cosmetic_Skin" />
       <xs:enumeration value="Cosmetic_Hair" />
       <xs:enumeration value="Miscellaneous" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="RimWorld.GeneTemplateDef.ChemicalBiostatOverride">
+    <xs:all>
+      <xs:element minOccurs="0" name="chemical" type="RimWorld.ChemicalDef.Enumeration" />
+      <xs:element minOccurs="0" name="biostatCpx" type="xs:int" />
+      <xs:element minOccurs="0" name="biostatMet" type="xs:int" />
+      <xs:element minOccurs="0" name="biostatArc" type="xs:int" />
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="RimWorld.ChemicalDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Alcohol" />
+      <xs:enumeration value="Ambrosia" />
+      <xs:enumeration value="GoJuice" />
+      <xs:enumeration value="Luciferium" />
+      <xs:enumeration value="Psychite" />
+      <xs:enumeration value="Smokeleaf" />
+      <xs:enumeration value="WakeUp" />
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="RimWorld.GoodwillSituationDef">
@@ -19161,6 +19194,8 @@
       </xs:element>
       <xs:element minOccurs="0" name="chemical" type="RimWorld.ChemicalDef.Enumeration" />
       <xs:element minOccurs="0" name="addictionChanceFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="overdoseChanceFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="toleranceBuildupFactor" type="xs:float" />
       <xs:element minOccurs="0" name="sterilize" type="xs:boolean" />
       <xs:element minOccurs="0" name="capMods">
         <xs:complexType>
@@ -19346,17 +19381,6 @@
       <xs:any minOccurs="0" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
-  <xs:simpleType name="RimWorld.ChemicalDef.Enumeration">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Alcohol" />
-      <xs:enumeration value="Ambrosia" />
-      <xs:enumeration value="GoJuice" />
-      <xs:enumeration value="Luciferium" />
-      <xs:enumeration value="Psychite" />
-      <xs:enumeration value="Smokeleaf" />
-      <xs:enumeration value="WakeUp" />
-    </xs:restriction>
-  </xs:simpleType>
   <xs:complexType name="Verse.PawnCapacityModifier">
     <xs:all>
       <xs:element minOccurs="0" name="capacity" type="Verse.PawnCapacityDef.Enumeration" />
@@ -24084,6 +24108,7 @@ OncePerSample means that the parameters are applied exactly once to each sample 
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="tradeNeverStack" type="xs:boolean" />
+      <xs:element minOccurs="0" name="tradeNeverGenerateStacked" type="xs:boolean" />
       <xs:element minOccurs="0" name="healthAffectsPrice" type="xs:boolean" />
       <xs:element minOccurs="0" name="colorGeneratorInTraderStock" type="Verse.ColorGenerator" />
       <xs:element minOccurs="0" name="tools">

@@ -7,12 +7,15 @@ namespace Zlepper.RimWorld.PerfFixes.SmarterTicking;
 public static class WorldPawns_GetSituation_Patches
 {
 
-    private static readonly PawnLazyTicker<WorldPawnSituation> _ticker = new(60, 120);
+    public static readonly PawnLazyTicker<WorldPawnSituation> Ticker = new(120);
 
     [HarmonyPrefix]
     public static bool GetSituation_Prefix(Pawn p, WorldPawns __instance, out WorldPawnSituation __result)
     {
-        __result = _ticker.TickAndCalculate(p, () => GetSituation_Original(__instance, p));
+        if (Ticker.TryGetValue(p, out __result)) return false;
+        
+        __result = GetSituation_Original(__instance, p);
+        Ticker.Set(p, __result);
 
         return false;
     }

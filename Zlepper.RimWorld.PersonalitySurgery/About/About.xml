@@ -11,6 +11,12 @@
   </supportedVersions>
   <modDependencies>
     <li>
+      <packageId>brrainz.harmony</packageId>
+      <displayName>Harmony</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+      <downloadUrl>https://github.com/pardeike/HarmonyRimWorld</downloadUrl>
+    </li>
+    <li>
       <packageId>UnlimitedHugs.HugsLib</packageId>
       <displayName>HugsLib</displayName>
       <steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl>
@@ -18,6 +24,7 @@
     </li>
   </modDependencies>
   <loadAfter>
+    <li>brrainz.harmony</li>
     <li>UnlimitedHugs.HugsLib</li>
   </loadAfter>
 </ModMetaData>

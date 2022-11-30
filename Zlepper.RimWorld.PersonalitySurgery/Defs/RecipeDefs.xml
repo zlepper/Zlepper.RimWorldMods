@@ -1,13 +1,14 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
-<Defs xmlns="rimworld" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="rimworld ../DefsSchema.xsd">
+﻿<Defs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="rimworld DefsSchema.xsd" xmlns="rimworld">
+
     <RecipeDef ParentName="SurgeryFlesh">
-        <defName>SurgeryExtractBioProperty</defName>
-        <workerClass>Zlepper.Rimworld.PersonalitySurgery.Recipe_UpdateBioSurgery</workerClass>
+        <defName>ExtractBioPropertySurgery</defName>
+        <label>Extract property</label>
+        <workerClass>Zlepper.Rimworld.PersonalitySurgery.Recipe_ExtractBioPropertySurgery</workerClass>
         <workAmount>2500</workAmount>
         <isViolation>true</isViolation>
         <hideBodyPartNames>true</hideBodyPartNames>
         <skillRequirements>
-            <Medicine>10</Medicine>
+            <Medicine>4</Medicine>
         </skillRequirements>
         <recipeUsers>
             <li>Human</li>
@@ -15,9 +16,9 @@
         <ingredients>
             <li>
                 <filter>
-                    <thingDefs>
-                        <li>MedicineIndustrial</li>
-                    </thingDefs>
+                    <categories>
+                        <li>Medicine</li>
+                    </categories>
                 </filter>
                 <count>1</count>
             </li>
@@ -33,16 +34,18 @@
         <researchPrerequisites>
             <li>PersonalitySurgery</li>
         </researchPrerequisites>
+        <surgerySuccessChanceFactor>0.9</surgerySuccessChanceFactor>
     </RecipeDef>
     
     <RecipeDef ParentName="SurgeryFlesh">
-        <defName>SurgeryInstallBioProperty</defName>
-        <workerClass>Zlepper.Rimworld.PersonalitySurgery.Recipe_UpdateBioSurgery</workerClass>
+        <defName>InstallBioPropertySurgery</defName>
+        <label>Install property</label>
+        <workerClass>Zlepper.Rimworld.PersonalitySurgery.Recipe_InstallBioPropertySurgery</workerClass>
         <workAmount>2500</workAmount>
         <isViolation>true</isViolation>
         <hideBodyPartNames>true</hideBodyPartNames>
         <skillRequirements>
-            <Medicine>10</Medicine>
+            <Medicine>4</Medicine>
         </skillRequirements>
         <recipeUsers>
             <li>Human</li>
@@ -50,9 +53,9 @@
         <ingredients>
             <li>
                 <filter>
-                    <thingDefs>
-                        <li>MedicineIndustrial</li>
-                    </thingDefs>
+                    <categories>
+                        <li>Medicine</li>
+                    </categories>
                 </filter>
                 <count>1</count>
             </li>
@@ -68,21 +71,8 @@
         <researchPrerequisites>
             <li>PersonalitySurgery</li>
         </researchPrerequisites>
+        <surgerySuccessChanceFactor>0.9</surgerySuccessChanceFactor>
     </RecipeDef>
 
-
-    <ResearchProjectDef>
-        <defName>PersonalitySurgery</defName>
-        <label>personality surgery</label>
-        <description>Extract and install personality from pawns</description>
-        <baseCost>1800</baseCost>
-        <techLevel>Spacer</techLevel>
-        <prerequisites>
-            <li>MedicineProduction</li>
-        </prerequisites>
-        <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
-        <researchViewX>12.00</researchViewX>
-        <researchViewY>1.0</researchViewY>
-    </ResearchProjectDef>
 
 </Defs>

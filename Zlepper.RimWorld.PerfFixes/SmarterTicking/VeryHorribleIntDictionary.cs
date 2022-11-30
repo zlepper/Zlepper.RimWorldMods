@@ -5,11 +5,11 @@ namespace Zlepper.RimWorld.PerfFixes.SmarterTicking;
 public sealed class VeryHorribleIntDictionary<TValue>
     where TValue : notnull
 {
-    private TValue?[] _values;
+    private ValueEntry<TValue>[] _values;
     
     public VeryHorribleIntDictionary(int initialCapacity = 1000000)
     {
-        _values = new TValue[initialCapacity];
+        _values = new ValueEntry<TValue>[initialCapacity];
     }
 
     [MethodImpl(MethodImplOptions.AggressiveInlining)]
@@ -19,11 +19,8 @@ public sealed class VeryHorribleIntDictionary<TValue>
         if (key < v.Length)
         {
             var match = v[key];
-            if (match != null)
-            {
-                value = match;
-                return true;
-            }
+            value = match.Value;
+            return match.HasValue;
         }
 
         value = default!;
@@ -35,11 +32,38 @@ public sealed class VeryHorribleIntDictionary<TValue>
     {
         if (key >= _values.Length)
         {
-            var newValues = new TValue[key * 2];
+            var newValues = new ValueEntry<TValue>[key * 2];
             Array.Copy(_values, newValues, _values.Length);
             _values = newValues;
         }
 
-        _values[key] = value;
+        _values[key] = new ValueEntry<TValue>(value);
+    }
+
+    [MethodImpl(MethodImplOptions.AggressiveInlining)]
+    public void Remove(int key)
+    {
+        var v = _values;
+        if (key < v.Length)
+        {
+            v[key] = default;
+        }
+    }
+
+    private readonly struct ValueEntry<T>
+    {
+        public readonly bool HasValue;
+        public readonly T Value;
+        
+        public ValueEntry(T value)
+        {
+            HasValue = true;
+            Value = value;
+        }
+    }
+
+    public void Clear()
+    {
+        Array.Clear(_values, 0, _values.Length);
     }
 }

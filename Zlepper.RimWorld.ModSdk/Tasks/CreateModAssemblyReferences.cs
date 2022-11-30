@@ -11,6 +11,7 @@ namespace Zlepper.RimWorld.ModSdk.Tasks;
 public class CreateModAssemblyReferences : Task
 {
     [Required] public ITaskItem[] ModDependencies { get; set; } = null!;
+    [Required] public ITaskItem[] ProjectReferences { get; set; } = null!;
 
     [Required] public string CurrentRimWorldVersion { get; set; } = null!;
     [Required] public string SteamModContentFolder { get; set; } = null!;
@@ -84,7 +85,7 @@ public class CreateModAssemblyReferences : Task
             })
             .ToArray();
 
-        ModDefFiles = ModDependencies.SelectMany(modDependency =>
+        var modDefFiles = ModDependencies.SelectMany(modDependency =>
         {
             var steamModPackageId = modDependency.GetMetadata("Identity");
             var modMetadata = modLocator.FindMod(steamModPackageId);
@@ -101,7 +102,33 @@ public class CreateModAssemblyReferences : Task
                 {"Private", "false"}
             }));
 
-        }).ToArray();
+        }).ToList();
+
+        var projectDefFiles = ProjectReferences.SelectMany(r =>
+        {
+            var csProjPath = r.GetMetadata("FullPath");
+
+            var projectPath = Path.GetDirectoryName(csProjPath);
+
+            var defFolder = Path.Combine(projectPath!, "Defs");
+
+            if (Directory.Exists(defFolder))
+            {
+                return Directory.EnumerateFiles(defFolder, "*.xml", SearchOption.AllDirectories)
+                    .Select(defPath => new TaskItem(defPath, new Dictionary<string, string>
+                    {
+                        {"HintPath", defPath},
+                        {"Private", "false"}
+                    }));
+            }
+            
+            
+            return Enumerable.Empty<TaskItem>();
+        });
+        
+        modDefFiles.AddRange(projectDefFiles);
+        
+        ModDefFiles = modDefFiles.ToArray();
 
         return !Log.HasLoggedErrors;
     }

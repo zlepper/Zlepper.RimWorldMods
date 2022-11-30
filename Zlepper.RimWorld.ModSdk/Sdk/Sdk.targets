@@ -97,6 +97,7 @@
                 ModDependencies="@(RimWorldSteamModDependency)"
                 SteamModContentFolder="$(SteamModContentFolder)"
                 CurrentRimWorldVersion="$(RimWorldVersion)"
+                ProjectReferences="@(ProjectReference)"
         >
             <Output TaskParameter="MatchedReferences" ItemName="Reference"/>
             <Output TaskParameter="ModDefFiles" ItemName="RimWorldDefFiles"/>

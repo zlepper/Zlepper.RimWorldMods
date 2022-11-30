@@ -39,4 +39,11 @@
       </Content>
     </ItemGroup>
 
+    <ItemGroup>
+      <None Remove="Utilities\TestFiles\*.xml" />
+      <Content Include="Utilities\TestFiles\*.xml">
+        <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      </Content>
+    </ItemGroup>
+
 </Project>

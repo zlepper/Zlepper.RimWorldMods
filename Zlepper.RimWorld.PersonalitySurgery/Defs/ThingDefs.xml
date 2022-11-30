@@ -1,0 +1,52 @@
+﻿
+<Defs xmlns="rimworld" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="rimworld DefsSchema.xsd">
+
+    <ThingDef ParentName="BodyPartArchotechBase">
+        <defName>SurgeryExtractBioTraitItem</defName>
+        <thingClass>Zlepper.RimWorld.PersonalitySurgery.TraitThing</thingClass>
+        <label>Extracted trait</label>
+        <description>A trait that has been extracted from someone</description>
+        <tradeNeverStack>true</tradeNeverStack>
+        <drawGUIOverlay>true</drawGUIOverlay>
+        <drawGUIOverlayQuality>false</drawGUIOverlayQuality>
+        <statBases>
+            <MarketValue>100</MarketValue>
+            <SellPriceFactor>0.8</SellPriceFactor>
+        </statBases>
+        <thingCategories>
+            <li>PersonalitySurgeryPersonalityCategory</li>
+        </thingCategories>
+        <tradeability>All</tradeability>
+        <comps>
+            <li Class="Zlepper.RimWorld.PersonalitySurgery.CompPropertiesLabel" />
+        </comps>
+    </ThingDef>
+
+
+    <ThingDef ParentName="BodyPartArchotechBase">
+        <defName>SurgeryExtractBioPassionItem</defName>
+        <thingClass>Zlepper.RimWorld.PersonalitySurgery.PassionThing</thingClass>
+        <label>Extracted skill passion</label>
+        <description>An extracted passion for a skill</description>
+        <tradeNeverStack>true</tradeNeverStack>
+        <drawGUIOverlay>true</drawGUIOverlay>
+        <drawGUIOverlayQuality>false</drawGUIOverlayQuality>
+        <statBases>
+            <MarketValue>100</MarketValue>
+            <SellPriceFactor>0.8</SellPriceFactor>
+        </statBases>
+        <thingCategories>
+            <li>PersonalitySurgeryPersonalityCategory</li>
+        </thingCategories>
+        <tradeability>All</tradeability>
+        <comps>
+            <li Class="Zlepper.RimWorld.PersonalitySurgery.CompPropertiesLabel" />
+        </comps>
+    </ThingDef>
+
+    <ThingCategoryDef>
+        <defName>PersonalitySurgeryPersonalityCategory</defName>
+        <label>Personality</label>
+        <parent>BodyParts</parent>
+    </ThingCategoryDef>
+</Defs>

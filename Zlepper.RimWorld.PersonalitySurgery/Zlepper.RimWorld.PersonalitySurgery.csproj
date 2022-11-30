@@ -2,6 +2,7 @@
 
     <PropertyGroup>
         <IncludeHugsLib>true</IncludeHugsLib>
+        <IncludeHarmony>true</IncludeHarmony>
         <RimWorldModName>Personality Surgery</RimWorldModName>
         <RimWorldPackageId>Zlepper.RimWorld.PersonalitySurgery</RimWorldPackageId>
         <Authors>Zlepper</Authors>
