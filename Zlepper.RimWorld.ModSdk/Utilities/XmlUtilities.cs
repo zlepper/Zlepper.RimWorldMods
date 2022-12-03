@@ -117,13 +117,17 @@ public static class XmlUtilities
     public static void WriteSchemaToFile(string filePath, XmlSchema schema)
     {
         FileUtilities.EnsureDirectory(Path.GetDirectoryName(filePath)!);
-        using var xmlWriter = XmlWriter.Create(filePath, new XmlWriterSettings()
+        using var memStream = new MemoryStream();
+        using var xmlWriter = XmlWriter.Create(memStream, new XmlWriterSettings()
         {
             Encoding = Encoding.UTF8,
             Indent = true,
             NewLineChars = "\n"
         });
         WriteCompiledSchema(schema, xmlWriter);
+        
+        using var fileStream = File.Open(filePath, FileMode.Create, FileAccess.Write, FileShare.None);
+        memStream.WriteTo(fileStream);
     }
 
     private static void WriteCompiledSchema(XmlSchema schema, XmlWriter xmlWriter)

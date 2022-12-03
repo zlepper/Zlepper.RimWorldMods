@@ -137,25 +137,7 @@ public class DefToSchemaConverter
 
         if (HasCustomLoadMethod(defType))
         {
-            var type = new XmlSchemaComplexType()
-            {
-                Name = typeName,
-                Namespaces = rimWorldXmlSerializerNamespaces,
-                Particle = new XmlSchemaSequence()
-                {
-                    Items =
-                    {
-                        new XmlSchemaAny()
-                        {
-                            ProcessContents = XmlSchemaContentProcessing.Skip,
-                            MinOccurs = 0,
-                            MaxOccurs = decimal.MaxValue
-                        }
-                    }
-                },
-            };
-            schema.Items.Add(type);
-            return type;
+            return InferSchemaTypeForCustomLoadClass(schema, typeName, defType);
         }
         else
         {
@@ -183,19 +165,178 @@ public class DefToSchemaConverter
         }
     }
 
+    private Type GetTypeFromPossiblyNullable(Type type)
+    {
+        if (IsNullable(type))
+        {
+            return type.GetGenericArguments()[0];
+        }
+
+        return type;
+    }
+
+    private static bool IsNullable(Type type)
+    {
+        return type.IsConstructedGenericType && type.GetGenericTypeDefinition().FullName == typeof(Nullable<>).FullName;
+    }
+
+    private XmlSchemaComplexType InferSchemaTypeForCustomLoadClass(XmlSchema schema, string typeName,
+        Type defType)
+    {
+        var fields = GetDefFieldsForDefType(defType);
+        if (fields.Count == 2)
+        {
+            var simpleFields = fields.Where(f =>
+                _wellKnownFieldTypes.ContainsKey(GetTypeFromPossiblyNullable(f.FieldType).FullName)).ToList();
+            if (simpleFields.Count == 1)
+            {
+                var defFields = fields.Where(f => _defContext.IsDef(f.FieldType)).ToList();
+                if (defFields.Count == 1)
+                {
+                    var defField = defFields.Single();
+                    var simpleField = simpleFields.Single();
+
+                    var wellKnownFieldType =
+                        _wellKnownFieldTypes[GetTypeFromPossiblyNullable(simpleField.FieldType).FullName];
+
+                    if (_currentlyDefinedDefs.TryGetValue(defField.FieldType, out var defNames))
+                    {
+                        XmlSchemaGroupBase xmlSchemaParticle = new XmlSchemaAll();
+                        foreach (var name in defNames.Distinct())
+                        {
+                            xmlSchemaParticle.Items.Add(new XmlSchemaElement()
+                            {
+                                Name = name,
+                                Namespaces = rimWorldXmlSerializerNamespaces,
+                                SchemaTypeName = wellKnownFieldType,
+                                MinOccurs = 0,
+                            });
+                        }
+
+                        if (IsNullable(simpleField.FieldType))
+                        {
+                            var defOptions = CreateDefOptionsType(defField.FieldType, schema);
+                            var listAlternative = new XmlSchemaElement()
+                            {
+                                Name = "li",
+                                Namespaces = rimWorldXmlSerializerNamespaces,
+                                SchemaTypeName = new XmlQualifiedName(defOptions.Name, rimWorldXmlNamespace),
+                                MinOccurs = 0,
+                                MaxOccurs = decimal.MaxValue,
+                            };
+
+                            var newParticle = new XmlSchemaChoice()
+                            {
+                                Items = {listAlternative}
+                            };
+
+                            foreach (var xmlSchemaObject in xmlSchemaParticle.Items)
+                            {
+                                newParticle.Items.Add(xmlSchemaObject);
+                            }
+                            
+                            xmlSchemaParticle = newParticle;
+                            
+                        }
+                        
+                        var customDictionaryType = new XmlSchemaComplexType()
+                        {
+                            Name = typeName,
+                            Namespaces = rimWorldXmlSerializerNamespaces,
+                            Particle = xmlSchemaParticle,
+                        };
+
+                        
+                        schema.Items.Add(customDictionaryType);
+                        return customDictionaryType;
+                    }
+                }
+            }
+        }
+
+        if (fields.Count == 1)
+        {
+            var field = fields.Single();
+            if (_defContext.IsDef(field.FieldType))
+            {
+                var xmlSchemaParticle = new XmlSchemaChoice()
+                {
+                    MinOccurs = 0,
+                    MaxOccurs = decimal.MaxValue
+                };
+
+                foreach (var concreteDefType in _currentlyDefinedDefs.Keys.Where(t => t.IsSubclassOf(field.FieldType)))
+                {
+                    var defOptionsType = CreateDefOptionsType(concreteDefType, schema);
+
+                    var element = new XmlSchemaElement
+                    {
+                        Name = _defContext.GetDefElementName(concreteDefType),
+                        SchemaTypeName = new XmlQualifiedName(defOptionsType.Name, rimWorldXmlNamespace),
+                    };
+                    xmlSchemaParticle.Items.Add(element);
+                }
+
+                var customDefLinks = new XmlSchemaComplexType()
+                {
+                    Name = typeName,
+                    Namespaces = rimWorldXmlSerializerNamespaces,
+                    Particle = xmlSchemaParticle,
+                };
+                schema.Items.Add(customDefLinks);
+                return customDefLinks;
+            }
+            else
+            {
+                throw new UnwindingStackOverflowException(
+                    $"Type {defType} has a single field, but it is not a def. It is: {field.FieldType}");
+            }
+        }
+
+        var type = new XmlSchemaComplexType()
+        {
+            Name = typeName,
+            Namespaces = rimWorldXmlSerializerNamespaces,
+            Particle = new XmlSchemaSequence()
+            {
+                Items =
+                {
+                    new XmlSchemaAny()
+                    {
+                        ProcessContents = XmlSchemaContentProcessing.Skip,
+                        MinOccurs = 0,
+                        MaxOccurs = decimal.MaxValue
+                    }
+                }
+            },
+        };
+        schema.Items.Add(type);
+        return type;
+    }
+
     private static bool HasCustomLoadMethod(Type defType)
     {
         return defType.GetMethod("LoadDataFromXmlCustom",
             BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic) != null;
     }
 
-    private bool ShouldSkip(Type defType)
+    private bool ShouldSkip(Type type)
     {
-        var isEntity = _defContext.GetBaseTypes(defType).Any(t => t.FullName == "Verse.Entity");
-        var isMap = defType.FullName == "Verse.Map";
-        var isIdeo = defType.FullName == "RimWorld.Ideo";
-        var isSteamRelated = defType.Namespace?.StartsWith("Verse.Steam") ?? false;
-        return isEntity || isMap || isIdeo || isSteamRelated;
+        if (type.IsConstructedGenericType)
+        {
+            return type.GetGenericArguments().Any(ShouldSkip);
+        }
+
+        var isEntity = _defContext.GetBaseTypes(type).Any(t => t.FullName == "Verse.Entity");
+        var isMap = type.FullName == "Verse.Map";
+        var isIdeo = type.FullName == "RimWorld.Ideo";
+        var isSteamRelated = type.Namespace?.StartsWith("Verse.Steam") ?? false;
+
+
+        var isInstanceOfDef = type.GetField("def", BindingFlags.Instance | BindingFlags.Public)?.FieldType.Name ==
+                              $"{type.Name}Def";
+
+        return isEntity || isMap || isIdeo || isSteamRelated || isInstanceOfDef;
     }
 
     private bool ShouldSkip(FieldInfo field)
@@ -207,9 +348,8 @@ public class DefToSchemaConverter
 
         var isInternalField = field.IsPrivate && field.Name.EndsWith("Int");
 
-
         var invalidName = field.Name.StartsWith("<");
-        
+
         return isInternalField || field.IsSpecialName || field.IsLiteral || invalidName;
     }
 
@@ -445,14 +585,6 @@ public class DefToSchemaConverter
             };
         }
 
-        if (type.FullName == "RimWorld.Faction")
-        {
-            return new XmlSchemaElement
-            {
-                SchemaTypeName = _wellKnownFieldTypes[typeof(string).FullName]
-            };
-        }
-
         try
         {
             var schemaType = CreateXmlSchemaForClass(type, schema, depth + 1);
@@ -539,7 +671,9 @@ public class DefToSchemaConverter
 
     private List<FieldInfo> GetDefFieldsForDefType(Type defType)
     {
-        return defType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).ToList();
+        return defType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+            .Where(f => !ShouldSkip(f))
+            .ToList();
     }
 
     private static XmlNode[] TextToNodeArray(string text)

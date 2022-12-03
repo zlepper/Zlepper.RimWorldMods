@@ -24,7 +24,7 @@ public class DefContext
     public bool IsDef(Type type)
     {
         return type.IsClass && !type.IsAbstract &&
-               GetBaseTypes(type).Any(IsRootDefClass);
+               GetBaseTypes(type).Append(type).Any(IsRootDefClass);
     }
 
     public bool IsRootDefClass(Type type)
