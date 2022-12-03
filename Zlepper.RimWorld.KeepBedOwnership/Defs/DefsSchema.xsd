@@ -15725,6 +15725,7 @@
   <xs:complexType name="RimWorld.SkillNeed">
     <xs:all>
       <xs:element minOccurs="0" name="skill" type="RimWorld.SkillDef.Enumeration" />
+      <xs:element minOccurs="0" name="required" type="xs:boolean" />
     </xs:all>
   </xs:complexType>
   <xs:complexType name="RimWorld.PawnCapacityOffset">

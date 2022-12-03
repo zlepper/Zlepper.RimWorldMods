@@ -11,7 +11,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <ProjectReference Include="..\Zlepper.RimWorld.PersonalitySurgery\Zlepper.RimWorld.PersonalitySurgery.csproj" ExcludeAssets="all" PrivateAssets="all" />
+      <ProjectReference Include="..\Zlepper.RimWorld.PersonalitySurgery\Zlepper.RimWorld.PersonalitySurgery.csproj" ExcludeAssets="all" PrivateAssets="all" Private="false" />
     </ItemGroup>
 
     

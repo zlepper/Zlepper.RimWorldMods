@@ -3022,7 +3022,6 @@
       <xs:enumeration value="SmashedStump_Anima" />
       <xs:enumeration value="Plant_GrassAnima" />
       <xs:enumeration value="SurgeryExtractBioTraitItem" />
-      <xs:enumeration value="SurgeryExtractBioPassionItem" />
     </xs:restriction>
   </xs:simpleType>
   <xs:simpleType name="Verse.FleckDef.Enumeration">
@@ -8335,7 +8334,8 @@
       <xs:enumeration value="CorpsesAnimal" />
       <xs:enumeration value="CorpsesInsect" />
       <xs:enumeration value="CorpsesMechanoid" />
-      <xs:enumeration value="PersonalitySurgeryPersonalityCategory" />
+      <xs:enumeration value="PersonalitySurgeryTraitCategory" />
+      <xs:enumeration value="PersonalitySurgeryPassionCategory" />
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="RimWorld.FleshTypeDef.Wound">
@@ -10430,8 +10430,8 @@
       <xs:enumeration value="RemoveVenomTalon" />
       <xs:enumeration value="CureBloodRot" />
       <xs:enumeration value="CureAbasia" />
-      <xs:enumeration value="ExtractBioPropertySurgery" />
-      <xs:enumeration value="InstallBioPropertySurgery" />
+      <xs:enumeration value="SurgeryExtractBioProperty" />
+      <xs:enumeration value="SurgeryInstallBioProperty" />
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="RimWorld.InteractionDef">

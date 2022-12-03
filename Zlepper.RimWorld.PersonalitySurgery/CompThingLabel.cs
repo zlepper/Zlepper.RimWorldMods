@@ -10,3 +10,11 @@ public class CompThingLabel : ThingComp
         GenMapUI.DrawThingLabel(parent, parent.LabelCap);
     }
 }
+
+public class CompPropertiesLabel : CompProperties
+{
+    public CompPropertiesLabel()
+    {
+        compClass = typeof(CompThingLabel);
+    }
+}

@@ -25,6 +25,9 @@
             <Intellectual>10</Intellectual>
             <Medicine>10</Medicine>
         </skillRequirements>
+        <recipeUsers>
+            <li>TraitCombiner</li>
+        </recipeUsers>
     </RecipeDef>
 
 </Defs>

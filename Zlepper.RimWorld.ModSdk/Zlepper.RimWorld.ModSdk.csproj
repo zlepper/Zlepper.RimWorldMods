@@ -13,6 +13,7 @@
         <PackageLicenseExpression>MIT</PackageLicenseExpression>
         <RepositoryUrl>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.ModSdk</RepositoryUrl>
         <PackageReadmeFile>readme.md</PackageReadmeFile>
+        <Optimize>true</Optimize>
     </PropertyGroup>
     <ItemGroup>
         <None Include="readme.md" Pack="true" PackagePath="\" />
