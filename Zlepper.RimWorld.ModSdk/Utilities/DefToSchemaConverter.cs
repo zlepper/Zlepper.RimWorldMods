@@ -57,7 +57,9 @@ public class DefToSchemaConverter
     };
 
     private const string rimWorldXmlNamespace = "rimworld";
-    private static readonly XmlSerializerNamespaces rimWorldXmlSerializerNamespaces = new XmlSerializerNamespaces(new[] {new XmlQualifiedName("", rimWorldXmlNamespace)});
+
+    private static readonly XmlSerializerNamespaces rimWorldXmlSerializerNamespaces =
+        new XmlSerializerNamespaces(new[] {new XmlQualifiedName("", rimWorldXmlNamespace)});
 
     public XmlSchema CreateSchema(IEnumerable<Type> defTypes)
     {
@@ -117,7 +119,7 @@ public class DefToSchemaConverter
         if (depth > 100)
             throw new UnwindingStackOverflowException("Dug too deep");
 
-        if (IsEntity(defType))
+        if (ShouldSkip(defType))
         {
             throw new UnwindingStackOverflowException(
                 $"Type {defType} is an entity, which should not be hit normally. ");
@@ -147,6 +149,7 @@ public class DefToSchemaConverter
                         {
                             ProcessContents = XmlSchemaContentProcessing.Skip,
                             MinOccurs = 0,
+                            MaxOccurs = decimal.MaxValue
                         }
                     }
                 },
@@ -156,7 +159,6 @@ public class DefToSchemaConverter
         }
         else
         {
-
             var fields = new XmlSchemaAll();
             var type = new XmlSchemaComplexType
             {
@@ -187,9 +189,28 @@ public class DefToSchemaConverter
             BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic) != null;
     }
 
-    private bool IsEntity(Type defType)
+    private bool ShouldSkip(Type defType)
     {
-        return _defContext.GetBaseTypes(defType).Any(t => t.FullName == "Verse.Entity");
+        var isEntity = _defContext.GetBaseTypes(defType).Any(t => t.FullName == "Verse.Entity");
+        var isMap = defType.FullName == "Verse.Map";
+        var isIdeo = defType.FullName == "RimWorld.Ideo";
+        var isSteamRelated = defType.Namespace?.StartsWith("Verse.Steam") ?? false;
+        return isEntity || isMap || isIdeo || isSteamRelated;
+    }
+
+    private bool ShouldSkip(FieldInfo field)
+    {
+        if (ShouldSkip(field.FieldType))
+        {
+            return true;
+        }
+
+        var isInternalField = field.IsPrivate && field.Name.EndsWith("Int");
+
+
+        var invalidName = field.Name.StartsWith("<");
+        
+        return isInternalField || field.IsSpecialName || field.IsLiteral || invalidName;
     }
 
     public const string XMLSchemaNamespace = "http://www.w3.org/2001/XMLSchema";
@@ -219,7 +240,7 @@ public class DefToSchemaConverter
             return null;
         }
 
-        if (IsEntity(field.FieldType))
+        if (ShouldSkip(field))
         {
             return null;
         }
@@ -330,7 +351,7 @@ public class DefToSchemaConverter
             }
             else
             {
-                foreach (var enumField in type.GetFields(BindingFlags.Public|BindingFlags.Static))
+                foreach (var enumField in type.GetFields(BindingFlags.Public | BindingFlags.Static))
                 {
                     restriction.Facets.Add(new XmlSchemaEnumerationFacet()
                     {
@@ -370,6 +391,7 @@ public class DefToSchemaConverter
                 {
                     return null;
                 }
+
                 return HasCustomLoadMethod(innerType) ? innerSchema : WrapInList(innerSchema);
             }
 
@@ -387,7 +409,7 @@ public class DefToSchemaConverter
 
                 return WrapInDictionary(keySchema, valueSchema);
             }
-            
+
             if (genericTypeDefinitionFullName == "RimWorld.QuestGen.SlateRef`1")
             {
                 return new XmlSchemaElement
@@ -395,20 +417,20 @@ public class DefToSchemaConverter
                     SchemaTypeName = _wellKnownFieldTypes[typeof(string).FullName]
                 };
             }
-            
+
             if (genericTypeDefinitionFullName == typeof(Nullable<>).FullName)
             {
                 var innerType = type.GetGenericArguments()[0];
 
                 return InferXmlSchemaElement(field, innerType, schema, depth);
             }
-            
+
             if (genericTypeDefinitionFullName == typeof(Predicate<>).FullName ||
                 genericTypeDefinitionFullName == typeof(Func<,>).FullName)
             {
                 return null;
             }
-            
+
             throw new NotImplementedException(
                 $"Can't handle field {field.Name} of type {type} on class {field.DeclaringType}. Full field type: {field.FieldType}. Base base type: {type.BaseType}");
         }
@@ -416,7 +438,7 @@ public class DefToSchemaConverter
         if (_defContext.IsDef(type))
         {
             var defOptionsType = CreateDefOptionsType(type, schema);
-            
+
             return new XmlSchemaElement
             {
                 SchemaTypeName = new XmlQualifiedName(defOptionsType.Name, rimWorldXmlNamespace)
@@ -457,24 +479,24 @@ public class DefToSchemaConverter
     private XmlSchemaSimpleType CreateDefOptionsType(Type defType, XmlSchema schema)
     {
         var optionsTypeName = defType.FullName!.Replace("+", ".") + ".Enumeration";
-        
+
         var existing = schema.Items.OfType<XmlSchemaSimpleType>().FirstOrDefault(type => type.Name == optionsTypeName);
-        if(existing != null)
+        if (existing != null)
         {
             return existing;
         }
-        
+
         var optionsType = new XmlSchemaSimpleType()
         {
             Name = optionsTypeName,
             Namespaces = rimWorldXmlSerializerNamespaces
         };
-        
+
         var restriction = new XmlSchemaSimpleTypeRestriction()
         {
             BaseTypeName = _wellKnownFieldTypes[typeof(string).FullName],
         };
-        
+
         if (_currentlyDefinedDefs.TryGetValue(defType, out var knownDefs))
         {
             foreach (var defName in knownDefs)
@@ -485,10 +507,10 @@ public class DefToSchemaConverter
                 });
             }
         }
-        
+
         optionsType.Content = restriction;
         schema.Items.Add(optionsType);
-        
+
         return optionsType;
     }
 
@@ -517,7 +539,7 @@ public class DefToSchemaConverter
 
     private List<FieldInfo> GetDefFieldsForDefType(Type defType)
     {
-        return defType.GetFields(BindingFlags.Instance | BindingFlags.Public).ToList();
+        return defType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic).ToList();
     }
 
     private static XmlNode[] TextToNodeArray(string text)
@@ -549,8 +571,6 @@ public class DefToSchemaConverter
             }
         };
     }
-
-
 }
 
 public class UnwindingStackOverflowException : Exception

@@ -179,11 +179,11 @@
         <DefsXsdFileName>Defs/DefsSchema.xsd</DefsXsdFileName>
     </PropertyGroup>
     
-    <Target Name="GenerateDefXsds" AfterTargets="Build" Inputs="@(RimWorldDefFiles);@(Reference)" Outputs="$(DefsXsdFileName)">
+    <Target Name="GenerateDefXsds" AfterTargets="Build" Inputs="@(RimWorldDefFiles);@(Reference)" Outputs="$(DefsXsdFileName)" Condition="'@(RimWorldResourceDefs)' != ''">
         <GenerateXdsFilesForDefs References="@(Reference)" RimWorldDefFiles="@(RimWorldDefFiles)" XmlSchemaFileName="$(DefsXsdFileName)" />
     </Target>
     
-    <Target Name="LinkXsds" AfterTargets="GenerateDefXsds" Condition="Exists('$(DefsXsdFileName)')">
+    <Target Name="LinkXsds" AfterTargets="GenerateDefXsds" Condition="Exists('$(DefsXsdFileName)') and '@(RimWorldResourceDefs)' != ''">
         <AddXmlSchemaToDefFiles DefFiles="@(RimWorldResourceDefs)" SchemaLocation="$(DefsXsdFileName)"  />
     </Target>
 </Project>

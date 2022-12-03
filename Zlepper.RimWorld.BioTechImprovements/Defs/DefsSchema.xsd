@@ -264,7 +264,7 @@
   </xs:complexType>
   <xs:complexType name="Verse.DefHyperlink">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="Verse.DefModExtension">
@@ -371,6 +371,20 @@
       <xs:element minOccurs="0" name="confirmationDialogText" type="xs:string" />
       <xs:element minOccurs="0" name="iconPath" type="xs:string" />
       <xs:element minOccurs="0" name="uiIcon" type="UnityEngine.Texture2D" />
+      <xs:element minOccurs="0" name="cachedTooltip" type="xs:string" />
+      <xs:element minOccurs="0" name="cachedTargets">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="requiredPsyfocusBandCached" type="xs:int" />
+      <xs:element minOccurs="0" name="anyCompOverridesPsyfocusCost" type="xs:boolean" />
+      <xs:element minOccurs="0" name="psyfocusCostRange" type="Verse.FloatRange" />
+      <xs:element minOccurs="0" name="psyfocusCostPercent" type="xs:string" />
+      <xs:element minOccurs="0" name="psyfocusCostPercentMax" type="xs:string" />
+      <xs:element minOccurs="0" name="warmupMoteSocialSymbolCached" type="UnityEngine.Texture2D" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -420,7 +434,7 @@
   </xs:simpleType>
   <xs:complexType name="RimWorld.StatModifier">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="Verse.VerbProperties">
@@ -499,7 +513,10 @@
       <xs:element minOccurs="0" name="ai_ProjectileLaunchingIgnoresMeleeThreats" type="xs:boolean" />
       <xs:element minOccurs="0" name="ai_TargetHasRangedAttackScoreOffset" type="xs:float" />
       <xs:element minOccurs="0" name="defaultProjectile" type="Verse.ThingDef.Enumeration" />
+      <xs:element minOccurs="0" name="forcedMissRadius" type="xs:float" />
+      <xs:element minOccurs="0" name="forcedMissRadiusClassicMortars" type="xs:float" />
       <xs:element minOccurs="0" name="forcedMissEvenDispersal" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isMortar" type="xs:boolean" />
       <xs:element minOccurs="0" name="accuracyTouch" type="xs:float" />
       <xs:element minOccurs="0" name="accuracyShort" type="xs:float" />
       <xs:element minOccurs="0" name="accuracyMedium" type="xs:float" />
@@ -3407,7 +3424,26 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="Verse.SimpleCurve">
-    <xs:all />
+    <xs:all>
+      <xs:element minOccurs="0" name="points">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.CurvePoint" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="Verse.CurvePoint">
+    <xs:all>
+      <xs:element minOccurs="0" name="loc" type="UnityEngine.Vector2" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="UnityEngine.Vector2">
+    <xs:all>
+      <xs:element minOccurs="0" name="x" type="xs:float" />
+      <xs:element minOccurs="0" name="y" type="xs:float" />
+    </xs:all>
   </xs:complexType>
   <xs:complexType name="Verse.FloatRange">
     <xs:all>
@@ -4383,6 +4419,20 @@
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="shuffleable" type="xs:boolean" />
+      <xs:element minOccurs="0" name="cachedDisabledWorkTypes">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.WorkTypeDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="unlockedMeditationTypesTemp">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -4446,7 +4496,7 @@
   </xs:simpleType>
   <xs:complexType name="RimWorld.BackstoryTrait">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="RimWorld.BackstoryThingDefCountClass">
@@ -4455,6 +4505,32 @@
       <xs:element minOccurs="0" name="value" type="xs:int" />
     </xs:all>
   </xs:complexType>
+  <xs:simpleType name="Verse.WorkTypeDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Childcare" />
+      <xs:enumeration value="Firefighter" />
+      <xs:enumeration value="Patient" />
+      <xs:enumeration value="Doctor" />
+      <xs:enumeration value="PatientBedRest" />
+      <xs:enumeration value="BasicWorker" />
+      <xs:enumeration value="Warden" />
+      <xs:enumeration value="Handling" />
+      <xs:enumeration value="Cooking" />
+      <xs:enumeration value="Hunting" />
+      <xs:enumeration value="Construction" />
+      <xs:enumeration value="Growing" />
+      <xs:enumeration value="Mining" />
+      <xs:enumeration value="PlantCutting" />
+      <xs:enumeration value="Smithing" />
+      <xs:enumeration value="Tailoring" />
+      <xs:enumeration value="Art" />
+      <xs:enumeration value="Crafting" />
+      <xs:enumeration value="Hauling" />
+      <xs:enumeration value="Cleaning" />
+      <xs:enumeration value="Research" />
+      <xs:enumeration value="Mechanitor" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="RimWorld.BeardDef">
     <xs:all>
       <xs:element minOccurs="0" name="offsetNarrowEast" type="UnityEngine.Vector3" />
@@ -4800,6 +4876,23 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="wildPlants" type="RimWorld.BiomePlantRecord" />
+      <xs:element minOccurs="0" name="wildAnimals" type="RimWorld.BiomeAnimalRecord" />
+      <xs:element minOccurs="0" name="pollutionWildAnimals" type="RimWorld.BiomeAnimalRecord" />
+      <xs:element minOccurs="0" name="diseases">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="RimWorld.BiomeDiseaseRecord" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="allowedPackAnimals">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.ThingDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="hasBedrock" type="xs:boolean" />
       <xs:element minOccurs="0" name="isExtremeBiome" type="xs:boolean" />
       <xs:element minOccurs="0" name="allowPollution" type="xs:boolean" />
@@ -4840,7 +4933,7 @@
   </xs:complexType>
   <xs:complexType name="RimWorld.WeatherCommonalityRecord">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="RimWorld.TerrainThreshold">
@@ -4943,6 +5036,122 @@
       <xs:element minOccurs="0" name="minSize" type="xs:int" />
     </xs:all>
   </xs:complexType>
+  <xs:complexType name="RimWorld.BiomePlantRecord">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RimWorld.BiomeAnimalRecord">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:complexType name="RimWorld.BiomeDiseaseRecord">
+    <xs:all>
+      <xs:element minOccurs="0" name="biome" type="RimWorld.BiomeDef.Enumeration" />
+      <xs:element minOccurs="0" name="diseaseInc" type="RimWorld.IncidentDef.Enumeration" />
+      <xs:element minOccurs="0" name="commonality" type="xs:float" />
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="RimWorld.BiomeDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="BorealForest" />
+      <xs:enumeration value="Tundra" />
+      <xs:enumeration value="ColdBog" />
+      <xs:enumeration value="IceSheet" />
+      <xs:enumeration value="SeaIce" />
+      <xs:enumeration value="TemperateForest" />
+      <xs:enumeration value="TemperateSwamp" />
+      <xs:enumeration value="TropicalRainforest" />
+      <xs:enumeration value="TropicalSwamp" />
+      <xs:enumeration value="AridShrubland" />
+      <xs:enumeration value="Desert" />
+      <xs:enumeration value="ExtremeDesert" />
+      <xs:enumeration value="Ocean" />
+      <xs:enumeration value="Lake" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="RimWorld.IncidentDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="GiveQuest_AncientComplex_Mechanitor" />
+      <xs:enumeration value="RefugeePodCrash_Baby" />
+      <xs:enumeration value="PoluxTreeSpawn" />
+      <xs:enumeration value="NoxiousHaze" />
+      <xs:enumeration value="WastepackInfestation" />
+      <xs:enumeration value="Ambush" />
+      <xs:enumeration value="ManhunterAmbush" />
+      <xs:enumeration value="CaravanMeeting" />
+      <xs:enumeration value="CaravanDemand" />
+      <xs:enumeration value="Disease_Flu" />
+      <xs:enumeration value="Disease_Plague" />
+      <xs:enumeration value="Disease_Malaria" />
+      <xs:enumeration value="Disease_SleepingSickness" />
+      <xs:enumeration value="Disease_FibrousMechanites" />
+      <xs:enumeration value="Disease_SensoryMechanites" />
+      <xs:enumeration value="Disease_GutWorms" />
+      <xs:enumeration value="Disease_MuscleParasites" />
+      <xs:enumeration value="Disease_AnimalFlu" />
+      <xs:enumeration value="Disease_AnimalPlague" />
+      <xs:enumeration value="ResourcePodCrash" />
+      <xs:enumeration value="PsychicSoothe" />
+      <xs:enumeration value="SelfTame" />
+      <xs:enumeration value="AmbrosiaSprout" />
+      <xs:enumeration value="FarmAnimalsWanderIn" />
+      <xs:enumeration value="WandererJoin" />
+      <xs:enumeration value="RefugeePodCrash" />
+      <xs:enumeration value="ThrumboPasses" />
+      <xs:enumeration value="RansomDemand" />
+      <xs:enumeration value="MeteoriteImpact" />
+      <xs:enumeration value="HerdMigration" />
+      <xs:enumeration value="WildManWandersIn" />
+      <xs:enumeration value="PsychicDrone" />
+      <xs:enumeration value="ToxicFallout" />
+      <xs:enumeration value="VolcanicWinter" />
+      <xs:enumeration value="HeatWave" />
+      <xs:enumeration value="ColdSnap" />
+      <xs:enumeration value="Flashstorm" />
+      <xs:enumeration value="ShortCircuit" />
+      <xs:enumeration value="CropBlight" />
+      <xs:enumeration value="Alphabeavers" />
+      <xs:enumeration value="ShipChunkDrop" />
+      <xs:enumeration value="OrbitalTraderArrival" />
+      <xs:enumeration value="TraderCaravanArrival" />
+      <xs:enumeration value="VisitorGroup" />
+      <xs:enumeration value="TravelerGroup" />
+      <xs:enumeration value="RaidFriendly" />
+      <xs:enumeration value="StrangerInBlackJoin" />
+      <xs:enumeration value="RaidEnemy" />
+      <xs:enumeration value="Infestation" />
+      <xs:enumeration value="DeepDrillInfestation" />
+      <xs:enumeration value="ManhunterPack" />
+      <xs:enumeration value="DefoliatorShipPartCrash" />
+      <xs:enumeration value="PsychicEmanatorShipPartCrash" />
+      <xs:enumeration value="AnimalInsanityMass" />
+      <xs:enumeration value="MechCluster" />
+      <xs:enumeration value="AnimalInsanitySingle" />
+      <xs:enumeration value="Eclipse" />
+      <xs:enumeration value="SolarFlare" />
+      <xs:enumeration value="Aurora" />
+      <xs:enumeration value="GiveQuest_Random" />
+      <xs:enumeration value="GiveQuest_EndGame_ShipEscape" />
+      <xs:enumeration value="GiveQuest_Beggars" />
+      <xs:enumeration value="GiveQuest_ReliquaryPilgrims" />
+      <xs:enumeration value="GauranlenPodSpawn" />
+      <xs:enumeration value="Infestation_Jelly" />
+      <xs:enumeration value="WanderersSkylantern" />
+      <xs:enumeration value="GiveQuest_WorkSite" />
+      <xs:enumeration value="GiveQuest_EndGame_ArchonexusVictory" />
+      <xs:enumeration value="WandererJoinAbasia" />
+      <xs:enumeration value="CaravanArrivalTributeCollector" />
+      <xs:enumeration value="AnimaTreeSpawn" />
+      <xs:enumeration value="GiveQuest_EndGame_RoyalAscent" />
+      <xs:enumeration value="GiveQuest_Intro_Wimp" />
+      <xs:enumeration value="GiveQuest_Intro_Deserter" />
+      <xs:enumeration value="ProblemCauser" />
+      <xs:enumeration value="Disease_Abasia" />
+      <xs:enumeration value="Disease_BloodRot" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="RimWorld.BodyTypeDef">
     <xs:all>
       <xs:element minOccurs="0" name="bodyNakedGraphicPath" type="xs:string" />
@@ -5021,12 +5230,6 @@
       <xs:element minOccurs="0" name="g" type="xs:float" />
       <xs:element minOccurs="0" name="b" type="xs:float" />
       <xs:element minOccurs="0" name="a" type="xs:float" />
-    </xs:all>
-  </xs:complexType>
-  <xs:complexType name="UnityEngine.Vector2">
-    <xs:all>
-      <xs:element minOccurs="0" name="x" type="xs:float" />
-      <xs:element minOccurs="0" name="y" type="xs:float" />
     </xs:all>
   </xs:complexType>
   <xs:complexType name="RimWorld.BossDef">
@@ -5288,6 +5491,13 @@
       <xs:element minOccurs="0" name="leaderDescription" type="xs:string" />
       <xs:element minOccurs="0" name="quest" type="RimWorld.QuestScriptDef.Enumeration" />
       <xs:element minOccurs="0" name="rewardDef" type="Verse.ThingDef.Enumeration" />
+      <xs:element minOccurs="0" name="tmpEntries">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -5344,7 +5554,7 @@
   </xs:complexType>
   <xs:complexType name="RimWorld.PawnKindDefCount">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:simpleType name="RimWorld.QuestScriptDef.Enumeration">
@@ -5751,6 +5961,7 @@
   </xs:simpleType>
   <xs:complexType name="Verse.HediffGiver_Event">
     <xs:all>
+      <xs:element minOccurs="0" name="chance" type="xs:float" />
       <xs:element minOccurs="0" name="hediff" type="Verse.HediffDef.Enumeration" />
       <xs:element minOccurs="0" name="partsToAffect">
         <xs:complexType>
@@ -6225,6 +6436,8 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
+      <xs:element minOccurs="0" name="helpText" type="xs:string" />
+      <xs:element minOccurs="0" name="helpTextController" type="xs:string" />
       <xs:element minOccurs="0" name="highlightTags">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -6299,6 +6512,7 @@
       </xs:element>
       <xs:element minOccurs="0" name="iconPath" type="xs:string" />
       <xs:element minOccurs="0" name="iconColor" type="UnityEngine.Color" />
+      <xs:element minOccurs="0" name="icon" type="UnityEngine.Texture2D" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -6354,7 +6568,11 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="RimWorld.StyleItemTagWeighted">
-    <xs:all />
+    <xs:all>
+      <xs:element minOccurs="0" name="tag" type="xs:string" />
+      <xs:element minOccurs="0" name="baseWeight" type="xs:float" />
+      <xs:element minOccurs="0" name="weightFactor" type="xs:float" />
+    </xs:all>
   </xs:complexType>
   <xs:complexType name="RimWorld.IdeoWeaponClassPair">
     <xs:all>
@@ -6526,6 +6744,16 @@
       <xs:element minOccurs="0" name="previewImagesFolderPath" type="xs:string" />
       <xs:element minOccurs="0" name="isCore" type="xs:boolean" />
       <xs:element minOccurs="0" name="primaryColor" type="UnityEngine.Color" />
+      <xs:element minOccurs="0" name="cachedIcon" type="UnityEngine.Texture2D" />
+      <xs:element minOccurs="0" name="cachedNotOwnedIcon" type="UnityEngine.Texture2D" />
+      <xs:element minOccurs="0" name="cachedBG" type="UnityEngine.Texture2D" />
+      <xs:element minOccurs="0" name="cachedPreviewImages">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="UnityEngine.Texture2D" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -6707,6 +6935,13 @@
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="RimWorld.BackstoryCategoryFilter" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="backstoryCategories">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -6908,7 +7143,7 @@
   </xs:simpleType>
   <xs:complexType name="RimWorld.PawnGenOption">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:simpleType name="Verse.ResearchProjectTagDef.Enumeration">
@@ -6969,11 +7204,158 @@
   </xs:complexType>
   <xs:complexType name="Verse.ThingFilter">
     <xs:all>
+      <xs:element minOccurs="0" name="allowedHitPointsPercents" type="Verse.FloatRange" />
       <xs:element minOccurs="0" name="allowedHitPointsConfigurable" type="xs:boolean" />
+      <xs:element minOccurs="0" name="allowedQualities" type="RimWorld.QualityRange" />
       <xs:element minOccurs="0" name="allowedQualitiesConfigurable" type="xs:boolean" />
       <xs:element minOccurs="0" name="customSummary" type="xs:string" />
+      <xs:element minOccurs="0" name="thingDefs">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.ThingDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="categories">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="tradeTagsToAllow">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="tradeTagsToDisallow">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="thingSetMakerTagsToAllow">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="thingSetMakerTagsToDisallow">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="disallowedCategories">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="specialFiltersToAllow">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="specialFiltersToDisallow">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="stuffCategoriesToAllow">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="RimWorld.StuffCategoryDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="allowAllWhoCanMake">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.ThingDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="disallowWorsePreferability">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Undefined" />
+            <xs:enumeration value="NeverForNutrition" />
+            <xs:enumeration value="DesperateOnly" />
+            <xs:enumeration value="DesperateOnlyForHumanlikes" />
+            <xs:enumeration value="RawBad" />
+            <xs:enumeration value="RawTasty" />
+            <xs:enumeration value="MealTerrible" />
+            <xs:enumeration value="MealAwful" />
+            <xs:enumeration value="MealSimple" />
+            <xs:enumeration value="MealFine" />
+            <xs:enumeration value="MealLavish" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="disallowInedibleByHuman" type="xs:boolean" />
+      <xs:element minOccurs="0" name="disallowNotEverStorable" type="xs:boolean" />
+      <xs:element minOccurs="0" name="allowWithComp" type="xs:string" />
+      <xs:element minOccurs="0" name="disallowWithComp" type="xs:string" />
+      <xs:element minOccurs="0" name="disallowCheaperThan" type="xs:float" />
+      <xs:element minOccurs="0" name="disallowedThingDefs">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.ThingDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
     </xs:all>
   </xs:complexType>
+  <xs:complexType name="RimWorld.QualityRange">
+    <xs:all>
+      <xs:element minOccurs="0" name="min">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Awful" />
+            <xs:enumeration value="Poor" />
+            <xs:enumeration value="Normal" />
+            <xs:enumeration value="Good" />
+            <xs:enumeration value="Excellent" />
+            <xs:enumeration value="Masterwork" />
+            <xs:enumeration value="Legendary" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="max">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Awful" />
+            <xs:enumeration value="Poor" />
+            <xs:enumeration value="Normal" />
+            <xs:enumeration value="Good" />
+            <xs:enumeration value="Excellent" />
+            <xs:enumeration value="Masterwork" />
+            <xs:enumeration value="Legendary" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="RimWorld.StuffCategoryDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Metallic" />
+      <xs:enumeration value="Woody" />
+      <xs:enumeration value="Stony" />
+      <xs:enumeration value="Fabric" />
+      <xs:enumeration value="Leathery" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:simpleType name="RimWorld.TraderKindDef.Enumeration">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Base_Neolithic_Standard" />
@@ -6999,7 +7381,15 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="RimWorld.XenotypeSet">
-    <xs:all />
+    <xs:all>
+      <xs:element minOccurs="0" name="xenotypeChances" type="RimWorld.XenotypeChance" />
+      <xs:element minOccurs="0" name="warnIfTotalAbove1" type="xs:boolean" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="RimWorld.XenotypeChance">
+    <xs:sequence>
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
+    </xs:sequence>
   </xs:complexType>
   <xs:simpleType name="RimWorld.RaidAgeRestrictionDef.Enumeration">
     <xs:restriction base="xs:string">
@@ -7276,7 +7666,7 @@
   </xs:simpleType>
   <xs:complexType name="RimWorld.MemeWeight">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="RimWorld.FeatureDef">
@@ -7343,24 +7733,6 @@
       </xs:element>
     </xs:all>
   </xs:complexType>
-  <xs:simpleType name="RimWorld.BiomeDef.Enumeration">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="BorealForest" />
-      <xs:enumeration value="Tundra" />
-      <xs:enumeration value="ColdBog" />
-      <xs:enumeration value="IceSheet" />
-      <xs:enumeration value="SeaIce" />
-      <xs:enumeration value="TemperateForest" />
-      <xs:enumeration value="TemperateSwamp" />
-      <xs:enumeration value="TropicalRainforest" />
-      <xs:enumeration value="TropicalSwamp" />
-      <xs:enumeration value="AridShrubland" />
-      <xs:enumeration value="Desert" />
-      <xs:enumeration value="ExtremeDesert" />
-      <xs:enumeration value="Ocean" />
-      <xs:enumeration value="Lake" />
-    </xs:restriction>
-  </xs:simpleType>
   <xs:complexType name="RimWorld.FleshTypeDef">
     <xs:all>
       <xs:element minOccurs="0" name="ateDirect" type="RimWorld.ThoughtDef.Enumeration" />
@@ -7385,6 +7757,20 @@
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="RimWorld.FleshTypeDef.HediffWound" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="bandagedWoundsResolved">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="RimWorld.FleshTypeDef.ResolvedWound" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="woundsResolved">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="RimWorld.FleshTypeDef.ResolvedWound" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -8370,7 +8756,31 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="woundsResolved">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="RimWorld.FleshTypeDef.ResolvedWound" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
     </xs:all>
+  </xs:complexType>
+  <xs:complexType name="RimWorld.FleshTypeDef.ResolvedWound">
+    <xs:all>
+      <xs:element minOccurs="0" name="material" type="UnityEngine.Material" />
+      <xs:element minOccurs="0" name="matSouth" type="UnityEngine.Material" />
+      <xs:element minOccurs="0" name="matEast" type="UnityEngine.Material" />
+      <xs:element minOccurs="0" name="matNorth" type="UnityEngine.Material" />
+      <xs:element minOccurs="0" name="matWest" type="UnityEngine.Material" />
+      <xs:element minOccurs="0" name="flipSouth" type="xs:boolean" />
+      <xs:element minOccurs="0" name="flipEast" type="xs:boolean" />
+      <xs:element minOccurs="0" name="flipNorth" type="xs:boolean" />
+      <xs:element minOccurs="0" name="flipWest" type="xs:boolean" />
+      <xs:element minOccurs="0" name="wound" type="RimWorld.FleshTypeDef.Wound" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="UnityEngine.Material">
+    <xs:all />
   </xs:complexType>
   <xs:complexType name="RimWorld.FurDef">
     <xs:all>
@@ -8433,7 +8843,7 @@
   </xs:complexType>
   <xs:complexType name="RimWorld.FurCoveredGraphicData">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="RimWorld.GatheringDef">
@@ -8460,6 +8870,7 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="worker" type="RimWorld.GatheringWorker" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -8497,6 +8908,18 @@
   <xs:simpleType name="Verse.AI.DutyDef.Enumeration">
     <xs:restriction base="xs:string" />
   </xs:simpleType>
+  <xs:complexType name="RimWorld.GatheringWorker">
+    <xs:all>
+      <xs:element minOccurs="0" name="def" type="RimWorld.GatheringDef.Enumeration" />
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="RimWorld.GatheringDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Party" />
+      <xs:enumeration value="MarriageCeremony" />
+      <xs:enumeration value="Concert" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="RimWorld.GauranlenTreeModeDef">
     <xs:all>
       <xs:element minOccurs="0" name="previousStage" type="RimWorld.GauranlenTreeModeDef.Enumeration" />
@@ -8517,6 +8940,7 @@
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="hyperlinks" type="Verse.DefHyperlink" />
+      <xs:element minOccurs="0" name="cachedDescription" type="xs:string" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -9314,6 +9738,7 @@
       </xs:element>
       <xs:element minOccurs="0" name="iconPath" type="xs:string" />
       <xs:element minOccurs="0" name="classicPlus" type="xs:boolean" />
+      <xs:element minOccurs="0" name="cachedIcon" type="UnityEngine.Texture2D" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -9677,97 +10102,9 @@
       <xs:enumeration value="EMIField" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:complexType name="RimWorld.BiomeDiseaseRecord">
-    <xs:all>
-      <xs:element minOccurs="0" name="biome" type="RimWorld.BiomeDef.Enumeration" />
-      <xs:element minOccurs="0" name="diseaseInc" type="RimWorld.IncidentDef.Enumeration" />
-      <xs:element minOccurs="0" name="commonality" type="xs:float" />
-    </xs:all>
-  </xs:complexType>
-  <xs:simpleType name="RimWorld.IncidentDef.Enumeration">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="GiveQuest_AncientComplex_Mechanitor" />
-      <xs:enumeration value="RefugeePodCrash_Baby" />
-      <xs:enumeration value="PoluxTreeSpawn" />
-      <xs:enumeration value="NoxiousHaze" />
-      <xs:enumeration value="WastepackInfestation" />
-      <xs:enumeration value="Ambush" />
-      <xs:enumeration value="ManhunterAmbush" />
-      <xs:enumeration value="CaravanMeeting" />
-      <xs:enumeration value="CaravanDemand" />
-      <xs:enumeration value="Disease_Flu" />
-      <xs:enumeration value="Disease_Plague" />
-      <xs:enumeration value="Disease_Malaria" />
-      <xs:enumeration value="Disease_SleepingSickness" />
-      <xs:enumeration value="Disease_FibrousMechanites" />
-      <xs:enumeration value="Disease_SensoryMechanites" />
-      <xs:enumeration value="Disease_GutWorms" />
-      <xs:enumeration value="Disease_MuscleParasites" />
-      <xs:enumeration value="Disease_AnimalFlu" />
-      <xs:enumeration value="Disease_AnimalPlague" />
-      <xs:enumeration value="ResourcePodCrash" />
-      <xs:enumeration value="PsychicSoothe" />
-      <xs:enumeration value="SelfTame" />
-      <xs:enumeration value="AmbrosiaSprout" />
-      <xs:enumeration value="FarmAnimalsWanderIn" />
-      <xs:enumeration value="WandererJoin" />
-      <xs:enumeration value="RefugeePodCrash" />
-      <xs:enumeration value="ThrumboPasses" />
-      <xs:enumeration value="RansomDemand" />
-      <xs:enumeration value="MeteoriteImpact" />
-      <xs:enumeration value="HerdMigration" />
-      <xs:enumeration value="WildManWandersIn" />
-      <xs:enumeration value="PsychicDrone" />
-      <xs:enumeration value="ToxicFallout" />
-      <xs:enumeration value="VolcanicWinter" />
-      <xs:enumeration value="HeatWave" />
-      <xs:enumeration value="ColdSnap" />
-      <xs:enumeration value="Flashstorm" />
-      <xs:enumeration value="ShortCircuit" />
-      <xs:enumeration value="CropBlight" />
-      <xs:enumeration value="Alphabeavers" />
-      <xs:enumeration value="ShipChunkDrop" />
-      <xs:enumeration value="OrbitalTraderArrival" />
-      <xs:enumeration value="TraderCaravanArrival" />
-      <xs:enumeration value="VisitorGroup" />
-      <xs:enumeration value="TravelerGroup" />
-      <xs:enumeration value="RaidFriendly" />
-      <xs:enumeration value="StrangerInBlackJoin" />
-      <xs:enumeration value="RaidEnemy" />
-      <xs:enumeration value="Infestation" />
-      <xs:enumeration value="DeepDrillInfestation" />
-      <xs:enumeration value="ManhunterPack" />
-      <xs:enumeration value="DefoliatorShipPartCrash" />
-      <xs:enumeration value="PsychicEmanatorShipPartCrash" />
-      <xs:enumeration value="AnimalInsanityMass" />
-      <xs:enumeration value="MechCluster" />
-      <xs:enumeration value="AnimalInsanitySingle" />
-      <xs:enumeration value="Eclipse" />
-      <xs:enumeration value="SolarFlare" />
-      <xs:enumeration value="Aurora" />
-      <xs:enumeration value="GiveQuest_Random" />
-      <xs:enumeration value="GiveQuest_EndGame_ShipEscape" />
-      <xs:enumeration value="GiveQuest_Beggars" />
-      <xs:enumeration value="GiveQuest_ReliquaryPilgrims" />
-      <xs:enumeration value="GauranlenPodSpawn" />
-      <xs:enumeration value="Infestation_Jelly" />
-      <xs:enumeration value="WanderersSkylantern" />
-      <xs:enumeration value="GiveQuest_WorkSite" />
-      <xs:enumeration value="GiveQuest_EndGame_ArchonexusVictory" />
-      <xs:enumeration value="WandererJoinAbasia" />
-      <xs:enumeration value="CaravanArrivalTributeCollector" />
-      <xs:enumeration value="AnimaTreeSpawn" />
-      <xs:enumeration value="GiveQuest_EndGame_RoyalAscent" />
-      <xs:enumeration value="GiveQuest_Intro_Wimp" />
-      <xs:enumeration value="GiveQuest_Intro_Deserter" />
-      <xs:enumeration value="ProblemCauser" />
-      <xs:enumeration value="Disease_Abasia" />
-      <xs:enumeration value="Disease_BloodRot" />
-    </xs:restriction>
-  </xs:simpleType>
   <xs:complexType name="RimWorld.MTBByBiome">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:simpleType name="Verse.GenStepDef.Enumeration">
@@ -10020,35 +10357,9 @@
   </xs:complexType>
   <xs:complexType name="Verse.SkillRequirement">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
-  <xs:simpleType name="Verse.WorkTypeDef.Enumeration">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Childcare" />
-      <xs:enumeration value="Firefighter" />
-      <xs:enumeration value="Patient" />
-      <xs:enumeration value="Doctor" />
-      <xs:enumeration value="PatientBedRest" />
-      <xs:enumeration value="BasicWorker" />
-      <xs:enumeration value="Warden" />
-      <xs:enumeration value="Handling" />
-      <xs:enumeration value="Cooking" />
-      <xs:enumeration value="Hunting" />
-      <xs:enumeration value="Construction" />
-      <xs:enumeration value="Growing" />
-      <xs:enumeration value="Mining" />
-      <xs:enumeration value="PlantCutting" />
-      <xs:enumeration value="Smithing" />
-      <xs:enumeration value="Tailoring" />
-      <xs:enumeration value="Art" />
-      <xs:enumeration value="Crafting" />
-      <xs:enumeration value="Hauling" />
-      <xs:enumeration value="Cleaning" />
-      <xs:enumeration value="Research" />
-      <xs:enumeration value="Mechanitor" />
-    </xs:restriction>
-  </xs:simpleType>
   <xs:simpleType name="Verse.PawnCapacityDef.Enumeration">
     <xs:restriction base="xs:string">
       <xs:enumeration value="Consciousness" />
@@ -10432,6 +10743,7 @@
   </xs:simpleType>
   <xs:complexType name="RimWorld.InteractionDef">
     <xs:all>
+      <xs:element minOccurs="0" name="workerClass" type="xs:string" />
       <xs:element minOccurs="0" name="interactionMote" type="Verse.ThingDef.Enumeration" />
       <xs:element minOccurs="0" name="socialFightBaseChance" type="xs:float" />
       <xs:element minOccurs="0" name="initiatorThought" type="RimWorld.ThoughtDef.Enumeration" />
@@ -10441,6 +10753,7 @@
       <xs:element minOccurs="0" name="recipientXpGainSkill" type="RimWorld.SkillDef.Enumeration" />
       <xs:element minOccurs="0" name="recipientXpGainAmount" type="xs:int" />
       <xs:element minOccurs="0" name="ignoreTimeSinceLastInteraction" type="xs:boolean" />
+      <xs:element minOccurs="0" name="symbol" type="xs:string" />
       <xs:element minOccurs="0" name="symbolSource">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -10488,6 +10801,27 @@
   </xs:complexType>
   <xs:complexType name="Verse.Grammar.RulePack">
     <xs:all>
+      <xs:element minOccurs="0" name="rulesStrings">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="rulesFiles">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="rulesRaw">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.Grammar.Rule" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="include">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -10497,10 +10831,44 @@
       </xs:element>
     </xs:all>
   </xs:complexType>
+  <xs:complexType name="Verse.Grammar.Rule">
+    <xs:all>
+      <xs:element minOccurs="0" name="keyword" type="xs:string" />
+      <xs:element minOccurs="0" name="tag" type="xs:string" />
+      <xs:element minOccurs="0" name="requiredTag" type="xs:string" />
+      <xs:element minOccurs="0" name="usesLimit" type="xs:int" />
+      <xs:element minOccurs="0" name="constantConstraints">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.Grammar.Rule.ConstantConstraint" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="Verse.Grammar.Rule.ConstantConstraint">
+    <xs:all>
+      <xs:element minOccurs="0" name="key" type="xs:string" />
+      <xs:element minOccurs="0" name="value" type="xs:string" />
+      <xs:element minOccurs="0" name="type">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Equal" />
+            <xs:enumeration value="NotEqual" />
+            <xs:enumeration value="Less" />
+            <xs:enumeration value="Greater" />
+            <xs:enumeration value="LessOrEqual" />
+            <xs:enumeration value="GreaterOrEqual" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
   <xs:complexType name="RimWorld.IssueDef">
     <xs:all>
       <xs:element minOccurs="0" name="allowMultiplePrecepts" type="xs:boolean" />
       <xs:element minOccurs="0" name="iconPath" type="xs:string" />
+      <xs:element minOccurs="0" name="icon" type="UnityEngine.Texture2D" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -10659,6 +11027,7 @@
       <xs:element minOccurs="0" name="iconPath" type="xs:string" />
       <xs:element minOccurs="0" name="workerClass" type="xs:string" />
       <xs:element minOccurs="0" name="jobDef" type="Verse.JobDef.Enumeration" />
+      <xs:element minOccurs="0" name="icon" type="UnityEngine.Texture2D" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -10695,6 +11064,7 @@
   </xs:complexType>
   <xs:complexType name="RimWorld.LifeStageDef">
     <xs:all>
+      <xs:element minOccurs="0" name="adjective" type="xs:string" />
       <xs:element minOccurs="0" name="visible" type="xs:boolean" />
       <xs:element minOccurs="0" name="reproductive" type="xs:boolean" />
       <xs:element minOccurs="0" name="milkable" type="xs:boolean" />
@@ -11415,6 +11785,28 @@
       <xs:element minOccurs="0" name="disagreeableTraits" type="Verse.TraitRequirement" />
       <xs:element minOccurs="0" name="preventApparelRequirements" type="xs:boolean" />
       <xs:element minOccurs="0" name="xenotypeSet" type="RimWorld.XenotypeSet" />
+      <xs:element minOccurs="0" name="icon" type="UnityEngine.Texture2D" />
+      <xs:element minOccurs="0" name="cachedAllDesignatorBuildables">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.BuildableDef" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="unlockedRoles">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="unlockedRituals">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -11929,24 +12321,65 @@
   </xs:complexType>
   <xs:complexType name="Verse.ThingDefCountClass">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
-  <xs:simpleType name="RimWorld.StuffCategoryDef.Enumeration">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Metallic" />
-      <xs:enumeration value="Woody" />
-      <xs:enumeration value="Stony" />
-      <xs:enumeration value="Fabric" />
-      <xs:enumeration value="Leathery" />
-    </xs:restriction>
-  </xs:simpleType>
   <xs:complexType name="Verse.CostListForDifficulty">
     <xs:all>
       <xs:element minOccurs="0" name="difficultyVar" type="xs:string" />
       <xs:element minOccurs="0" name="costList" type="Verse.ThingDefCountClass" />
       <xs:element minOccurs="0" name="costStuffCount" type="xs:int" />
       <xs:element minOccurs="0" name="invert" type="xs:boolean" />
+      <xs:element minOccurs="0" name="cachedApplies" type="xs:boolean" />
+      <xs:element minOccurs="0" name="cachedDifficulty" type="RimWorld.Difficulty" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="RimWorld.Difficulty">
+    <xs:all>
+      <xs:element minOccurs="0" name="threatScale" type="xs:float" />
+      <xs:element minOccurs="0" name="allowBigThreats" type="xs:boolean" />
+      <xs:element minOccurs="0" name="allowIntroThreats" type="xs:boolean" />
+      <xs:element minOccurs="0" name="allowCaveHives" type="xs:boolean" />
+      <xs:element minOccurs="0" name="peacefulTemples" type="xs:boolean" />
+      <xs:element minOccurs="0" name="allowViolentQuests" type="xs:boolean" />
+      <xs:element minOccurs="0" name="babiesAreHealthy" type="xs:boolean" />
+      <xs:element minOccurs="0" name="noBabiesOrChildren" type="xs:boolean" />
+      <xs:element minOccurs="0" name="childRaidersAllowed" type="xs:boolean" />
+      <xs:element minOccurs="0" name="predatorsHuntHumanlikes" type="xs:boolean" />
+      <xs:element minOccurs="0" name="scariaRotChance" type="xs:float" />
+      <xs:element minOccurs="0" name="colonistMoodOffset" type="xs:float" />
+      <xs:element minOccurs="0" name="tradePriceFactorLoss" type="xs:float" />
+      <xs:element minOccurs="0" name="cropYieldFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="mineYieldFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="butcherYieldFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="researchSpeedFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="diseaseIntervalFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="enemyReproductionRateFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="playerPawnInfectionChanceFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="manhunterChanceOnDamageFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="deepDrillInfestationChanceFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="wastepackInfestationChanceFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="foodPoisonChanceFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="maintenanceCostFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="enemyDeathOnDownedChanceFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="adaptationGrowthRateFactorOverZero" type="xs:float" />
+      <xs:element minOccurs="0" name="adaptationEffectFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="questRewardValueFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="raidLootPointsFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="allowTraps" type="xs:boolean" />
+      <xs:element minOccurs="0" name="allowTurrets" type="xs:boolean" />
+      <xs:element minOccurs="0" name="allowMortars" type="xs:boolean" />
+      <xs:element minOccurs="0" name="classicMortars" type="xs:boolean" />
+      <xs:element minOccurs="0" name="allowExtremeWeatherIncidents" type="xs:boolean" />
+      <xs:element minOccurs="0" name="fixedWealthMode" type="xs:boolean" />
+      <xs:element minOccurs="0" name="fixedWealthTimeFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="friendlyFireChanceFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="allowInstantKillChance" type="xs:float" />
+      <xs:element minOccurs="0" name="lowPopConversionBoost" type="xs:float" />
+      <xs:element minOccurs="0" name="minThreatPointsRangeCeiling" type="xs:float" />
+      <xs:element minOccurs="0" name="childAgingRate" type="xs:float" />
+      <xs:element minOccurs="0" name="adultAgingRate" type="xs:float" />
+      <xs:element minOccurs="0" name="unwaveringPrisoners" type="xs:boolean" />
     </xs:all>
   </xs:complexType>
   <xs:simpleType name="Verse.TerrainAffordanceDef.Enumeration">
@@ -11963,7 +12396,10 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="Verse.ColorForStuff">
-    <xs:all />
+    <xs:all>
+      <xs:element minOccurs="0" name="stuff" type="Verse.ThingDef.Enumeration" />
+      <xs:element minOccurs="0" name="color" type="UnityEngine.Color" />
+    </xs:all>
   </xs:complexType>
   <xs:simpleType name="Verse.DesignationCategoryDef.Enumeration">
     <xs:restriction base="xs:string">
@@ -12001,8 +12437,19 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="Verse.IconForStuffAppearance">
-    <xs:all />
+    <xs:all>
+      <xs:element minOccurs="0" name="appearance" type="Verse.StuffAppearanceDef.Enumeration" />
+      <xs:element minOccurs="0" name="iconPath" type="xs:string" />
+    </xs:all>
   </xs:complexType>
+  <xs:simpleType name="Verse.StuffAppearanceDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Smooth" />
+      <xs:enumeration value="Planks" />
+      <xs:enumeration value="Bricks" />
+      <xs:enumeration value="Metal" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="RimWorld.PreceptApparelRequirement">
     <xs:all>
       <xs:element minOccurs="0" name="allowedFactionCategoryTags">
@@ -12064,7 +12511,7 @@
   </xs:complexType>
   <xs:complexType name="Verse.TraitRequirement">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="RimWorld.MemeGroupDef">
@@ -12441,6 +12888,7 @@
   <xs:complexType name="RimWorld.FactionCurve">
     <xs:all>
       <xs:element minOccurs="0" name="faction" type="RimWorld.FactionDef.Enumeration" />
+      <xs:element minOccurs="0" name="selectionWeightPerPointsCurve" type="Verse.SimpleCurve" />
     </xs:all>
   </xs:complexType>
   <xs:complexType name="RimWorld.PawnTableDef">
@@ -12854,6 +13302,8 @@
       <xs:element minOccurs="0" name="skipOpportunityLettersBeforeDay" type="xs:float" />
       <xs:element minOccurs="0" name="notifyPlayerOnOpportunity" type="xs:boolean" />
       <xs:element minOccurs="0" name="workerClass" type="xs:string" />
+      <xs:element minOccurs="0" name="worker" type="RimWorld.PreceptWorker" />
+      <xs:element minOccurs="0" name="icon" type="UnityEngine.Texture2D" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -13048,7 +13498,7 @@
   </xs:complexType>
   <xs:complexType name="RimWorld.PreceptThingChanceClass">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:simpleType name="RimWorld.ExpectationDef.Enumeration">
@@ -13096,6 +13546,11 @@
       <xs:enumeration value="OneDrinkPerDay" />
     </xs:restriction>
   </xs:simpleType>
+  <xs:complexType name="RimWorld.PreceptWorker">
+    <xs:all>
+      <xs:element minOccurs="0" name="def" type="RimWorld.PreceptDef.Enumeration" />
+    </xs:all>
+  </xs:complexType>
   <xs:complexType name="RimWorld.PrisonerInteractionModeDef">
     <xs:all>
       <xs:element minOccurs="0" name="listOrder" type="xs:int" />
@@ -13632,6 +14087,15 @@
       <xs:element minOccurs="0" name="onlyWorstOutcome" type="xs:boolean" />
       <xs:element minOccurs="0" name="letterInfoText" type="xs:string" />
       <xs:element minOccurs="0" name="effectDesc" type="xs:string" />
+      <xs:element minOccurs="0" name="workerInstance" type="RimWorld.RitualAttachableOutcomeEffectWorker" />
+      <xs:element minOccurs="0" name="requiredMemeList" type="xs:string" />
+      <xs:element minOccurs="0" name="appliesToOutcomeListTmp">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -13666,6 +14130,22 @@
       </xs:element>
     </xs:all>
   </xs:complexType>
+  <xs:complexType name="RimWorld.RitualAttachableOutcomeEffectWorker">
+    <xs:all>
+      <xs:element minOccurs="0" name="def" type="RimWorld.RitualAttachableOutcomeEffectDef.Enumeration" />
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="RimWorld.RitualAttachableOutcomeEffectDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="FarmAnimalsWanderIn" />
+      <xs:enumeration value="GauranlenTreePod" />
+      <xs:enumeration value="InsectJellyTunnels" />
+      <xs:enumeration value="NearbyFactionGoodwill" />
+      <xs:enumeration value="RandomRecruit" />
+      <xs:enumeration value="DiscoverAncientComplex" />
+      <xs:enumeration value="RechargePsyfocus" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="RimWorld.RitualBehaviorDef">
     <xs:all>
       <xs:element minOccurs="0" name="workerClass" type="xs:string" />
@@ -13749,6 +14229,8 @@
   </xs:complexType>
   <xs:complexType name="RimWorld.RitualRole">
     <xs:all>
+      <xs:element minOccurs="0" name="label" type="xs:string" />
+      <xs:element minOccurs="0" name="categoryLabel" type="xs:string" />
       <xs:element minOccurs="0" name="missingDesc" type="xs:string" />
       <xs:element minOccurs="0" name="noCandidatesGizmoDesc" type="xs:string" />
       <xs:element minOccurs="0" name="customChildDisallowMessage" type="xs:string" />
@@ -13771,6 +14253,7 @@
       <xs:element minOccurs="0" name="endJobOnRitualCleanup" type="xs:boolean" />
       <xs:element minOccurs="0" name="mustBeAbleToReachTarget" type="xs:boolean" />
       <xs:element minOccurs="0" name="blocksSocialInteraction" type="xs:boolean" />
+      <xs:element minOccurs="0" name="loadID" type="xs:int" />
     </xs:all>
   </xs:complexType>
   <xs:complexType name="RimWorld.RitualStage">
@@ -13840,6 +14323,20 @@
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="RimWorld.RitualRoleBehavior" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="behaviorForRole">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li">
+              <xs:complexType>
+                <xs:sequence>
+                  <xs:element name="key" type="xs:string" />
+                  <xs:element name="value" type="RimWorld.RitualRoleBehavior" />
+                </xs:sequence>
+              </xs:complexType>
+            </xs:element>
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -13918,7 +14415,19 @@
       <xs:element minOccurs="0" name="roleId" type="xs:string" />
       <xs:element minOccurs="0" name="dutyDef" type="Verse.AI.DutyDef.Enumeration" />
       <xs:element minOccurs="0" name="jobReportOverride" type="xs:string" />
+      <xs:element minOccurs="0" name="customPositions">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="RimWorld.RitualPosition" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="speakerInteraction" type="RimWorld.InteractionDef.Enumeration" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="RimWorld.RitualPosition">
+    <xs:all>
+      <xs:element minOccurs="0" name="highlight" type="xs:boolean" />
     </xs:all>
   </xs:complexType>
   <xs:simpleType name="RimWorld.InteractionDef.Enumeration">
@@ -14104,6 +14613,11 @@
       <xs:element minOccurs="0" name="warnOnLowQuality" type="xs:boolean" />
       <xs:element minOccurs="0" name="allowAttachableOutcome" type="xs:boolean" />
       <xs:element minOccurs="0" name="allowOutcomeWithNoAttendance" type="xs:boolean" />
+      <xs:element minOccurs="0" name="minMoodCached" type="xs:float" />
+      <xs:element minOccurs="0" name="maxMoodCached" type="xs:float" />
+      <xs:element minOccurs="0" name="moodDurationCached" type="xs:float" />
+      <xs:element minOccurs="0" name="bestOutcomeCached" type="RimWorld.OutcomeChance" />
+      <xs:element minOccurs="0" name="worstOutcomeCached" type="RimWorld.OutcomeChance" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -14162,7 +14676,11 @@
     </xs:all>
   </xs:complexType>
   <xs:complexType name="RimWorld.RitualOutcomeComp">
-    <xs:all />
+    <xs:all>
+      <xs:element minOccurs="0" name="label" type="xs:string" />
+      <xs:element minOccurs="0" name="labelAbstract" type="xs:string" />
+      <xs:element minOccurs="0" name="qualityOffset" type="xs:float" />
+    </xs:all>
   </xs:complexType>
   <xs:complexType name="RimWorld.RitualPatternDef">
     <xs:all>
@@ -14230,6 +14748,7 @@
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="patternGroupTag" type="xs:string" />
+      <xs:element minOccurs="0" name="icon" type="UnityEngine.Texture2D" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -14804,6 +15323,8 @@
       </xs:element>
       <xs:element minOccurs="0" name="speechCooldown" type="Verse.IntRange" />
       <xs:element minOccurs="0" name="maxPsylinkLevel" type="xs:int" />
+      <xs:element minOccurs="0" name="awardWorker" type="RimWorld.RoyalTitleAwardWorker" />
+      <xs:element minOccurs="0" name="inheritanceWorkerOverride" type="RimWorld.RoyalTitleInheritanceWorker" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -14920,6 +15441,14 @@
       </xs:element>
     </xs:all>
   </xs:complexType>
+  <xs:complexType name="RimWorld.RoyalTitleAwardWorker">
+    <xs:all>
+      <xs:element minOccurs="0" name="def" type="RimWorld.RoyalTitleDef.Enumeration" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="RimWorld.RoyalTitleInheritanceWorker">
+    <xs:all />
+  </xs:complexType>
   <xs:complexType name="RimWorld.RoyalTitlePermitDef">
     <xs:all>
       <xs:element minOccurs="0" name="workerClass" type="xs:string" />
@@ -14931,6 +15460,7 @@
       <xs:element minOccurs="0" name="usableOnWorldMap" type="xs:boolean" />
       <xs:element minOccurs="0" name="prerequisite" type="RimWorld.RoyalTitlePermitDef.Enumeration" />
       <xs:element minOccurs="0" name="uiPosition" type="UnityEngine.Vector2" />
+      <xs:element minOccurs="0" name="worker" type="RimWorld.RoyalTitlePermitWorker" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -14980,6 +15510,11 @@
       <xs:element minOccurs="0" name="warmupTicks" type="xs:int" />
       <xs:element minOccurs="0" name="explosionRadiusRange" type="Verse.FloatRange" />
       <xs:element minOccurs="0" name="itemsToDrop" type="Verse.ThingDefCountClass" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="RimWorld.RoyalTitlePermitWorker">
+    <xs:all>
+      <xs:element minOccurs="0" name="def" type="RimWorld.RoyalTitlePermitDef.Enumeration" />
     </xs:all>
   </xs:complexType>
   <xs:complexType name="RimWorld.RuleDef">
@@ -15080,9 +15615,67 @@
       <xs:element minOccurs="0" name="name" type="xs:string" />
       <xs:element minOccurs="0" name="summary" type="xs:string" />
       <xs:element minOccurs="0" name="description" type="xs:string" />
+      <xs:element minOccurs="0" name="playerFaction" type="RimWorld.ScenPart_PlayerFaction" />
+      <xs:element minOccurs="0" name="parts">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="RimWorld.ScenPart" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="fileName" type="xs:string" />
+      <xs:element minOccurs="0" name="tempUploadDir" type="xs:string" />
       <xs:element minOccurs="0" name="enabled" type="xs:boolean" />
       <xs:element minOccurs="0" name="showInUI" type="xs:boolean" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="RimWorld.ScenPart_PlayerFaction">
+    <xs:all>
+      <xs:element minOccurs="0" name="factionDef" type="RimWorld.FactionDef.Enumeration" />
+      <xs:element minOccurs="0" name="def" type="RimWorld.ScenPartDef.Enumeration" />
+      <xs:element minOccurs="0" name="visible" type="xs:boolean" />
+      <xs:element minOccurs="0" name="summarized" type="xs:boolean" />
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="RimWorld.ScenPartDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="StartingMech" />
+      <xs:enumeration value="ConfigurePawnsKindDefs" />
+      <xs:enumeration value="ConfigurePawnsXenotypes" />
+      <xs:enumeration value="DisableExostriderRemains" />
+      <xs:enumeration value="PlayerFaction" />
+      <xs:enumeration value="ConfigPage_ConfigureStartingPawns" />
+      <xs:enumeration value="PlayerPawnsArriveMethod" />
+      <xs:enumeration value="GameStartDialog" />
+      <xs:enumeration value="PawnFilter_Age" />
+      <xs:enumeration value="OnPawnDeathExplode" />
+      <xs:enumeration value="ForcedTrait" />
+      <xs:enumeration value="ForcedHediff" />
+      <xs:enumeration value="Naked" />
+      <xs:enumeration value="SetNeedLevel" />
+      <xs:enumeration value="StartingResearch" />
+      <xs:enumeration value="GameCondition_Planetkiller" />
+      <xs:enumeration value="Rule_DisallowDesignator_ZoneAdd_Growing" />
+      <xs:enumeration value="Rule_DisallowDesignator_Mine" />
+      <xs:enumeration value="Rule_DisallowDesignator_Hunt" />
+      <xs:enumeration value="Rule_DisallowDesignator_Tame" />
+      <xs:enumeration value="StatFactor" />
+      <xs:enumeration value="NoPossessions" />
+      <xs:enumeration value="DisableIncident" />
+      <xs:enumeration value="CreateIncident" />
+      <xs:enumeration value="Rule_DisallowBuilding" />
+      <xs:enumeration value="PermanentGameCondition" />
+      <xs:enumeration value="StartingAnimal" />
+      <xs:enumeration value="StartingThing_Defined" />
+      <xs:enumeration value="ScatterThingsNearPlayerStart" />
+      <xs:enumeration value="ScatterThingsAnywhere" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="RimWorld.ScenPart">
+    <xs:all>
+      <xs:element minOccurs="0" name="def" type="RimWorld.ScenPartDef.Enumeration" />
+      <xs:element minOccurs="0" name="visible" type="xs:boolean" />
+      <xs:element minOccurs="0" name="summarized" type="xs:boolean" />
     </xs:all>
   </xs:complexType>
   <xs:complexType name="RimWorld.ScenPartDef">
@@ -15585,6 +16178,27 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
+      <xs:element minOccurs="0" name="toStringStyleUnfinalized">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Integer" />
+            <xs:enumeration value="FloatOne" />
+            <xs:enumeration value="FloatTwo" />
+            <xs:enumeration value="FloatThree" />
+            <xs:enumeration value="FloatMaxOne" />
+            <xs:enumeration value="FloatMaxTwo" />
+            <xs:enumeration value="FloatMaxThree" />
+            <xs:enumeration value="FloatTwoOrThree" />
+            <xs:enumeration value="PercentZero" />
+            <xs:enumeration value="PercentOne" />
+            <xs:enumeration value="PercentTwo" />
+            <xs:enumeration value="Temperature" />
+            <xs:enumeration value="TemperatureOffset" />
+            <xs:enumeration value="WorkAmount" />
+            <xs:enumeration value="Money" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
       <xs:element minOccurs="0" name="formatString" type="xs:string" />
       <xs:element minOccurs="0" name="formatStringUnfinalized" type="xs:string" />
       <xs:element minOccurs="0" name="finalizeEquippedStatOffset" type="xs:boolean" />
@@ -15759,6 +16373,8 @@
       <xs:element minOccurs="0" name="disableAlerts" type="xs:boolean" />
       <xs:element minOccurs="0" name="disablePermadeath" type="xs:boolean" />
       <xs:element minOccurs="0" name="forcedDifficulty" type="RimWorld.DifficultyDef.Enumeration" />
+      <xs:element minOccurs="0" name="portraitLarge" type="xs:string" />
+      <xs:element minOccurs="0" name="portraitTiny" type="xs:string" />
       <xs:element minOccurs="0" name="comps">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -15898,6 +16514,13 @@
   </xs:complexType>
   <xs:complexType name="RimWorld.StyleItemCategoryDef">
     <xs:all>
+      <xs:element minOccurs="0" name="cachedStyleItems">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="RimWorld.StyleItemDef" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -15932,6 +16555,80 @@
       </xs:element>
     </xs:all>
   </xs:complexType>
+  <xs:complexType name="RimWorld.StyleItemDef">
+    <xs:all>
+      <xs:element minOccurs="0" name="styleTags">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="styleGender">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Male" />
+            <xs:enumeration value="MaleUsually" />
+            <xs:enumeration value="Any" />
+            <xs:enumeration value="FemaleUsually" />
+            <xs:enumeration value="Female" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="category" type="RimWorld.StyleItemCategoryDef.Enumeration" />
+      <xs:element minOccurs="0" name="noGraphic" type="xs:boolean" />
+      <xs:element minOccurs="0" name="requiredGene" type="Verse.GeneDef.Enumeration" />
+      <xs:element minOccurs="0" name="texPath" type="xs:string" />
+      <xs:element minOccurs="0" name="iconPath" type="xs:string" />
+      <xs:element minOccurs="0" name="defName" type="defName">
+        <xs:annotation>
+          <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="label" type="defLabel">
+        <xs:annotation>
+          <xs:documentation>A human-readable label used to identify this in game.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="description" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>A human-readable description given when the Def is inspected by players.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="descriptionHyperlinks" type="Verse.DefHyperlink" />
+      <xs:element minOccurs="0" name="ignoreConfigErrors" type="xs:boolean">
+        <xs:annotation>
+          <xs:documentation>Disables config error checking. Intended for mod use. (Be careful!)</xs:documentation>
+        </xs:annotation>
+      </xs:element>
+      <xs:element minOccurs="0" name="ignoreIllegalLabelCharacterConfigError" type="xs:boolean" />
+      <xs:element minOccurs="0" name="modExtensions">
+        <xs:annotation>
+          <xs:documentation>Mod-specific data. Not used by core game code.</xs:documentation>
+        </xs:annotation>
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.DefModExtension" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="RimWorld.StyleItemCategoryDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Furskin" />
+      <xs:enumeration value="Minimal" />
+      <xs:enumeration value="Tribal" />
+      <xs:enumeration value="Cannibal" />
+      <xs:enumeration value="Punk" />
+      <xs:enumeration value="Urban" />
+      <xs:enumeration value="Rural" />
+      <xs:enumeration value="Royal" />
+      <xs:enumeration value="Soldier" />
+      <xs:enumeration value="Moustache" />
+      <xs:enumeration value="Misc" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="RimWorld.SurgeryOutcomeEffectDef">
     <xs:all>
       <xs:element minOccurs="0" name="comps">
@@ -16373,6 +17070,7 @@
       <xs:element minOccurs="0" name="gameCondition" type="Verse.GameConditionDef.Enumeration" />
       <xs:element minOccurs="0" name="nullifiedIfNotColonist" type="xs:boolean" />
       <xs:element minOccurs="0" name="thoughtToMake" type="RimWorld.ThoughtDef.Enumeration" />
+      <xs:element minOccurs="0" name="icon" type="xs:string" />
       <xs:element minOccurs="0" name="showBubble" type="xs:boolean" />
       <xs:element minOccurs="0" name="minExpectation" type="RimWorld.ExpectationDef.Enumeration" />
       <xs:element minOccurs="0" name="minExpectationForNegativeThought" type="RimWorld.ExpectationDef.Enumeration" />
@@ -16674,7 +17372,7 @@
   </xs:complexType>
   <xs:complexType name="Verse.ThingDefCountRangeClass">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="RimWorld.TrainableDef">
@@ -16868,6 +17566,8 @@
         </xs:simpleType>
       </xs:element>
       <xs:element minOccurs="0" name="disableHostilityFromFaction" type="RimWorld.FactionDef.Enumeration" />
+      <xs:element minOccurs="0" name="commonality" type="xs:float" />
+      <xs:element minOccurs="0" name="commonalityFemale" type="xs:float" />
       <xs:element minOccurs="0" name="allowOnHostileSpawn" type="xs:boolean" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
@@ -17314,6 +18014,7 @@
       <xs:element minOccurs="0" name="commonality" type="xs:float" />
       <xs:element minOccurs="0" name="marketValueOffset" type="xs:float" />
       <xs:element minOccurs="0" name="neverBond" type="xs:boolean" />
+      <xs:element minOccurs="0" name="worker" type="RimWorld.WeaponTraitWorker" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -17348,6 +18049,34 @@
       </xs:element>
     </xs:all>
   </xs:complexType>
+  <xs:complexType name="RimWorld.WeaponTraitWorker">
+    <xs:all>
+      <xs:element minOccurs="0" name="def" type="RimWorld.WeaponTraitDef.Enumeration" />
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="RimWorld.WeaponTraitDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="PsychicSensitivityUpMajor" />
+      <xs:enumeration value="PsychicSensitivityUpMinor" />
+      <xs:enumeration value="PsychicSensitivityDownMinor" />
+      <xs:enumeration value="PsychicSensitivityDownMajor" />
+      <xs:enumeration value="ThoughtKind" />
+      <xs:enumeration value="ThoughtCalm" />
+      <xs:enumeration value="ThoughtMuttering" />
+      <xs:enumeration value="ThoughtWailing" />
+      <xs:enumeration value="OnKill_PsyfocusGain" />
+      <xs:enumeration value="OnKill_ThoughtGood" />
+      <xs:enumeration value="OnKill_ThoughtBad" />
+      <xs:enumeration value="NeedKill" />
+      <xs:enumeration value="PsyfocusMeditationBonus" />
+      <xs:enumeration value="NoPain" />
+      <xs:enumeration value="SpeedBoost" />
+      <xs:enumeration value="HungerMaker" />
+      <xs:enumeration value="NeuralHeatRecoveryGain" />
+      <xs:enumeration value="NeverBond" />
+      <xs:enumeration value="Jealous" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="RimWorld.WorkGiverDef">
     <xs:all>
       <xs:element minOccurs="0" name="giverClass" type="xs:string" />
@@ -17681,11 +18410,6 @@
       </xs:element>
     </xs:all>
   </xs:complexType>
-  <xs:complexType name="RimWorld.XenotypeChance">
-    <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
-    </xs:sequence>
-  </xs:complexType>
   <xs:complexType name="RimWorld.XenotypeIconDef">
     <xs:all>
       <xs:element minOccurs="0" name="texPath" type="xs:string" />
@@ -17795,6 +18519,7 @@
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="leaveJoinableLordIfIssuesJob" type="xs:boolean" />
+      <xs:element minOccurs="0" name="priority" type="xs:float" />
     </xs:all>
   </xs:complexType>
   <xs:complexType name="Verse.ApparelLayerDef">
@@ -17959,6 +18684,8 @@
       <xs:element minOccurs="0" name="permanentInjuryChanceFactor" type="xs:float" />
       <xs:element minOccurs="0" name="bleedRate" type="xs:float" />
       <xs:element minOccurs="0" name="frostbiteVulnerability" type="xs:float" />
+      <xs:element minOccurs="0" name="skinCovered" type="xs:boolean" />
+      <xs:element minOccurs="0" name="solid" type="xs:boolean" />
       <xs:element minOccurs="0" name="alive" type="xs:boolean" />
       <xs:element minOccurs="0" name="delicate" type="xs:boolean" />
       <xs:element minOccurs="0" name="canScarify" type="xs:boolean" />
@@ -18171,6 +18898,8 @@
   <xs:complexType name="Verse.DamageDef">
     <xs:all>
       <xs:element minOccurs="0" name="workerClass" type="xs:string" />
+      <xs:element minOccurs="0" name="externalViolence" type="xs:boolean" />
+      <xs:element minOccurs="0" name="externalViolenceForMechanoids" type="xs:boolean" />
       <xs:element minOccurs="0" name="hasForcefulImpact" type="xs:boolean" />
       <xs:element minOccurs="0" name="harmsHealth" type="xs:boolean" />
       <xs:element minOccurs="0" name="makesBlood" type="xs:boolean" />
@@ -18837,7 +19566,7 @@
   </xs:simpleType>
   <xs:complexType name="Verse.ShaderParameter">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="Verse.ShadowData">
@@ -18872,7 +19601,12 @@
     </xs:all>
   </xs:complexType>
   <xs:complexType name="UnityEngine.Rect">
-    <xs:all />
+    <xs:all>
+      <xs:element minOccurs="0" name="m_XMin" type="xs:float" />
+      <xs:element minOccurs="0" name="m_YMin" type="xs:float" />
+      <xs:element minOccurs="0" name="m_Width" type="xs:float" />
+      <xs:element minOccurs="0" name="m_Height" type="xs:float" />
+    </xs:all>
   </xs:complexType>
   <xs:complexType name="Verse.AsymmetricLinkData">
     <xs:all>
@@ -18916,11 +19650,19 @@
       <xs:element minOccurs="0" name="color" type="UnityEngine.Color" />
       <xs:element minOccurs="0" name="size" type="UnityEngine.Vector2" />
       <xs:element minOccurs="0" name="offset" type="UnityEngine.Vector3" />
+      <xs:element minOccurs="0" name="colorMat" type="UnityEngine.Material" />
     </xs:all>
   </xs:complexType>
   <xs:complexType name="Verse.GameConditionDef">
     <xs:all>
       <xs:element minOccurs="0" name="conditionClass" type="xs:string" />
+      <xs:element minOccurs="0" name="exclusiveConditions">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.GameConditionDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="startMessage" type="xs:string" />
       <xs:element minOccurs="0" name="endMessage" type="xs:string" />
       <xs:element minOccurs="0" name="letterText" type="xs:string" />
@@ -19056,6 +19798,7 @@
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="iconPath" type="xs:string" />
+      <xs:element minOccurs="0" name="iconColor" type="UnityEngine.Color" />
       <xs:element minOccurs="0" name="displayCategory" type="Verse.GeneCategoryDef.Enumeration" />
       <xs:element minOccurs="0" name="displayOrderInCategory" type="xs:float" />
       <xs:element minOccurs="0" name="graphicData" type="Verse.GeneGraphicData" />
@@ -19344,6 +20087,10 @@
       </xs:element>
       <xs:element minOccurs="0" name="drawNorthAfterHair" type="xs:boolean" />
       <xs:element minOccurs="0" name="drawOnEyes" type="xs:boolean" />
+      <xs:element minOccurs="0" name="drawOffset" type="UnityEngine.Vector3" />
+      <xs:element minOccurs="0" name="drawOffsetNorth" type="UnityEngine.Vector3" />
+      <xs:element minOccurs="0" name="drawOffsetSouth" type="UnityEngine.Vector3" />
+      <xs:element minOccurs="0" name="drawOffsetEast" type="UnityEngine.Vector3" />
       <xs:element minOccurs="0" name="narrowCrownHorizontalOffset" type="xs:float" />
     </xs:all>
   </xs:complexType>
@@ -19360,7 +20107,7 @@
   </xs:complexType>
   <xs:complexType name="RimWorld.Aptitude">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="Verse.PassionMod">
@@ -19379,7 +20126,7 @@
   </xs:complexType>
   <xs:complexType name="Verse.DamageFactor">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="Verse.PawnCapacityModifier">
@@ -19759,6 +20506,9 @@
       <xs:element minOccurs="0" name="battleStateLabel" type="xs:string" />
       <xs:element minOccurs="0" name="labelNounPretty" type="xs:string" />
       <xs:element minOccurs="0" name="targetPrefix" type="xs:string" />
+      <xs:element minOccurs="0" name="alwaysAllowMothballCached" type="xs:boolean" />
+      <xs:element minOccurs="0" name="alwaysAllowMothball" type="xs:boolean" />
+      <xs:element minOccurs="0" name="descriptionCached" type="xs:string" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -21908,10 +22658,19 @@
     </xs:all>
   </xs:complexType>
   <xs:complexType name="Verse.AlternateGraphic">
-    <xs:all />
+    <xs:all>
+      <xs:element minOccurs="0" name="weight" type="xs:float" />
+      <xs:element minOccurs="0" name="texPath" type="xs:string" />
+      <xs:element minOccurs="0" name="color" type="UnityEngine.Color" />
+      <xs:element minOccurs="0" name="colorTwo" type="UnityEngine.Color" />
+      <xs:element minOccurs="0" name="graphicData" type="Verse.GraphicData" />
+    </xs:all>
   </xs:complexType>
   <xs:complexType name="Verse.MissingPart">
-    <xs:all />
+    <xs:all>
+      <xs:element minOccurs="0" name="bodyPart" type="Verse.BodyPartDef.Enumeration" />
+      <xs:element minOccurs="0" name="injury" type="Verse.HediffDef.Enumeration" />
+    </xs:all>
   </xs:complexType>
   <xs:simpleType name="Verse.ThingStyleDef.Enumeration">
     <xs:restriction base="xs:string">
@@ -22021,6 +22780,56 @@
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="Verse.SpecificApparelRequirement">
+    <xs:all>
+      <xs:element minOccurs="0" name="bodyPartGroup" type="Verse.BodyPartGroupDef.Enumeration" />
+      <xs:element minOccurs="0" name="apparelLayer" type="Verse.ApparelLayerDef.Enumeration" />
+      <xs:element minOccurs="0" name="apparelDef" type="Verse.ThingDef.Enumeration" />
+      <xs:element minOccurs="0" name="requiredTag" type="xs:string" />
+      <xs:element minOccurs="0" name="alternateTagChoices">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.SpecificApparelRequirement.TagChance" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="stuff" type="Verse.ThingDef.Enumeration" />
+      <xs:element minOccurs="0" name="styleDef" type="Verse.ThingStyleDef.Enumeration" />
+      <xs:element minOccurs="0" name="color" type="UnityEngine.Color" />
+      <xs:element minOccurs="0" name="colorGenerator" type="Verse.ColorGenerator" />
+      <xs:element minOccurs="0" name="locked" type="xs:boolean" />
+      <xs:element minOccurs="0" name="biocode" type="xs:boolean" />
+      <xs:element minOccurs="0" name="quality">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Awful" />
+            <xs:enumeration value="Poor" />
+            <xs:enumeration value="Normal" />
+            <xs:enumeration value="Good" />
+            <xs:enumeration value="Excellent" />
+            <xs:enumeration value="Masterwork" />
+            <xs:enumeration value="Legendary" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:simpleType name="Verse.ApparelLayerDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="OnSkin" />
+      <xs:enumeration value="Middle" />
+      <xs:enumeration value="Shell" />
+      <xs:enumeration value="Belt" />
+      <xs:enumeration value="Overhead" />
+      <xs:enumeration value="EyeCover" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Verse.SpecificApparelRequirement.TagChance">
+    <xs:all>
+      <xs:element minOccurs="0" name="tag" type="xs:string" />
+      <xs:element minOccurs="0" name="chance" type="xs:float" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="Verse.ColorGenerator">
     <xs:all />
   </xs:complexType>
   <xs:complexType name="Verse.PawnInventoryOption">
@@ -22046,7 +22855,10 @@
     </xs:all>
   </xs:complexType>
   <xs:complexType name="Verse.SkillRange">
-    <xs:all />
+    <xs:all>
+      <xs:element minOccurs="0" name="skill" type="RimWorld.SkillDef.Enumeration" />
+      <xs:element minOccurs="0" name="range" type="Verse.IntRange" />
+    </xs:all>
   </xs:complexType>
   <xs:complexType name="Verse.PlaceDef">
     <xs:all>
@@ -22114,6 +22926,7 @@
       <xs:element minOccurs="0" name="defaultIngredientFilter" type="Verse.ThingFilter" />
       <xs:element minOccurs="0" name="allowMixingIngredients" type="xs:boolean" />
       <xs:element minOccurs="0" name="ignoreIngredientCountTakeEntireStacks" type="xs:boolean" />
+      <xs:element minOccurs="0" name="ingredientValueGetterClass" type="xs:string" />
       <xs:element minOccurs="0" name="forceHiddenSpecialFilters">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -22147,6 +22960,7 @@
       <xs:element minOccurs="0" name="workSkillLearnFactor" type="xs:float" />
       <xs:element minOccurs="0" name="effectWorking" type="Verse.EffecterDef.Enumeration" />
       <xs:element minOccurs="0" name="soundWorking" type="Verse.SoundDef.Enumeration" />
+      <xs:element minOccurs="0" name="uiIconThing" type="Verse.ThingDef.Enumeration" />
       <xs:element minOccurs="0" name="recipeUsers">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -22249,6 +23063,7 @@
       <xs:element minOccurs="0" name="gestationCycles" type="xs:int" />
       <xs:element minOccurs="0" name="formingTicks" type="xs:int" />
       <xs:element minOccurs="0" name="mechResurrection" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isSurgeryCached" type="xs:boolean" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -22286,6 +23101,7 @@
   <xs:complexType name="Verse.IngredientCount">
     <xs:all>
       <xs:element minOccurs="0" name="filter" type="Verse.ThingFilter" />
+      <xs:element minOccurs="0" name="count" type="xs:float" />
     </xs:all>
   </xs:complexType>
   <xs:simpleType name="Verse.SpecialThingFilterDef.Enumeration">
@@ -22365,6 +23181,13 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="researchMods">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.ResearchMod" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="requiredResearchBuilding" type="Verse.ThingDef.Enumeration" />
       <xs:element minOccurs="0" name="requiredResearchFacilities">
         <xs:complexType>
@@ -22441,6 +23264,9 @@
         </xs:complexType>
       </xs:element>
     </xs:all>
+  </xs:complexType>
+  <xs:complexType name="Verse.ResearchMod">
+    <xs:all />
   </xs:complexType>
   <xs:simpleType name="RimWorld.ResearchTabDef.Enumeration">
     <xs:restriction base="xs:string">
@@ -22563,6 +23389,13 @@
   <xs:complexType name="Verse.RoomRoleDef">
     <xs:all>
       <xs:element minOccurs="0" name="workerClass" type="xs:string" />
+      <xs:element minOccurs="0" name="relatedStats">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.RoomStatDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -22597,6 +23430,22 @@
       </xs:element>
     </xs:all>
   </xs:complexType>
+  <xs:simpleType name="Verse.RoomStatDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="AssemblySpeedFactor" />
+      <xs:enumeration value="Impressiveness" />
+      <xs:enumeration value="Wealth" />
+      <xs:enumeration value="Space" />
+      <xs:enumeration value="Beauty" />
+      <xs:enumeration value="Cleanliness" />
+      <xs:enumeration value="InfectionChanceFactor" />
+      <xs:enumeration value="SurgerySuccessChanceCleanlinessFactor" />
+      <xs:enumeration value="ResearchSpeedFactor" />
+      <xs:enumeration value="GraveVisitingJoyGainFactor" />
+      <xs:enumeration value="FoodPoisonChance" />
+      <xs:enumeration value="BiosculpterPodSpeedFactor" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="Verse.RoomStatDef">
     <xs:all>
       <xs:element minOccurs="0" name="workerClass" type="xs:string" />
@@ -22653,22 +23502,6 @@
       <xs:element minOccurs="0" name="label" type="xs:string" />
     </xs:all>
   </xs:complexType>
-  <xs:simpleType name="Verse.RoomStatDef.Enumeration">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="AssemblySpeedFactor" />
-      <xs:enumeration value="Impressiveness" />
-      <xs:enumeration value="Wealth" />
-      <xs:enumeration value="Space" />
-      <xs:enumeration value="Beauty" />
-      <xs:enumeration value="Cleanliness" />
-      <xs:enumeration value="InfectionChanceFactor" />
-      <xs:enumeration value="SurgerySuccessChanceCleanlinessFactor" />
-      <xs:enumeration value="ResearchSpeedFactor" />
-      <xs:enumeration value="GraveVisitingJoyGainFactor" />
-      <xs:enumeration value="FoodPoisonChance" />
-      <xs:enumeration value="BiosculpterPodSpeedFactor" />
-    </xs:restriction>
-  </xs:simpleType>
   <xs:complexType name="Verse.RulePackDef">
     <xs:all>
       <xs:element minOccurs="0" name="include">
@@ -22678,6 +23511,7 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="rulePack" type="Verse.Grammar.RulePack" />
       <xs:element minOccurs="0" name="directTestable" type="xs:boolean" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
@@ -22754,9 +23588,6 @@
         </xs:complexType>
       </xs:element>
     </xs:all>
-  </xs:complexType>
-  <xs:complexType name="UnityEngine.Material">
-    <xs:all />
   </xs:complexType>
   <xs:complexType name="Verse.ShaderTypeDef">
     <xs:all>
@@ -23330,6 +24161,14 @@ OncePerSample means that the parameters are applied exactly once to each sample 
       </xs:element>
       <xs:element minOccurs="0" name="soundOngoingRitual" type="Verse.SoundDef.Enumeration" />
       <xs:element minOccurs="0" name="ritualVisualEffectDef" type="RimWorld.RitualVisualEffectDef.Enumeration" />
+      <xs:element minOccurs="0" name="cachedIcon" type="UnityEngine.Texture2D" />
+      <xs:element minOccurs="0" name="cachedAllDesignatorBuildables">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.BuildableDef" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -23365,7 +24204,10 @@ OncePerSample means that the parameters are applied exactly once to each sample 
     </xs:all>
   </xs:complexType>
   <xs:complexType name="Verse.ThingDefStyle">
-    <xs:all />
+    <xs:all>
+      <xs:element minOccurs="0" name="thingDef" type="Verse.ThingDef.Enumeration" />
+      <xs:element minOccurs="0" name="styleDef" type="Verse.ThingStyleDef.Enumeration" />
+    </xs:all>
   </xs:complexType>
   <xs:complexType name="Verse.SubcameraDef">
     <xs:all>
@@ -23962,6 +24804,7 @@ OncePerSample means that the parameters are applied exactly once to each sample 
       <xs:element minOccurs="0" name="deepLumpSizeRange" type="Verse.IntRange" />
       <xs:element minOccurs="0" name="generateCommonality" type="xs:float" />
       <xs:element minOccurs="0" name="generateAllowChance" type="xs:float" />
+      <xs:element minOccurs="0" name="canOverlapZones" type="xs:boolean" />
       <xs:element minOccurs="0" name="startingHpRange" type="Verse.FloatRange" />
       <xs:element minOccurs="0" name="thingSetMakerTags">
         <xs:complexType>
@@ -24112,6 +24955,13 @@ OncePerSample means that the parameters are applied exactly once to each sample 
       <xs:element minOccurs="0" name="tradeNeverGenerateStacked" type="xs:boolean" />
       <xs:element minOccurs="0" name="healthAffectsPrice" type="xs:boolean" />
       <xs:element minOccurs="0" name="colorGeneratorInTraderStock" type="Verse.ColorGenerator" />
+      <xs:element minOccurs="0" name="verbs">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.VerbProperties" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="tools">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -24189,6 +25039,13 @@ OncePerSample means that the parameters are applied exactly once to each sample 
       <xs:element minOccurs="0" name="ritualFocus" type="Verse.RitualFocusProperties" />
       <xs:element minOccurs="0" name="ingredient" type="RimWorld.IngredientProperties" />
       <xs:element minOccurs="0" name="canBeUsedUnderRoof" type="xs:boolean" />
+      <xs:element minOccurs="0" name="allRecipesCached">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="Verse.RecipeDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="statBases" type="RimWorld.StatModifier" />
       <xs:element minOccurs="0" name="passability">
         <xs:simpleType>
@@ -24493,11 +25350,11 @@ OncePerSample means that the parameters are applied exactly once to each sample 
       <xs:enumeration value="Drug" />
     </xs:restriction>
   </xs:simpleType>
-  <xs:complexType name="Verse.ColorGenerator">
-    <xs:all />
-  </xs:complexType>
   <xs:complexType name="Verse.ThingStyleChance">
-    <xs:all />
+    <xs:all>
+      <xs:element minOccurs="0" name="styleDef" type="Verse.ThingStyleDef.Enumeration" />
+      <xs:element minOccurs="0" name="chance" type="xs:float" />
+    </xs:all>
   </xs:complexType>
   <xs:complexType name="RimWorld.IngestibleProperties">
     <xs:all>
@@ -24666,6 +25523,7 @@ OncePerSample means that the parameters are applied exactly once to each sample 
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="isInert" type="xs:boolean" />
+      <xs:element minOccurs="0" name="deconstructible" type="xs:boolean" />
       <xs:element minOccurs="0" name="alwaysDeconstructible" type="xs:boolean" />
       <xs:element minOccurs="0" name="claimable" type="xs:boolean" />
       <xs:element minOccurs="0" name="isSittable" type="xs:boolean" />
@@ -24892,6 +25750,8 @@ OncePerSample means that the parameters are applied exactly once to each sample 
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
+      <xs:element minOccurs="0" name="fleshType" type="RimWorld.FleshTypeDef.Enumeration" />
+      <xs:element minOccurs="0" name="bloodDef" type="Verse.ThingDef.Enumeration" />
       <xs:element minOccurs="0" name="hasGenders" type="xs:boolean" />
       <xs:element minOccurs="0" name="needsRest" type="xs:boolean" />
       <xs:element minOccurs="0" name="thinkTreeMain" type="Verse.ThinkTreeDef.Enumeration" />
@@ -25031,6 +25891,8 @@ OncePerSample means that the parameters are applied exactly once to each sample 
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="trainability" type="Verse.TrainabilityDef.Enumeration" />
+      <xs:element minOccurs="0" name="nameGenerator" type="Verse.RulePackDef.Enumeration" />
+      <xs:element minOccurs="0" name="nameGeneratorFemale" type="Verse.RulePackDef.Enumeration" />
       <xs:element minOccurs="0" name="nameOnTameChance" type="xs:float" />
       <xs:element minOccurs="0" name="baseBodySize" type="xs:float" />
       <xs:element minOccurs="0" name="baseHealthScale" type="xs:float" />
@@ -25068,9 +25930,16 @@ OncePerSample means that the parameters are applied exactly once to each sample 
       <xs:element minOccurs="0" name="soundAmbience" type="Verse.SoundDef.Enumeration" />
     </xs:all>
   </xs:complexType>
+  <xs:simpleType name="RimWorld.FleshTypeDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Normal" />
+      <xs:enumeration value="Mechanoid" />
+      <xs:enumeration value="Insectoid" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="RimWorld.AnimalBiomeRecord">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:simpleType name="RimWorld.HediffGiverSetDef.Enumeration">
@@ -25081,7 +25950,7 @@ OncePerSample means that the parameters are applied exactly once to each sample 
   </xs:simpleType>
   <xs:complexType name="Verse.MechWorkTypePriority">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="Verse.LifeStageAge">
@@ -25114,7 +25983,7 @@ OncePerSample means that the parameters are applied exactly once to each sample 
   </xs:simpleType>
   <xs:complexType name="Verse.LifeStageWorkSettings">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="RimWorld.ApparelProperties">
@@ -25230,16 +26099,6 @@ OncePerSample means that the parameters are applied exactly once to each sample 
       </xs:element>
     </xs:all>
   </xs:complexType>
-  <xs:simpleType name="Verse.ApparelLayerDef.Enumeration">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="OnSkin" />
-      <xs:enumeration value="Middle" />
-      <xs:enumeration value="Shell" />
-      <xs:enumeration value="Belt" />
-      <xs:enumeration value="Overhead" />
-      <xs:enumeration value="EyeCover" />
-    </xs:restriction>
-  </xs:simpleType>
   <xs:complexType name="RimWorld.WornGraphicData">
     <xs:all>
       <xs:element minOccurs="0" name="renderUtilityAsPack" type="xs:boolean" />
@@ -25390,12 +26249,15 @@ OncePerSample means that the parameters are applied exactly once to each sample 
       <xs:element minOccurs="0" name="topWindExposure" type="xs:float" />
       <xs:element minOccurs="0" name="maxMeshCount" type="xs:int" />
       <xs:element minOccurs="0" name="visualSizeRange" type="Verse.FloatRange" />
+      <xs:element minOccurs="0" name="leaflessGraphicPath" type="xs:string" />
+      <xs:element minOccurs="0" name="immatureGraphicPath" type="xs:string" />
       <xs:element minOccurs="0" name="dropLeaves" type="xs:boolean" />
+      <xs:element minOccurs="0" name="pollutedGraphicPath" type="xs:string" />
     </xs:all>
   </xs:complexType>
   <xs:complexType name="RimWorld.PlantBiomeRecord">
     <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
+      <xs:any minOccurs="0" maxOccurs="unbounded" processContents="skip" />
     </xs:sequence>
   </xs:complexType>
   <xs:complexType name="Verse.ProjectileProperties">
@@ -25404,6 +26266,8 @@ OncePerSample means that the parameters are applied exactly once to each sample 
       <xs:element minOccurs="0" name="flyOverhead" type="xs:boolean" />
       <xs:element minOccurs="0" name="alwaysFreeIntercept" type="xs:boolean" />
       <xs:element minOccurs="0" name="damageDef" type="Verse.DamageDef.Enumeration" />
+      <xs:element minOccurs="0" name="damageAmountBase" type="xs:int" />
+      <xs:element minOccurs="0" name="armorPenetrationBase" type="xs:float" />
       <xs:element minOccurs="0" name="stoppingPower" type="xs:float" />
       <xs:element minOccurs="0" name="extraDamages">
         <xs:complexType>
@@ -25476,14 +26340,6 @@ OncePerSample means that the parameters are applied exactly once to each sample 
       <xs:element minOccurs="0" name="soundMeleeHitBlunt" type="Verse.SoundDef.Enumeration" />
     </xs:all>
   </xs:complexType>
-  <xs:simpleType name="Verse.StuffAppearanceDef.Enumeration">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="Smooth" />
-      <xs:enumeration value="Planks" />
-      <xs:enumeration value="Bricks" />
-      <xs:enumeration value="Metal" />
-    </xs:restriction>
-  </xs:simpleType>
   <xs:complexType name="Verse.SkyfallerProperties">
     <xs:all>
       <xs:element minOccurs="0" name="hitRoof" type="xs:boolean" />
@@ -25577,6 +26433,10 @@ OncePerSample means that the parameters are applied exactly once to each sample 
       <xs:element minOccurs="0" name="uiIconPath" type="xs:string" />
       <xs:element minOccurs="0" name="wornGraphicPath" type="xs:string" />
       <xs:element minOccurs="0" name="color" type="UnityEngine.Color" />
+      <xs:element minOccurs="0" name="graphic" type="Verse.Graphic" />
+      <xs:element minOccurs="0" name="uiIcon" type="UnityEngine.Texture2D" />
+      <xs:element minOccurs="0" name="cachedCategory" type="Verse.StyleCategoryDef.Enumeration" />
+      <xs:element minOccurs="0" name="hasCategory" type="xs:boolean" />
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
           <xs:documentation>The name of this Def. It is used as an identifier by the game code.</xs:documentation>
@@ -25609,6 +26469,16 @@ OncePerSample means that the parameters are applied exactly once to each sample 
           </xs:choice>
         </xs:complexType>
       </xs:element>
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="Verse.Graphic">
+    <xs:all>
+      <xs:element minOccurs="0" name="data" type="Verse.GraphicData" />
+      <xs:element minOccurs="0" name="path" type="xs:string" />
+      <xs:element minOccurs="0" name="maskPath" type="xs:string" />
+      <xs:element minOccurs="0" name="color" type="UnityEngine.Color" />
+      <xs:element minOccurs="0" name="colorTwo" type="UnityEngine.Color" />
+      <xs:element minOccurs="0" name="drawSize" type="UnityEngine.Vector2" />
     </xs:all>
   </xs:complexType>
   <xs:complexType name="Verse.ThinkTreeDef">

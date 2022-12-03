@@ -34,4 +34,10 @@
     <InstallMinorPassionRecipeLabel>Install passion for {0}</InstallMinorPassionRecipeLabel>
     <InstallMinorPassionRecipeDescription>Installs a passion for '{0}'.</InstallMinorPassionRecipeDescription>
     <InstallMinorPassionRecipeJobString>Installing passion ({0})</InstallMinorPassionRecipeJobString>
+    
+    <InstallPassionWarning_WillRemoveHigherPassion>This will remove a higher passion</InstallPassionWarning_WillRemoveHigherPassion>
+    <InstallPassionWarning_GeneWillOverridePassion>Gene {0} will override this passion</InstallPassionWarning_GeneWillOverridePassion>
+    
+    <InstallTraitWarning_TraitsWillBeOverridenTitle>The following traits to be overridden and removed for {0}:</InstallTraitWarning_TraitsWillBeOverridenTitle>
+    <InstallTraitWarning_GenesWillSuppressTraitTitle>The following genes will suppress the trait:</InstallTraitWarning_GenesWillSuppressTraitTitle>
 </LanguageData>
