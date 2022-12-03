@@ -108,11 +108,15 @@ public static class XmlUtilities
         using var memStream = new MemoryStream();
         using var xmlWriter = XmlWriter.Create(memStream, new XmlWriterSettings()
         {
-            Encoding = Encoding.UTF8,
+            Encoding = new UTF8Encoding(false),
             Indent = true,
-            NewLineChars = "\n"
+            NewLineChars = "\n",
         });
-        WriteCompiledSchema(schema, xmlWriter);
+        var serializer = new XmlSerializer(typeof(XsdSchema));
+        serializer.Serialize(xmlWriter, schema, new XmlSerializerNamespaces(new XmlQualifiedName[]
+        {
+            new("xs", XmlSchema.Namespace)
+        }));
         return Encoding.UTF8.GetString(memStream.ToArray());
     }
 
@@ -121,19 +125,6 @@ public static class XmlUtilities
         FileUtilities.EnsureDirectory(Path.GetDirectoryName(filePath)!);
 
         var s = GetSchemaAsString(schema);
-        File.WriteAllText(filePath, s);
-    }
-
-    private static void WriteCompiledSchema(XsdSchema schema, XmlWriter xmlWriter)
-    {
-        var serializer = new XmlSerializer(typeof(XsdSchema));
-
-
-        var nsmgr = new XmlNamespaceManager(new NameTable());
-        nsmgr.AddNamespace("xs", DefToSchemaConverter.XMLSchemaNamespace);
-        serializer.Serialize(xmlWriter, schema, new XmlSerializerNamespaces(new XmlQualifiedName[]
-        {
-            new("xs", XmlSchema.Namespace)
-        }));
+        File.WriteAllText(filePath, s, Encoding.UTF8);
     }
 }

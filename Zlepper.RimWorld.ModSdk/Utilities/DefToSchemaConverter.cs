@@ -124,7 +124,7 @@ public class DefToSchemaConverter
                 $"Type {defType} is an entity, which should not be hit normally. ");
         }
 
-        var typeName = defType.FullName!.Replace("+", ".");
+        var typeName = GetTypeNameForXml(defType);
         var existing = _schema.Types
             .FirstOrDefault(t => t.Name == typeName);
 
@@ -147,7 +147,6 @@ public class DefToSchemaConverter
         var type = new XsdComplexType()
         {
             Name = typeName,
-            Properties = fields,
         };
         _schema.Types.Add(type);
 
@@ -162,7 +161,31 @@ public class DefToSchemaConverter
             fields.Elements.Add(fieldElement);
         }
 
+        var baseType = defType.BaseType;
+        if (baseType != null && baseType.FullName != typeof(object).FullName &&
+            baseType.FullName != typeof(ValueType).FullName)
+        {
+            var baseTypeSchema = CreateXmlSchemaForClass(baseType, depth + 1);
+            
+            type.ComplexContent = new XsdComplexContent()
+            {
+                Extension = new XsdExtension(baseTypeSchema.Name ?? GetTypeNameForXml(baseType))
+                {
+                    Properties = fields
+                }
+            };
+        }
+        else
+        {
+            type.Properties = fields;
+        }
+
         return type;
+    }
+
+    private static string GetTypeNameForXml(Type defType)
+    {
+        return defType.FullName!.Replace("+", ".");
     }
 
     private Type GetTypeFromPossiblyNullable(Type type)
@@ -218,7 +241,7 @@ public class DefToSchemaConverter
                             {
                                 Name = "li",
                                 SchemaTypeName = defOptions.Name,
-                                MinOccurs =  Occurs.Zero,
+                                MinOccurs = Occurs.Zero,
                                 MaxOccurs = Occurs.Unbounded,
                             };
 
@@ -284,7 +307,7 @@ public class DefToSchemaConverter
             Name = typeName,
             Properties = new XsdSequenceGroup()
             {
-                Elements = 
+                Elements =
                 {
                     new XsdAny()
                     {
@@ -321,13 +344,10 @@ public class DefToSchemaConverter
         var isEntity = _defContext.GetBaseTypes(type).Any(t => t.FullName == "Verse.Entity");
         var isMap = type.FullName == "Verse.Map";
         var isIdeo = type.FullName == "RimWorld.Ideo";
+        var isFaction  =type.FullName == "RimWorld.Faction";
         var isSteamRelated = type.Namespace?.StartsWith("Verse.Steam") ?? false;
 
-
-        var isInstanceOfDef = type.GetField("def", BindingFlags.Instance | BindingFlags.Public)?.FieldType.Name ==
-                              $"{type.Name}Def";
-
-        return isEntity || isMap || isIdeo || isSteamRelated || isInstanceOfDef;
+        return isEntity || isMap || isIdeo || isSteamRelated || isFaction;
     }
 
     private bool ShouldSkip(FieldInfo field)
@@ -569,7 +589,7 @@ public class DefToSchemaConverter
 
     private XsdSimpleType CreateDefOptionsType(Type defType)
     {
-        var optionsTypeName = defType.FullName!.Replace("+", ".") + ".Enumeration";
+        var optionsTypeName = GetTypeNameForXml(defType) + ".Enumeration";
 
         var existing = _schema.Types.OfType<XsdSimpleType>().FirstOrDefault(type => type.Name == optionsTypeName);
         if (existing != null)
@@ -608,7 +628,7 @@ public class DefToSchemaConverter
             {
                 Properties = new XsdSequenceGroup()
                 {
-                    Elements = 
+                    Elements =
                     {
                         keySchema,
                         valueSchema,
@@ -622,7 +642,8 @@ public class DefToSchemaConverter
 
     private List<FieldInfo> GetDefFieldsForDefType(Type defType)
     {
-        return defType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic)
+        return defType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic |
+                                 BindingFlags.DeclaredOnly)
             .Where(f => !ShouldSkip(f))
             .ToList();
     }
