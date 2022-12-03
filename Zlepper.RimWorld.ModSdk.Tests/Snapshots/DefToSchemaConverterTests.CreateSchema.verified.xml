@@ -204,8 +204,8 @@
     </xs:all>
   </xs:complexType>
   <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.StatModifier">
-    <xs:sequence>
-      <xs:any minOccurs="0" processContents="skip" />
-    </xs:sequence>
+    <xs:all>
+      <xs:element minOccurs="0" name="MySkill" type="xs:float" />
+    </xs:all>
   </xs:complexType>
 </xs:schema>
