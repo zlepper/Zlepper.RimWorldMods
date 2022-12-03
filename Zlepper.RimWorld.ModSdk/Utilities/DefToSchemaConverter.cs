@@ -5,6 +5,7 @@ using System.Reflection;
 using System.Xml;
 using System.Xml.Schema;
 using System.Xml.Serialization;
+using Zlepper.RimWorld.ModSdk.XsdOneOne;
 
 namespace Zlepper.RimWorld.ModSdk.Utilities;
 
@@ -12,113 +13,92 @@ public class DefToSchemaConverter
 {
     private readonly DefContext _defContext;
     private readonly IReadOnlyDictionary<Type, List<string>> _currentlyDefinedDefs;
+    private readonly XsdSchema _schema;
 
     public DefToSchemaConverter(DefContext defContext, IReadOnlyDictionary<Type, List<string>> currentlyDefinedDefs)
     {
+        _schema = new(rimWorldXmlNamespace);
         _defContext = defContext;
         _currentlyDefinedDefs = currentlyDefinedDefs;
-        _customStringTypes = new CustomStringTypes(_defContext, _currentlyDefinedDefs);
+        _customStringTypes = new CustomStringTypes(_schema);
     }
 
-    
-    public static readonly IReadOnlyDictionary<string, XmlQualifiedName> WellKnownFieldTypes =
-        new Dictionary<string, XmlQualifiedName>
+
+    public static readonly IReadOnlyDictionary<string, string> WellKnownFieldTypes =
+        new Dictionary<string, string>
         {
-            {typeof(string).FullName, new XmlQualifiedName("string", XMLSchemaNamespace)},
-            {typeof(Type).FullName, new XmlQualifiedName("string", XMLSchemaNamespace)},
-            {typeof(byte).FullName, new XmlQualifiedName("byte", XMLSchemaNamespace)},
-            {typeof(decimal).FullName, new XmlQualifiedName("decimal", XMLSchemaNamespace)},
-            {typeof(float).FullName, new XmlQualifiedName("float", XMLSchemaNamespace)},
-            {typeof(double).FullName, new XmlQualifiedName("double", XMLSchemaNamespace)},
-            {typeof(int).FullName, new XmlQualifiedName("int", XMLSchemaNamespace)},
-            {typeof(long).FullName, new XmlQualifiedName("long", XMLSchemaNamespace)},
-            {typeof(short).FullName, new XmlQualifiedName("short", XMLSchemaNamespace)},
-            {typeof(ushort).FullName, new XmlQualifiedName("unsignedShort", XMLSchemaNamespace)},
-            {typeof(bool).FullName, new XmlQualifiedName("boolean", XMLSchemaNamespace)},
+            {typeof(string).FullName, "xs:string"},
+            {typeof(Type).FullName, "xs:string"},
+            {typeof(byte).FullName, "xs:byte"},
+            {typeof(decimal).FullName, "xs:decimal"},
+            {typeof(float).FullName, "xs:float"},
+            {typeof(double).FullName, "xs:double"},
+            {typeof(int).FullName, "xs:int"},
+            {typeof(long).FullName, "xs:long"},
+            {typeof(short).FullName, "xs:short"},
+            {typeof(ushort).FullName, "xs:unsignedShort"},
+            {typeof(bool).FullName, "xs:boolean"},
         };
 
-    
+
     public const string defNameSchemaTypeName = "defName";
     public const string defLabelSchemaTypeName = "defLabel";
 
     public static readonly XmlSerializerNamespaces rimWorldXmlSerializerNamespaces =
         new XmlSerializerNamespaces(new[] {new XmlQualifiedName("", rimWorldXmlNamespace)});
 
-    public static readonly XmlSchemaSimpleType defLabelSchemaType = new()
+    public static readonly XsdSimpleType defLabelSchemaType = new()
     {
         Name = defLabelSchemaTypeName,
-        Namespaces = rimWorldXmlSerializerNamespaces,
-        Content = new XmlSchemaSimpleTypeRestriction()
+        Restriction = new XsdRestriction
         {
-            BaseTypeName = WellKnownFieldTypes[typeof(string).FullName],
             Facets =
             {
-                new XmlSchemaPatternFacet()
-                {
-                    Value = @"[^\[\]\{\}]*"
-                },
+                new XsdPattern(@"[^\[\]\{\}]*")
             }
-        }
+        },
     };
 
-    public readonly XmlSchemaSimpleType defNameSchemaType = new()
+    public readonly XsdSimpleType defNameSchemaType = new()
     {
         Name = defNameSchemaTypeName,
-        Namespaces = rimWorldXmlSerializerNamespaces,
-        Content = new XmlSchemaSimpleTypeRestriction()
+        Restriction = new XsdRestriction()
         {
-            BaseTypeName = WellKnownFieldTypes[typeof(string).FullName],
-            Facets =
-            {
-                new XmlSchemaPatternFacet()
-                {
-                    Value = @"[a-zA-Z0-9\-_]*"
-                },
-            }
-        }
+            Facets = {new XsdPattern(@"[a-zA-Z0-9\-_]*")}
+        },
     };
 
     public const string rimWorldXmlNamespace = "rimworld";
 
-    public XmlSchema CreateSchema(IEnumerable<Type> defTypes)
+    public XsdSchema CreateSchema(IEnumerable<Type> defTypes)
     {
         defTypes = defTypes.OrderBy(t => t.FullName, StringComparer.InvariantCultureIgnoreCase).ToList();
-        var schema = new XmlSchema();
-        schema.Namespaces.Add("", rimWorldXmlNamespace);
-        schema.TargetNamespace = rimWorldXmlNamespace;
-        schema.ElementFormDefault = XmlSchemaForm.Qualified;
 
-        var defsRoot = new XmlSchemaElement()
+        var defsRoot = new XsdElement("Defs");
+        var defsRootElementList = new XsdChoiceGroup()
         {
-            Name = "Defs",
-            Namespaces = rimWorldXmlSerializerNamespaces,
+            MaxOccurs = Occurs.Unbounded,
+            MinOccurs = Occurs.Zero,
         };
-        var defsRootElementList = new XmlSchemaChoice()
+        defsRoot.SchemaType = new XsdComplexType()
         {
-            MaxOccurs = decimal.MaxValue,
-            MinOccurs = 0,
+            Properties = defsRootElementList,
         };
-        defsRoot.SchemaType = new XmlSchemaComplexType()
-        {
-            Particle = defsRootElementList
-        };
-        schema.Items.Add(defsRoot);
-        schema.Items.Add(defNameSchemaType);
-        schema.Items.Add(defLabelSchemaType);
+        _schema.Elements.Add(defsRoot);
+        _schema.Types.Add(defNameSchemaType);
+        _schema.Types.Add(defLabelSchemaType);
 
 
         foreach (var defType in defTypes)
         {
             try
             {
-                CreateXmlSchemaForClass(defType, schema, 1);
+                var classType = CreateXmlSchemaForClass(defType, 1);
 
                 var elementName = _defContext.GetDefElementName(defType);
-                defsRootElementList.Items.Add(new XmlSchemaElement()
+                defsRootElementList.Elements.Add(new XsdElement(elementName)
                 {
-                    Name = elementName,
-                    Namespaces = rimWorldXmlSerializerNamespaces,
-                    SchemaTypeName = new XmlQualifiedName(defType.FullName, rimWorldXmlNamespace),
+                    SchemaTypeName = classType.Name,
                 });
             }
             catch (UnwindingStackOverflowException e)
@@ -129,11 +109,11 @@ public class DefToSchemaConverter
             }
         }
 
-        return schema;
+        return _schema;
     }
 
 
-    private XmlSchemaType CreateXmlSchemaForClass(Type defType, XmlSchema schema, int depth)
+    private XsdType CreateXmlSchemaForClass(Type defType, int depth)
     {
         if (depth > 100)
             throw new UnwindingStackOverflowException("Dug too deep");
@@ -145,8 +125,7 @@ public class DefToSchemaConverter
         }
 
         var typeName = defType.FullName!.Replace("+", ".");
-        var existing = schema.Items
-            .OfType<XmlSchemaType>()
+        var existing = _schema.Types
             .FirstOrDefault(t => t.Name == typeName);
 
         if (existing != null)
@@ -156,32 +135,31 @@ public class DefToSchemaConverter
 
         if (HasCustomLoadMethod(defType))
         {
-            return InferSchemaTypeForCustomLoadClass(schema, typeName, defType);
+            return InferSchemaTypeForCustomLoadClass(typeName, defType);
         }
 
         if (HasCustomFromStringMethod(defType))
         {
-            return _customStringTypes.GetCustomStringType(schema, typeName, defType);
+            return _customStringTypes.GetCustomStringType(typeName, defType);
         }
 
-        var fields = new XmlSchemaAll();
-        var type = new XmlSchemaComplexType
+        var fields = new XsdAllGroup();
+        var type = new XsdComplexType()
         {
             Name = typeName,
-            Namespaces = rimWorldXmlSerializerNamespaces,
-            Particle = fields
+            Properties = fields,
         };
-        schema.Items.Add(type);
+        _schema.Types.Add(type);
 
         foreach (var fieldInfo in GetDefFieldsForDefType(defType))
         {
-            var fieldElement = GetFieldElement(fieldInfo, schema, depth);
+            var fieldElement = GetFieldElement(fieldInfo, depth);
             if (fieldElement == null)
             {
                 continue;
             }
 
-            fields.Items.Add(fieldElement);
+            fields.Elements.Add(fieldElement);
         }
 
         return type;
@@ -202,7 +180,7 @@ public class DefToSchemaConverter
         return type.IsConstructedGenericType && type.GetGenericTypeDefinition().FullName == typeof(Nullable<>).FullName;
     }
 
-    private XmlSchemaComplexType InferSchemaTypeForCustomLoadClass(XmlSchema schema, string typeName,
+    private XsdComplexType InferSchemaTypeForCustomLoadClass(string typeName,
         Type defType)
     {
         var fields = GetDefFieldsForDefType(defType);
@@ -223,52 +201,46 @@ public class DefToSchemaConverter
 
                     if (_currentlyDefinedDefs.TryGetValue(defField.FieldType, out var defNames))
                     {
-                        XmlSchemaGroupBase xmlSchemaParticle = new XmlSchemaAll();
+                        XsdGroup xmlSchemaParticle = new XsdAllGroup();
                         foreach (var name in defNames.Distinct())
                         {
-                            xmlSchemaParticle.Items.Add(new XmlSchemaElement()
+                            xmlSchemaParticle.Elements.Add(new XsdElement(name)
                             {
-                                Name = name,
-                                Namespaces = rimWorldXmlSerializerNamespaces,
                                 SchemaTypeName = wellKnownFieldType,
-                                MinOccurs = 0,
+                                MinOccurs = Occurs.Zero,
                             });
                         }
 
                         if (IsNullable(simpleField.FieldType))
                         {
-                            var defOptions = CreateDefOptionsType(defField.FieldType, schema);
-                            var listAlternative = new XmlSchemaElement()
+                            var defOptions = CreateDefOptionsType(defField.FieldType);
+                            var listAlternative = new XsdElement("li")
                             {
                                 Name = "li",
-                                Namespaces = rimWorldXmlSerializerNamespaces,
-                                SchemaTypeName = new XmlQualifiedName(defOptions.Name, rimWorldXmlNamespace),
-                                MinOccurs = 0,
-                                MaxOccurs = decimal.MaxValue,
+                                SchemaTypeName = defOptions.Name,
+                                MinOccurs =  Occurs.Zero,
+                                MaxOccurs = Occurs.Unbounded,
                             };
 
-                            var newParticle = new XmlSchemaChoice()
+                            var newParticle = new XsdChoiceGroup()
                             {
-                                Items = {listAlternative}
+                                Elements = new(xmlSchemaParticle.Elements)
+                                {
+                                    listAlternative
+                                },
                             };
-
-                            foreach (var xmlSchemaObject in xmlSchemaParticle.Items)
-                            {
-                                newParticle.Items.Add(xmlSchemaObject);
-                            }
 
                             xmlSchemaParticle = newParticle;
                         }
 
-                        var customDictionaryType = new XmlSchemaComplexType()
+                        var customDictionaryType = new XsdComplexType()
                         {
                             Name = typeName,
-                            Namespaces = rimWorldXmlSerializerNamespaces,
-                            Particle = xmlSchemaParticle,
+                            Properties = xmlSchemaParticle,
                         };
 
 
-                        schema.Items.Add(customDictionaryType);
+                        _schema.Types.Add(customDictionaryType);
                         return customDictionaryType;
                     }
                 }
@@ -280,59 +252,50 @@ public class DefToSchemaConverter
             var field = fields.Single();
             if (_defContext.IsDef(field.FieldType))
             {
-                var xmlSchemaParticle = new XmlSchemaChoice()
+                var xmlSchemaParticle = new XsdChoiceGroup()
                 {
-                    MinOccurs = 0,
-                    MaxOccurs = decimal.MaxValue
+                    MinOccurs = Occurs.Zero,
+                    MaxOccurs = Occurs.Unbounded
                 };
 
                 foreach (var concreteDefType in _currentlyDefinedDefs.Keys.Where(t => t.IsSubclassOf(field.FieldType)))
                 {
-                    var defOptionsType = CreateDefOptionsType(concreteDefType, schema);
+                    var defOptionsType = CreateDefOptionsType(concreteDefType);
 
-                    var element = new XmlSchemaElement
+                    var element = new XsdElement(_defContext.GetDefElementName(concreteDefType))
                     {
-                        Name = _defContext.GetDefElementName(concreteDefType),
-                        Namespaces = rimWorldXmlSerializerNamespaces,
-                        SchemaTypeName = new XmlQualifiedName(defOptionsType.Name, rimWorldXmlNamespace),
+                        SchemaTypeName = defOptionsType.Name,
                     };
-                    xmlSchemaParticle.Items.Add(element);
+                    xmlSchemaParticle.Elements.Add(element);
                 }
 
-                var customDefLinks = new XmlSchemaComplexType()
+                var customDefLinks = new XsdComplexType()
                 {
                     Name = typeName,
-                    Namespaces = rimWorldXmlSerializerNamespaces,
-                    Particle = xmlSchemaParticle,
+                    Properties = xmlSchemaParticle,
                 };
-                schema.Items.Add(customDefLinks);
+                _schema.Types.Add(customDefLinks);
                 return customDefLinks;
-            }
-            else
-            {
-                throw new UnwindingStackOverflowException(
-                    $"Type {defType} has a single field, but it is not a def. It is: {field.FieldType}");
             }
         }
 
-        var type = new XmlSchemaComplexType()
+        var type = new XsdComplexType()
         {
             Name = typeName,
-            Namespaces = rimWorldXmlSerializerNamespaces,
-            Particle = new XmlSchemaSequence()
+            Properties = new XsdSequenceGroup()
             {
-                Items =
+                Elements = 
                 {
-                    new XmlSchemaAny()
+                    new XsdAny()
                     {
                         ProcessContents = XmlSchemaContentProcessing.Skip,
-                        MinOccurs = 0,
-                        MaxOccurs = decimal.MaxValue
+                        MinOccurs = Occurs.Zero,
+                        MaxOccurs = Occurs.Unbounded
                     }
                 }
             },
         };
-        schema.Items.Add(type);
+        _schema.Types.Add(type);
         return type;
     }
 
@@ -385,7 +348,7 @@ public class DefToSchemaConverter
 
     private readonly CustomStringTypes _customStringTypes;
 
-    private XmlSchemaElement? GetFieldElement(FieldInfo field, XmlSchema schema, int depth)
+    private XsdElement? GetFieldElement(FieldInfo field, int depth)
     {
         var name = field.Name;
 
@@ -399,7 +362,7 @@ public class DefToSchemaConverter
             return null;
         }
 
-        XmlSchemaAnnotation? annotation = null;
+        XsdAnnotation? annotation = null;
         var attributes = field.GetCustomAttributesData();
         if (attributes.Count > 0)
         {
@@ -422,15 +385,9 @@ public class DefToSchemaConverter
                             var description = attribute.ConstructorArguments[0].Value as string;
                             if (!string.IsNullOrWhiteSpace(description))
                             {
-                                annotation = new XmlSchemaAnnotation()
+                                annotation = new XsdAnnotation()
                                 {
-                                    Items =
-                                    {
-                                        new XmlSchemaDocumentation()
-                                        {
-                                            Markup = TextToNodeArray(description!),
-                                        }
-                                    }
+                                    Documentation = description
                                 };
                             }
                         }
@@ -445,7 +402,7 @@ public class DefToSchemaConverter
         }
 
 
-        var xmlSchemaElement = InferXmlSchemaElement(field, field.FieldType, schema, depth);
+        var xmlSchemaElement = InferXmlSchemaElement(field, field.FieldType, depth);
         if (xmlSchemaElement == null)
         {
             return null;
@@ -453,16 +410,14 @@ public class DefToSchemaConverter
 
         switch (field.Name)
         {
-            case "defName" when field.DeclaringType?.Name == _defContext.RootDefTypeClassName &&
-                                field.DeclaringType?.Namespace == _defContext.RootDefTypeClassNamespace:
+            case "defName" when _defContext.IsRootDefClass(field.DeclaringType!):
             {
-                xmlSchemaElement.SchemaTypeName = new XmlQualifiedName(defNameSchemaTypeName, rimWorldXmlNamespace);
+                xmlSchemaElement.SchemaTypeName = defNameSchemaTypeName;
                 break;
             }
-            case "label" when field.DeclaringType?.Name == _defContext.RootDefTypeClassName &&
-                              field.DeclaringType?.Namespace == _defContext.RootDefTypeClassNamespace:
+            case "label" when _defContext.IsRootDefClass(field.DeclaringType!):
             {
-                xmlSchemaElement.SchemaTypeName = new XmlQualifiedName(defLabelSchemaTypeName, rimWorldXmlNamespace);
+                xmlSchemaElement.SchemaTypeName = defLabelSchemaTypeName;
                 break;
             }
         }
@@ -470,17 +425,16 @@ public class DefToSchemaConverter
 
         xmlSchemaElement.Annotation = annotation;
         xmlSchemaElement.Name = name;
-        xmlSchemaElement.Namespaces = rimWorldXmlSerializerNamespaces;
         xmlSchemaElement.MinOccurs = 0;
 
         return xmlSchemaElement;
     }
 
-    private XmlSchemaElement? InferXmlSchemaElement(FieldInfo field, Type type, XmlSchema schema, int depth)
+    private XsdElement? InferXmlSchemaElement(FieldInfo field, Type type, int depth)
     {
         if (WellKnownFieldTypes.TryGetValue(type.FullName, out var wellKnownType))
         {
-            return new XmlSchemaElement()
+            return new XsdElement(field.Name)
             {
                 SchemaTypeName = wellKnownType
             };
@@ -488,37 +442,28 @@ public class DefToSchemaConverter
 
         if (type.IsEnum || type.BaseType?.FullName == "System.Enum")
         {
-            var restriction = new XmlSchemaSimpleTypeRestriction()
-            {
-                BaseTypeName = WellKnownFieldTypes[typeof(string).FullName],
-            };
+            var restriction = new XsdRestriction();
 
             if (type.IsEnum)
             {
                 foreach (var enumName in type.GetEnumNames())
                 {
-                    restriction.Facets.Add(new XmlSchemaEnumerationFacet()
-                    {
-                        Value = enumName
-                    });
+                    restriction.Facets.Add(new XsdEnumeration(enumName));
                 }
             }
             else
             {
                 foreach (var enumField in type.GetFields(BindingFlags.Public | BindingFlags.Static))
                 {
-                    restriction.Facets.Add(new XmlSchemaEnumerationFacet()
-                    {
-                        Value = enumField.Name
-                    });
+                    restriction.Facets.Add(new XsdEnumeration(enumField.Name));
                 }
             }
 
-            var xmlSchemaElement = new XmlSchemaElement()
+            var xmlSchemaElement = new XsdElement(field.Name)
             {
-                SchemaType = new XmlSchemaSimpleType()
+                SchemaType = new XsdSimpleType()
                 {
-                    Content = restriction
+                    Restriction = restriction
                 }
             };
 
@@ -540,7 +485,7 @@ public class DefToSchemaConverter
                 var innerType = type.GetGenericArguments()[0];
 
 
-                var innerSchema = InferXmlSchemaElement(field, innerType, schema, depth);
+                var innerSchema = InferXmlSchemaElement(field, innerType, depth);
                 if (innerSchema == null)
                 {
                     return null;
@@ -554,8 +499,8 @@ public class DefToSchemaConverter
                 var keyType = type.GetGenericArguments()[0];
                 var valueType = type.GetGenericArguments()[1];
 
-                var keySchema = InferXmlSchemaElement(field, keyType, schema, depth);
-                var valueSchema = InferXmlSchemaElement(field, valueType, schema, depth);
+                var keySchema = InferXmlSchemaElement(field, keyType, depth);
+                var valueSchema = InferXmlSchemaElement(field, valueType, depth);
                 if (keySchema == null || valueSchema == null)
                 {
                     return null;
@@ -566,9 +511,9 @@ public class DefToSchemaConverter
 
             if (genericTypeDefinitionFullName == "RimWorld.QuestGen.SlateRef`1")
             {
-                return new XmlSchemaElement
+                return new XsdElement(field.Name)
                 {
-                    SchemaTypeName = WellKnownFieldTypes[typeof(string).FullName]
+                    SchemaTypeName = "xs:string"
                 };
             }
 
@@ -576,7 +521,7 @@ public class DefToSchemaConverter
             {
                 var innerType = type.GetGenericArguments()[0];
 
-                return InferXmlSchemaElement(field, innerType, schema, depth);
+                return InferXmlSchemaElement(field, innerType, depth);
             }
 
             if (genericTypeDefinitionFullName == typeof(Predicate<>).FullName ||
@@ -591,21 +536,21 @@ public class DefToSchemaConverter
 
         if (_defContext.IsDef(type))
         {
-            var defOptionsType = CreateDefOptionsType(type, schema);
+            var defOptionsType = CreateDefOptionsType(type);
 
-            return new XmlSchemaElement
+            return new XsdElement(field.Name)
             {
-                SchemaTypeName = new XmlQualifiedName(defOptionsType.Name, rimWorldXmlNamespace)
+                SchemaTypeName = defOptionsType.Name
             };
         }
 
         try
         {
-            var schemaType = CreateXmlSchemaForClass(type, schema, depth + 1);
+            var schemaType = CreateXmlSchemaForClass(type, depth + 1);
 
-            return new XmlSchemaElement()
+            return new XsdElement("")
             {
-                SchemaTypeName = new XmlQualifiedName(schemaType.Name, schemaType.Namespaces.ToArray()[0].Namespace)
+                SchemaTypeName = schemaType.Name,
             };
         }
         catch (UnwindingStackOverflowException e)
@@ -622,56 +567,48 @@ public class DefToSchemaConverter
         }
     }
 
-    private XmlSchemaSimpleType CreateDefOptionsType(Type defType, XmlSchema schema)
+    private XsdSimpleType CreateDefOptionsType(Type defType)
     {
         var optionsTypeName = defType.FullName!.Replace("+", ".") + ".Enumeration";
 
-        var existing = schema.Items.OfType<XmlSchemaSimpleType>().FirstOrDefault(type => type.Name == optionsTypeName);
+        var existing = _schema.Types.OfType<XsdSimpleType>().FirstOrDefault(type => type.Name == optionsTypeName);
         if (existing != null)
         {
             return existing;
         }
 
-        var optionsType = new XmlSchemaSimpleType()
+        var optionsType = new XsdSimpleType()
         {
             Name = optionsTypeName,
-            Namespaces = rimWorldXmlSerializerNamespaces
         };
 
-        var restriction = new XmlSchemaSimpleTypeRestriction()
-        {
-            BaseTypeName = WellKnownFieldTypes[typeof(string).FullName],
-        };
+        var restriction = new XsdRestriction();
 
         if (_currentlyDefinedDefs.TryGetValue(defType, out var knownDefs))
         {
             foreach (var defName in knownDefs)
             {
-                restriction.Facets.Add(new XmlSchemaEnumerationFacet()
-                {
-                    Value = defName
-                });
+                restriction.Facets.Add(new XsdEnumeration(defName));
             }
         }
 
-        optionsType.Content = restriction;
-        schema.Items.Add(optionsType);
+        optionsType.Restriction = restriction;
+        _schema.Types.Add(optionsType);
 
         return optionsType;
     }
 
-    private XmlSchemaElement WrapInDictionary(XmlSchemaElement keySchema, XmlSchemaElement valueSchema)
+    private XsdElement WrapInDictionary(XsdElement keySchema, XsdElement valueSchema)
     {
         keySchema.Name = "key";
         valueSchema.Name = "value";
-        var innerType = new XmlSchemaElement()
+        var innerType = new XsdElement("li")
         {
-            Name = "li",
-            SchemaType = new XmlSchemaComplexType()
+            SchemaType = new XsdComplexType()
             {
-                Particle = new XmlSchemaSequence()
+                Properties = new XsdSequenceGroup()
                 {
-                    Items =
+                    Elements = 
                     {
                         keySchema,
                         valueSchema,
@@ -699,22 +636,19 @@ public class DefToSchemaConverter
         };
     }
 
-    private XmlSchemaElement WrapInList(XmlSchemaElement mainElement)
+    private XsdElement WrapInList(XsdElement mainElement)
     {
         mainElement.Name = "li";
 
-        return new()
+        return new("")
         {
-            SchemaType = new XmlSchemaComplexType()
+            SchemaType = new XsdComplexType()
             {
-                Particle = new XmlSchemaChoice()
+                Properties = new XsdChoiceGroup()
                 {
-                    MinOccurs = 0,
-                    MaxOccurs = decimal.MaxValue,
-                    Items =
-                    {
-                        mainElement,
-                    }
+                    MinOccurs = Occurs.Zero,
+                    MaxOccurs = Occurs.Unbounded,
+                    Elements = {mainElement},
                 }
             }
         };

@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<xs:schema xmlns="rimworld" elementFormDefault="qualified" targetNamespace="rimworld" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+<xs:schema elementFormDefault="qualified" targetNamespace="rimworld" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="Defs">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -21103,7 +21103,6 @@
   </xs:complexType>
   <xs:complexType name="Verse.TraitRequirement">
     <xs:choice>
-      <xs:element minOccurs="0" maxOccurs="unbounded" name="li" type="RimWorld.TraitDef.Enumeration" />
       <xs:element minOccurs="0" name="Delicate" type="xs:int" />
       <xs:element minOccurs="0" name="Recluse" type="xs:int" />
       <xs:element minOccurs="0" name="Nudist" type="xs:int" />
@@ -21149,6 +21148,7 @@
       <xs:element minOccurs="0" name="ShootingAccuracy" type="xs:int" />
       <xs:element minOccurs="0" name="Beauty" type="xs:int" />
       <xs:element minOccurs="0" name="Immunity" type="xs:int" />
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="li" type="RimWorld.TraitDef.Enumeration" />
     </xs:choice>
   </xs:complexType>
   <xs:complexType name="RimWorld.MemeGroupDef">

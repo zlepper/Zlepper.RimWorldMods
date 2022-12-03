@@ -2,67 +2,39 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Xml.Schema;
+using Zlepper.RimWorld.ModSdk.XsdOneOne;
 
 namespace Zlepper.RimWorld.ModSdk.Utilities;
 
 public class CustomStringTypes
 {
-    private readonly DefContext _defContext;
-    private readonly IReadOnlyDictionary<Type, List<string>> _currentlyDefinedDefs;
+    private readonly XsdSchema _xsdSchema;
 
-    public CustomStringTypes(DefContext defContext, IReadOnlyDictionary<Type, List<string>> currentlyDefinedDefs)
+    public CustomStringTypes(XsdSchema xsdSchema)
     {
-        _defContext = defContext;
-        _currentlyDefinedDefs = currentlyDefinedDefs;
+        _xsdSchema = xsdSchema;
     }
 
-    private static XmlSchemaSimpleType _rot4 = new XmlSchemaSimpleType()
+    private static XsdSimpleType _rot4 = new()
     {
         Name = "Verse.Rot4",
-        Namespaces = DefToSchemaConverter.rimWorldXmlSerializerNamespaces,
-        Content = new XmlSchemaSimpleTypeRestriction()
+        Restriction = new XsdRestriction()
         {
-            BaseTypeName = DefToSchemaConverter.WellKnownFieldTypes[typeof(string).FullName],
             Facets =
             {
-                new XmlSchemaEnumerationFacet()
-                {
-                    Value = "0",
-                },
-                new XmlSchemaEnumerationFacet()
-                {
-                    Value = "1",
-                },
-                new XmlSchemaEnumerationFacet()
-                {
-                    Value = "2",
-                },
-                new XmlSchemaEnumerationFacet()
-                {
-                    Value = "3",
-                },
-                new XmlSchemaEnumerationFacet()
-                {
-                    Value = "North",
-                },
-                new XmlSchemaEnumerationFacet()
-                {
-                    Value = "East",
-                },
-                new XmlSchemaEnumerationFacet()
-                {
-                    Value = "South",
-                },
-                new XmlSchemaEnumerationFacet()
-                {
-                    Value = "West",
-                },
+                new XsdEnumeration("0"),
+                new XsdEnumeration("1"),
+                new XsdEnumeration("2"),
+                new XsdEnumeration("3"),
+                new XsdEnumeration("North"),
+                new XsdEnumeration("East"),
+                new XsdEnumeration("South"),
+                new XsdEnumeration("West"),
             }
-        }
+        },
     };
 
-    private static IReadOnlyDictionary<string, string> _regexTypes = new Dictionary<string, string>
+    private static readonly IReadOnlyDictionary<string, string> _regexTypes = new Dictionary<string, string>
     {
         {"Verse.IntRange", RegexPatterns.IntRange},
         {"Verse.FloatRange", RegexPatterns.FloatRange},
@@ -71,28 +43,23 @@ public class CustomStringTypes
         {"Verse.IntVec3", RegexPatterns.IntVec3},
     };
     
-    public XmlSchemaSimpleType GetCustomStringType(XmlSchema schema, string typeName, Type type)
+    public XsdSimpleType GetCustomStringType(string typeName, Type type)
     {
         var fullTypeName = type.FullName;
 
-        XmlSchemaSimpleType? result = null;
+        XsdSimpleType? result = null;
         if (_regexTypes.TryGetValue(fullTypeName, out var pattern))
         {
-            result = new XmlSchemaSimpleType()
+            result = new XsdSimpleType()
             {
                 Name = typeName,
-                Namespaces = DefToSchemaConverter.rimWorldXmlSerializerNamespaces,
-                Content = new XmlSchemaSimpleTypeRestriction()
+                Restriction = new XsdRestriction()
                 {
-                    BaseTypeName = DefToSchemaConverter.WellKnownFieldTypes[typeof(string).FullName],
                     Facets =
                     {
-                        new XmlSchemaPatternFacet()
-                        {
-                            Value = pattern,
-                        },
+                        new XsdPattern(pattern)
                     }
-                }
+                },
             };
         }
         else
@@ -110,19 +77,19 @@ public class CustomStringTypes
 
         if (result == null)
         {
-            return XmlSchemaType.GetBuiltInSimpleType(XmlTypeCode.String);
+            return new XsdSimpleType()
+            {
+                Name = "xs:string"
+            };
         }
 
-        schema.Items.Add(result);
+        _xsdSchema.Types.Add(result);
         return result;
     }
 
-    private static XmlSchemaSimpleType GenerateQualityRange(string typeName, Type type)
+    private static XsdSimpleType GenerateQualityRange(string typeName, Type type)
     {
-        var restriction = new XmlSchemaSimpleTypeRestriction()
-        {
-            BaseTypeName = DefToSchemaConverter.WellKnownFieldTypes[typeof(string).FullName],
-        };
+        var restriction = new XsdRestriction();
 
         var enumFields = type.GetField("min").FieldType
             .GetFields(BindingFlags.Static | BindingFlags.Public)
@@ -135,18 +102,14 @@ public class CustomStringTypes
             {
                 var from = enumFields[i].Name;
                 var to = enumFields[j].Name;
-                restriction.Facets.Add(new XmlSchemaEnumerationFacet()
-                {
-                    Value = $"{from}~{to}",
-                });
+                restriction.Facets.Add(new XsdEnumeration($"{from}~{to}"));
             }
         }
 
-        return new XmlSchemaSimpleType()
+        return new XsdSimpleType()
         {
             Name = typeName,
-            Namespaces = DefToSchemaConverter.rimWorldXmlSerializerNamespaces,
-            Content = restriction
+            Restriction = restriction,
         };
     }
 }

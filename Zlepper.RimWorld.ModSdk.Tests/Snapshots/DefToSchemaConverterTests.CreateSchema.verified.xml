@@ -1,4 +1,4 @@
-﻿<xs:schema xmlns="rimworld" elementFormDefault="qualified" targetNamespace="rimworld" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+﻿<xs:schema elementFormDefault="qualified" targetNamespace="rimworld" xmlns:xs="http://www.w3.org/2001/XMLSchema">
   <xs:element name="Defs">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
