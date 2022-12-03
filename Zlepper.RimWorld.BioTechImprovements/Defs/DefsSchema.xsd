@@ -12977,23 +12977,16 @@
       </xs:element>
     </xs:all>
   </xs:complexType>
-  <xs:complexType name="Verse.CurvePoint">
-    <xs:all>
-      <xs:element minOccurs="0" name="loc" type="UnityEngine.Vector2" />
-    </xs:all>
-  </xs:complexType>
-  <xs:complexType name="UnityEngine.Vector2">
-    <xs:all>
-      <xs:element minOccurs="0" name="x" type="xs:float" />
-      <xs:element minOccurs="0" name="y" type="xs:float" />
-    </xs:all>
-  </xs:complexType>
-  <xs:complexType name="Verse.FloatRange">
-    <xs:all>
-      <xs:element minOccurs="0" name="min" type="xs:float" />
-      <xs:element minOccurs="0" name="max" type="xs:float" />
-    </xs:all>
-  </xs:complexType>
+  <xs:simpleType name="Verse.CurvePoint">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\(?(-?\d+)(?:,(-?\d+)){0,1}\)?" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="Verse.FloatRange">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(-?\d+(?:\.\d+)?)(?:~(-?\d+(?:\.\d+)?))?" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="UnityEngine.Vector3">
     <xs:all>
       <xs:element minOccurs="0" name="x" type="xs:float" />
@@ -13001,12 +12994,11 @@
       <xs:element minOccurs="0" name="z" type="xs:float" />
     </xs:all>
   </xs:complexType>
-  <xs:complexType name="Verse.IntRange">
-    <xs:all>
-      <xs:element minOccurs="0" name="min" type="xs:int" />
-      <xs:element minOccurs="0" name="max" type="xs:int" />
-    </xs:all>
-  </xs:complexType>
+  <xs:simpleType name="Verse.IntRange">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="(-?\d+)(?:~(-?\d+))?" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="UnityEngine.Texture2D">
     <xs:all />
   </xs:complexType>
@@ -15097,15 +15089,30 @@
       <xs:element minOccurs="0" name="range" type="xs:float" />
     </xs:all>
   </xs:complexType>
-  <xs:complexType name="Verse.Rot4">
-    <xs:all />
-  </xs:complexType>
+  <xs:simpleType name="Verse.Rot4">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="0" />
+      <xs:enumeration value="1" />
+      <xs:enumeration value="2" />
+      <xs:enumeration value="3" />
+      <xs:enumeration value="North" />
+      <xs:enumeration value="East" />
+      <xs:enumeration value="South" />
+      <xs:enumeration value="West" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="UnityEngine.Color">
     <xs:all>
       <xs:element minOccurs="0" name="r" type="xs:float" />
       <xs:element minOccurs="0" name="g" type="xs:float" />
       <xs:element minOccurs="0" name="b" type="xs:float" />
       <xs:element minOccurs="0" name="a" type="xs:float" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="UnityEngine.Vector2">
+    <xs:all>
+      <xs:element minOccurs="0" name="x" type="xs:float" />
+      <xs:element minOccurs="0" name="y" type="xs:float" />
     </xs:all>
   </xs:complexType>
   <xs:complexType name="RimWorld.BossDef">
@@ -16731,36 +16738,38 @@
       </xs:element>
     </xs:all>
   </xs:complexType>
-  <xs:complexType name="RimWorld.QualityRange">
-    <xs:all>
-      <xs:element minOccurs="0" name="min">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Awful" />
-            <xs:enumeration value="Poor" />
-            <xs:enumeration value="Normal" />
-            <xs:enumeration value="Good" />
-            <xs:enumeration value="Excellent" />
-            <xs:enumeration value="Masterwork" />
-            <xs:enumeration value="Legendary" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-      <xs:element minOccurs="0" name="max">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Awful" />
-            <xs:enumeration value="Poor" />
-            <xs:enumeration value="Normal" />
-            <xs:enumeration value="Good" />
-            <xs:enumeration value="Excellent" />
-            <xs:enumeration value="Masterwork" />
-            <xs:enumeration value="Legendary" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-    </xs:all>
-  </xs:complexType>
+  <xs:simpleType name="RimWorld.QualityRange">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Awful~Awful" />
+      <xs:enumeration value="Awful~Poor" />
+      <xs:enumeration value="Awful~Normal" />
+      <xs:enumeration value="Awful~Good" />
+      <xs:enumeration value="Awful~Excellent" />
+      <xs:enumeration value="Awful~Masterwork" />
+      <xs:enumeration value="Awful~Legendary" />
+      <xs:enumeration value="Poor~Poor" />
+      <xs:enumeration value="Poor~Normal" />
+      <xs:enumeration value="Poor~Good" />
+      <xs:enumeration value="Poor~Excellent" />
+      <xs:enumeration value="Poor~Masterwork" />
+      <xs:enumeration value="Poor~Legendary" />
+      <xs:enumeration value="Normal~Normal" />
+      <xs:enumeration value="Normal~Good" />
+      <xs:enumeration value="Normal~Excellent" />
+      <xs:enumeration value="Normal~Masterwork" />
+      <xs:enumeration value="Normal~Legendary" />
+      <xs:enumeration value="Good~Good" />
+      <xs:enumeration value="Good~Excellent" />
+      <xs:enumeration value="Good~Masterwork" />
+      <xs:enumeration value="Good~Legendary" />
+      <xs:enumeration value="Excellent~Excellent" />
+      <xs:enumeration value="Excellent~Masterwork" />
+      <xs:enumeration value="Excellent~Legendary" />
+      <xs:enumeration value="Masterwork~Masterwork" />
+      <xs:enumeration value="Masterwork~Legendary" />
+      <xs:enumeration value="Legendary~Legendary" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="RimWorld.XenotypeSet">
     <xs:all>
       <xs:element minOccurs="0" name="xenotypeChances" type="RimWorld.XenotypeChance" />
@@ -24219,13 +24228,11 @@
       </xs:element>
     </xs:all>
   </xs:complexType>
-  <xs:complexType name="Verse.IntVec3">
-    <xs:all>
-      <xs:element minOccurs="0" name="x" type="xs:int" />
-      <xs:element minOccurs="0" name="y" type="xs:int" />
-      <xs:element minOccurs="0" name="z" type="xs:int" />
-    </xs:all>
-  </xs:complexType>
+  <xs:simpleType name="Verse.IntVec3">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\(?(-?\d+),(-?\d+),(-?\d+)\)?" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="RimWorld.RiverDef">
     <xs:all>
       <xs:element minOccurs="0" name="spawnFlowThreshold" type="xs:int" />
@@ -24780,12 +24787,11 @@
       <xs:element minOccurs="0" name="selectionWeight" type="xs:float" />
     </xs:all>
   </xs:complexType>
-  <xs:complexType name="Verse.IntVec2">
-    <xs:all>
-      <xs:element minOccurs="0" name="x" type="xs:int" />
-      <xs:element minOccurs="0" name="z" type="xs:int" />
-    </xs:all>
-  </xs:complexType>
+  <xs:simpleType name="Verse.IntVec2">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="\(?(-?\d+),(-?\d+)\)?" />
+    </xs:restriction>
+  </xs:simpleType>
   <xs:complexType name="RimWorld.ScenarioDef">
     <xs:all>
       <xs:element minOccurs="0" name="scenario" type="RimWorld.Scenario" />

@@ -17,18 +17,40 @@ public class DefToSchemaConverter
     {
         _defContext = defContext;
         _currentlyDefinedDefs = currentlyDefinedDefs;
+        _customStringTypes = new CustomStringTypes(_defContext, _currentlyDefinedDefs);
     }
 
-    private const string defNameSchemaTypeName = "defName";
-    private const string defLabelSchemaTypeName = "defLabel";
+    
+    public static readonly IReadOnlyDictionary<string, XmlQualifiedName> WellKnownFieldTypes =
+        new Dictionary<string, XmlQualifiedName>
+        {
+            {typeof(string).FullName, new XmlQualifiedName("string", XMLSchemaNamespace)},
+            {typeof(Type).FullName, new XmlQualifiedName("string", XMLSchemaNamespace)},
+            {typeof(byte).FullName, new XmlQualifiedName("byte", XMLSchemaNamespace)},
+            {typeof(decimal).FullName, new XmlQualifiedName("decimal", XMLSchemaNamespace)},
+            {typeof(float).FullName, new XmlQualifiedName("float", XMLSchemaNamespace)},
+            {typeof(double).FullName, new XmlQualifiedName("double", XMLSchemaNamespace)},
+            {typeof(int).FullName, new XmlQualifiedName("int", XMLSchemaNamespace)},
+            {typeof(long).FullName, new XmlQualifiedName("long", XMLSchemaNamespace)},
+            {typeof(short).FullName, new XmlQualifiedName("short", XMLSchemaNamespace)},
+            {typeof(ushort).FullName, new XmlQualifiedName("unsignedShort", XMLSchemaNamespace)},
+            {typeof(bool).FullName, new XmlQualifiedName("boolean", XMLSchemaNamespace)},
+        };
 
-    private readonly XmlSchemaSimpleType defLabelSchemaType = new()
+    
+    public const string defNameSchemaTypeName = "defName";
+    public const string defLabelSchemaTypeName = "defLabel";
+
+    public static readonly XmlSerializerNamespaces rimWorldXmlSerializerNamespaces =
+        new XmlSerializerNamespaces(new[] {new XmlQualifiedName("", rimWorldXmlNamespace)});
+
+    public static readonly XmlSchemaSimpleType defLabelSchemaType = new()
     {
         Name = defLabelSchemaTypeName,
-        Namespaces = new(new[] {new XmlQualifiedName("", rimWorldXmlNamespace)}),
+        Namespaces = rimWorldXmlSerializerNamespaces,
         Content = new XmlSchemaSimpleTypeRestriction()
         {
-            BaseTypeName = _wellKnownFieldTypes[typeof(string).FullName],
+            BaseTypeName = WellKnownFieldTypes[typeof(string).FullName],
             Facets =
             {
                 new XmlSchemaPatternFacet()
@@ -39,13 +61,13 @@ public class DefToSchemaConverter
         }
     };
 
-    private readonly XmlSchemaSimpleType defNameSchemaType = new()
+    public readonly XmlSchemaSimpleType defNameSchemaType = new()
     {
         Name = defNameSchemaTypeName,
-        Namespaces = new(new[] {new XmlQualifiedName("", rimWorldXmlNamespace)}),
+        Namespaces = rimWorldXmlSerializerNamespaces,
         Content = new XmlSchemaSimpleTypeRestriction()
         {
-            BaseTypeName = _wellKnownFieldTypes[typeof(string).FullName],
+            BaseTypeName = WellKnownFieldTypes[typeof(string).FullName],
             Facets =
             {
                 new XmlSchemaPatternFacet()
@@ -56,10 +78,7 @@ public class DefToSchemaConverter
         }
     };
 
-    private const string rimWorldXmlNamespace = "rimworld";
-
-    private static readonly XmlSerializerNamespaces rimWorldXmlSerializerNamespaces =
-        new XmlSerializerNamespaces(new[] {new XmlQualifiedName("", rimWorldXmlNamespace)});
+    public const string rimWorldXmlNamespace = "rimworld";
 
     public XmlSchema CreateSchema(IEnumerable<Type> defTypes)
     {
@@ -114,7 +133,7 @@ public class DefToSchemaConverter
     }
 
 
-    private XmlSchemaComplexType CreateXmlSchemaForClass(Type defType, XmlSchema schema, int depth)
+    private XmlSchemaType CreateXmlSchemaForClass(Type defType, XmlSchema schema, int depth)
     {
         if (depth > 100)
             throw new UnwindingStackOverflowException("Dug too deep");
@@ -127,7 +146,7 @@ public class DefToSchemaConverter
 
         var typeName = defType.FullName!.Replace("+", ".");
         var existing = schema.Items
-            .OfType<XmlSchemaComplexType>()
+            .OfType<XmlSchemaType>()
             .FirstOrDefault(t => t.Name == typeName);
 
         if (existing != null)
@@ -139,30 +158,33 @@ public class DefToSchemaConverter
         {
             return InferSchemaTypeForCustomLoadClass(schema, typeName, defType);
         }
-        else
+
+        if (HasCustomFromStringMethod(defType))
         {
-            var fields = new XmlSchemaAll();
-            var type = new XmlSchemaComplexType
-            {
-                Name = typeName,
-                Namespaces = rimWorldXmlSerializerNamespaces,
-                Particle = fields
-            };
-            schema.Items.Add(type);
+            return _customStringTypes.GetCustomStringType(schema, typeName, defType);
+        }
 
-            foreach (var fieldInfo in GetDefFieldsForDefType(defType))
-            {
-                var fieldElement = GetFieldElement(fieldInfo, schema, depth);
-                if (fieldElement == null)
-                {
-                    continue;
-                }
+        var fields = new XmlSchemaAll();
+        var type = new XmlSchemaComplexType
+        {
+            Name = typeName,
+            Namespaces = rimWorldXmlSerializerNamespaces,
+            Particle = fields
+        };
+        schema.Items.Add(type);
 
-                fields.Items.Add(fieldElement);
+        foreach (var fieldInfo in GetDefFieldsForDefType(defType))
+        {
+            var fieldElement = GetFieldElement(fieldInfo, schema, depth);
+            if (fieldElement == null)
+            {
+                continue;
             }
 
-            return type;
+            fields.Items.Add(fieldElement);
         }
+
+        return type;
     }
 
     private Type GetTypeFromPossiblyNullable(Type type)
@@ -187,7 +209,7 @@ public class DefToSchemaConverter
         if (fields.Count == 2)
         {
             var simpleFields = fields.Where(f =>
-                _wellKnownFieldTypes.ContainsKey(GetTypeFromPossiblyNullable(f.FieldType).FullName)).ToList();
+                WellKnownFieldTypes.ContainsKey(GetTypeFromPossiblyNullable(f.FieldType).FullName)).ToList();
             if (simpleFields.Count == 1)
             {
                 var defFields = fields.Where(f => _defContext.IsDef(f.FieldType)).ToList();
@@ -197,7 +219,7 @@ public class DefToSchemaConverter
                     var simpleField = simpleFields.Single();
 
                     var wellKnownFieldType =
-                        _wellKnownFieldTypes[GetTypeFromPossiblyNullable(simpleField.FieldType).FullName];
+                        WellKnownFieldTypes[GetTypeFromPossiblyNullable(simpleField.FieldType).FullName];
 
                     if (_currentlyDefinedDefs.TryGetValue(defField.FieldType, out var defNames))
                     {
@@ -234,11 +256,10 @@ public class DefToSchemaConverter
                             {
                                 newParticle.Items.Add(xmlSchemaObject);
                             }
-                            
+
                             xmlSchemaParticle = newParticle;
-                            
                         }
-                        
+
                         var customDictionaryType = new XmlSchemaComplexType()
                         {
                             Name = typeName,
@@ -246,7 +267,7 @@ public class DefToSchemaConverter
                             Particle = xmlSchemaParticle,
                         };
 
-                        
+
                         schema.Items.Add(customDictionaryType);
                         return customDictionaryType;
                     }
@@ -272,6 +293,7 @@ public class DefToSchemaConverter
                     var element = new XmlSchemaElement
                     {
                         Name = _defContext.GetDefElementName(concreteDefType),
+                        Namespaces = rimWorldXmlSerializerNamespaces,
                         SchemaTypeName = new XmlQualifiedName(defOptionsType.Name, rimWorldXmlNamespace),
                     };
                     xmlSchemaParticle.Items.Add(element);
@@ -320,6 +342,12 @@ public class DefToSchemaConverter
             BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic) != null;
     }
 
+    private static bool HasCustomFromStringMethod(Type defType)
+    {
+        return defType.GetMethod("FromString",
+            BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic) != null;
+    }
+
     private bool ShouldSkip(Type type)
     {
         if (type.IsConstructedGenericType)
@@ -355,21 +383,7 @@ public class DefToSchemaConverter
 
     public const string XMLSchemaNamespace = "http://www.w3.org/2001/XMLSchema";
 
-    private static readonly IReadOnlyDictionary<string, XmlQualifiedName> _wellKnownFieldTypes =
-        new Dictionary<string, XmlQualifiedName>
-        {
-            {typeof(string).FullName, new XmlQualifiedName("string", XMLSchemaNamespace)},
-            {typeof(Type).FullName, new XmlQualifiedName("string", XMLSchemaNamespace)},
-            {typeof(byte).FullName, new XmlQualifiedName("byte", XMLSchemaNamespace)},
-            {typeof(decimal).FullName, new XmlQualifiedName("decimal", XMLSchemaNamespace)},
-            {typeof(float).FullName, new XmlQualifiedName("float", XMLSchemaNamespace)},
-            {typeof(double).FullName, new XmlQualifiedName("double", XMLSchemaNamespace)},
-            {typeof(int).FullName, new XmlQualifiedName("int", XMLSchemaNamespace)},
-            {typeof(long).FullName, new XmlQualifiedName("long", XMLSchemaNamespace)},
-            {typeof(short).FullName, new XmlQualifiedName("short", XMLSchemaNamespace)},
-            {typeof(ushort).FullName, new XmlQualifiedName("unsignedShort", XMLSchemaNamespace)},
-            {typeof(bool).FullName, new XmlQualifiedName("boolean", XMLSchemaNamespace)},
-        };
+    private readonly CustomStringTypes _customStringTypes;
 
     private XmlSchemaElement? GetFieldElement(FieldInfo field, XmlSchema schema, int depth)
     {
@@ -464,7 +478,7 @@ public class DefToSchemaConverter
 
     private XmlSchemaElement? InferXmlSchemaElement(FieldInfo field, Type type, XmlSchema schema, int depth)
     {
-        if (_wellKnownFieldTypes.TryGetValue(type.FullName, out var wellKnownType))
+        if (WellKnownFieldTypes.TryGetValue(type.FullName, out var wellKnownType))
         {
             return new XmlSchemaElement()
             {
@@ -476,7 +490,7 @@ public class DefToSchemaConverter
         {
             var restriction = new XmlSchemaSimpleTypeRestriction()
             {
-                BaseTypeName = _wellKnownFieldTypes[typeof(string).FullName],
+                BaseTypeName = WellKnownFieldTypes[typeof(string).FullName],
             };
 
             if (type.IsEnum)
@@ -554,7 +568,7 @@ public class DefToSchemaConverter
             {
                 return new XmlSchemaElement
                 {
-                    SchemaTypeName = _wellKnownFieldTypes[typeof(string).FullName]
+                    SchemaTypeName = WellKnownFieldTypes[typeof(string).FullName]
                 };
             }
 
@@ -591,7 +605,7 @@ public class DefToSchemaConverter
 
             return new XmlSchemaElement()
             {
-                SchemaTypeName = new XmlQualifiedName(schemaType.Name, rimWorldXmlNamespace)
+                SchemaTypeName = new XmlQualifiedName(schemaType.Name, schemaType.Namespaces.ToArray()[0].Namespace)
             };
         }
         catch (UnwindingStackOverflowException e)
@@ -626,7 +640,7 @@ public class DefToSchemaConverter
 
         var restriction = new XmlSchemaSimpleTypeRestriction()
         {
-            BaseTypeName = _wellKnownFieldTypes[typeof(string).FullName],
+            BaseTypeName = WellKnownFieldTypes[typeof(string).FullName],
         };
 
         if (_currentlyDefinedDefs.TryGetValue(defType, out var knownDefs))
