@@ -105,6 +105,7 @@ public static class XmlUtilities
 
     public static string GetSchemaAsString(XsdSchema schema)
     {
+        schema.Sort();
         using var memStream = new MemoryStream();
         using var xmlWriter = XmlWriter.Create(memStream, new XmlWriterSettings()
         {

@@ -4,7 +4,6 @@ using System.Linq;
 using System.Reflection;
 using System.Xml;
 using System.Xml.Schema;
-using System.Xml.Serialization;
 using Zlepper.RimWorld.ModSdk.XsdOneOne;
 
 namespace Zlepper.RimWorld.ModSdk.Utilities;
@@ -14,6 +13,7 @@ public class DefToSchemaConverter
     private readonly DefContext _defContext;
     private readonly IReadOnlyDictionary<Type, List<string>> _currentlyDefinedDefs;
     private readonly XsdSchema _schema;
+    private readonly CustomStringTypes _customStringTypes;
 
     public DefToSchemaConverter(DefContext defContext, IReadOnlyDictionary<Type, List<string>> currentlyDefinedDefs)
     {
@@ -44,9 +44,6 @@ public class DefToSchemaConverter
     public const string defNameSchemaTypeName = "defName";
     public const string defLabelSchemaTypeName = "defLabel";
 
-    public static readonly XmlSerializerNamespaces rimWorldXmlSerializerNamespaces =
-        new XmlSerializerNamespaces(new[] {new XmlQualifiedName("", rimWorldXmlNamespace)});
-
     public static readonly XsdSimpleType defLabelSchemaType = new()
     {
         Name = defLabelSchemaTypeName,
@@ -70,9 +67,15 @@ public class DefToSchemaConverter
 
     public const string rimWorldXmlNamespace = "rimworld";
 
-    public XsdSchema CreateSchema(IEnumerable<Type> defTypes)
+    private IReadOnlyList<Type> _allTypes = null!;
+
+    public XsdSchema CreateSchema(IEnumerable<Type> allTypes)
     {
-        defTypes = defTypes.OrderBy(t => t.FullName, StringComparer.InvariantCultureIgnoreCase).ToList();
+        _allTypes = allTypes.ToList();
+
+        var defTypes = _allTypes
+            .Where(_defContext.IsDef)
+            .ToList();
 
         var defsRoot = new XsdElement("Defs");
         var defsRootElementList = new XsdChoiceGroup()
@@ -166,7 +169,7 @@ public class DefToSchemaConverter
             baseType.FullName != typeof(ValueType).FullName)
         {
             var baseTypeSchema = CreateXmlSchemaForClass(baseType, depth + 1);
-            
+
             type.ComplexContent = new XsdComplexContent()
             {
                 Extension = new XsdExtension(baseTypeSchema.Name ?? GetTypeNameForXml(baseType))
@@ -180,12 +183,64 @@ public class DefToSchemaConverter
             type.Properties = fields;
         }
 
+        if (!_defContext.IsDef(defType))
+        {
+            var subTypes = GetAllSubTypesOf(defType);
+
+            if (subTypes.Count > 0)
+            {
+                var attributeType = GetClassPropertyAttributeType(subTypes, defType);
+
+                var attr = new XsdAttribute(ClassAttributeName)
+                {
+                    SchemaTypeName = attributeType.Name,
+                };
+
+                if (type.ComplexContent?.Extension is { } ext)
+                {
+                    ext.Attributes.Add(attr);   
+                }
+                else
+                {
+                    type.Attributes.Add(attr);
+                }
+            }
+        }
+
         return type;
     }
 
-    private static string GetTypeNameForXml(Type defType)
+    public const string ClassAttributeName = "Class";
+
+    private XsdSimpleType GetClassPropertyAttributeType(IEnumerable<Type> possibleClasses, Type parentClass)
     {
-        return defType.FullName!.Replace("+", ".");
+        var typeName = GetTypeNameForXml(parentClass) + ".SubTypes";
+        var existing = _schema.Types
+            .OfType<XsdSimpleType>()
+            .FirstOrDefault(t => t.Name == typeName);
+
+        if (existing != null)
+        {
+            return existing;
+        }
+
+        var type = new XsdSimpleType()
+        {
+            Name = typeName,
+            Restriction = new XsdRestriction()
+            {
+                Facets = possibleClasses.Select(c => new XsdEnumeration(GetTypeNameForXml(c))).ToList<XsdFacet>()
+            }
+        };
+
+        _schema.Types.Add(type);
+
+        return type;
+    }
+
+    private string GetTypeNameForXml(Type defType)
+    {
+        return _defContext.GetDefElementName(defType);
     }
 
     private Type GetTypeFromPossiblyNullable(Type type)
@@ -344,7 +399,7 @@ public class DefToSchemaConverter
         var isEntity = _defContext.GetBaseTypes(type).Any(t => t.FullName == "Verse.Entity");
         var isMap = type.FullName == "Verse.Map";
         var isIdeo = type.FullName == "RimWorld.Ideo";
-        var isFaction  =type.FullName == "RimWorld.Faction";
+        var isFaction = type.FullName == "RimWorld.Faction";
         var isSteamRelated = type.Namespace?.StartsWith("Verse.Steam") ?? false;
 
         return isEntity || isMap || isIdeo || isSteamRelated || isFaction;
@@ -364,9 +419,6 @@ public class DefToSchemaConverter
         return isInternalField || field.IsSpecialName || field.IsLiteral || invalidName;
     }
 
-    public const string XMLSchemaNamespace = "http://www.w3.org/2001/XMLSchema";
-
-    private readonly CustomStringTypes _customStringTypes;
 
     private XsdElement? GetFieldElement(FieldInfo field, int depth)
     {
@@ -460,6 +512,16 @@ public class DefToSchemaConverter
             };
         }
 
+        if (_defContext.IsDef(type))
+        {
+            var defOptionsType = CreateDefOptionsType(type);
+
+            return new XsdElement(field.Name)
+            {
+                SchemaTypeName = defOptionsType.Name
+            };
+        }
+
         if (type.IsEnum || type.BaseType?.FullName == "System.Enum")
         {
             var restriction = new XsdRestriction();
@@ -503,7 +565,6 @@ public class DefToSchemaConverter
             if (genericTypeDefinitionFullName == typeof(List<>).FullName)
             {
                 var innerType = type.GetGenericArguments()[0];
-
 
                 var innerSchema = InferXmlSchemaElement(field, innerType, depth);
                 if (innerSchema == null)
@@ -554,21 +615,11 @@ public class DefToSchemaConverter
                 $"Can't handle field {field.Name} of type {type} on class {field.DeclaringType}. Full field type: {field.FieldType}. Base base type: {type.BaseType}");
         }
 
-        if (_defContext.IsDef(type))
-        {
-            var defOptionsType = CreateDefOptionsType(type);
-
-            return new XsdElement(field.Name)
-            {
-                SchemaTypeName = defOptionsType.Name
-            };
-        }
-
         try
         {
             var schemaType = CreateXmlSchemaForClass(type, depth + 1);
 
-            return new XsdElement("")
+            return new XsdElement(field.Name)
             {
                 SchemaTypeName = schemaType.Name,
             };
@@ -585,6 +636,11 @@ public class DefToSchemaConverter
                 $"Can't handle field {field.Name} of type {type} on class {field.DeclaringType}. Full field type: {field.FieldType}. Base base type: {type.BaseType}",
                 e);
         }
+    }
+
+    private List<Type> GetAllSubTypesOf(Type type)
+    {
+        return _allTypes.Where(t => t.IsSubclassOf(type)).ToList();
     }
 
     private XsdSimpleType CreateDefOptionsType(Type defType)

@@ -28,13 +28,13 @@ public class GenerateXdsFilesForDefs : Task
 
             var assemblies = context.GetAssemblies().ToList();
 
-            var defs = GetDefTypes(assemblies);
+            var allTypes = GetAllTypes(assemblies);
 
-            var currentlyDefinedDefs = GetCurrentDefinedDefs(defs);
+            var currentlyDefinedDefs = GetCurrentDefinedDefs(allTypes);
 
             var converter = new DefToSchemaConverter(_defContext, currentlyDefinedDefs);
 
-            var schema = converter.CreateSchema(defs);
+            var schema = converter.CreateSchema(allTypes);
 
 
             XmlUtilities.WriteSchemaToFile(XmlSchemaFileName, schema);
@@ -60,7 +60,7 @@ public class GenerateXdsFilesForDefs : Task
         return defReader.ReadAllDefFiles(files, Log);
     }
 
-    private List<Type> GetDefTypes(IEnumerable<Assembly> assemblies)
+    private List<Type> GetAllTypes(IEnumerable<Assembly> assemblies)
     {
         return assemblies
             .SelectMany(a =>
@@ -80,7 +80,6 @@ public class GenerateXdsFilesForDefs : Task
                     return Enumerable.Empty<Type>();
                 }
             })
-            .Where(_defContext.IsDef)
             .ToList();
     }
 

@@ -4,7 +4,7 @@ using System.Xml.Serialization;
 namespace Zlepper.RimWorld.ModSdk.XsdOneOne;
 
 [XmlType("enumeration", Namespace = XmlSchema.Namespace)]
-public class XsdEnumeration : XsdFacet
+public sealed class XsdEnumeration : XsdFacet
 {
     public XsdEnumeration(string value) : base(value)
     {
@@ -12,5 +12,10 @@ public class XsdEnumeration : XsdFacet
 
     private XsdEnumeration()
     {
+    }
+
+    public override void Sort()
+    {
+        
     }
 }

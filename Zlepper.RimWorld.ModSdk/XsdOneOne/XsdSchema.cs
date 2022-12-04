@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -5,7 +6,7 @@ using System.Xml.Serialization;
 namespace Zlepper.RimWorld.ModSdk.XsdOneOne;
 
 [XmlRoot("schema", Namespace = XmlSchema.Namespace)]
-public class XsdSchema
+public class XsdSchema : XsdNode
 {
     [XmlElement("element")]
     public List<XsdElement> Elements = new();
@@ -28,5 +29,19 @@ public class XsdSchema
     private XsdSchema()
     {
         TargetNamespace = null!;
+    }
+
+    public override void Sort()
+    {
+        Elements.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.InvariantCultureIgnoreCase));
+        foreach (var xsdElement in Elements)
+        {
+            xsdElement.Sort();
+        }
+        Types.Sort((a, b) => string.Compare(a.Name, b.Name, StringComparison.InvariantCultureIgnoreCase));
+        foreach (var xsdType in Types)
+        {
+            xsdType.Sort();
+        }
     }
 }

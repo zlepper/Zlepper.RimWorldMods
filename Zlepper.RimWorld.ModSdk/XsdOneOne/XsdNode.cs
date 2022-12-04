@@ -8,4 +8,6 @@ public abstract class XsdNode
 {
     [XmlElement("annotation")]
     public XsdAnnotation? Annotation;
+
+    public abstract void Sort();
 }

@@ -6,18 +6,14 @@ namespace Zlepper.RimWorld.ModSdk.Tests.Utilities;
 [TestFixture]
 public class DefToSchemaConverterTests
 {
-    private static readonly List<Type> _allDefTypes = new()
-    {
-        typeof(Def), typeof(WorkTypeDef), typeof(SkillDef), typeof(InteractionDef), typeof(BackstoryDef),
-        typeof(BodyTypeDef), typeof(DefWithWorkerClass)
-    };
+    private static readonly Type[] _allTypes = typeof(Def).Assembly.GetTypes();
     
     [Test]
     public async Task GeneratesSchemaForSimpleDef()
     {
         
         var defContext = new DefContext(typeof(Def));
-        var _defReader = new DefReader(_allDefTypes, defContext);
+        var _defReader = new DefReader(_allTypes, defContext);
         
         var defContent = await File.ReadAllTextAsync("Utilities/RimWorldVerseCopy/SampleDefFile.xml");
         var defined = _defReader.ParseDefContent(defContent);
@@ -27,7 +23,7 @@ public class DefToSchemaConverterTests
         
         var _converter = new DefToSchemaConverter(defContext, defined);
 
-        var schema = _converter.CreateSchema(_allDefTypes);
+        var schema = _converter.CreateSchema(_allTypes);
         var result = XmlUtilities.GetSchemaAsString(schema);
 
         await VerifyXml(result).UseDirectory("../Snapshots").UseMethodName("CreateSchema");

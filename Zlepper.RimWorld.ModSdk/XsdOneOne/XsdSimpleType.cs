@@ -8,4 +8,9 @@ public class XsdSimpleType : XsdType
 {
     [XmlElement("restriction")]
     public XsdRestriction? Restriction;
+
+    public override void Sort()
+    {
+        Restriction?.Sort();
+    }
 }

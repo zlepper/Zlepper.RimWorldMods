@@ -6,4 +6,8 @@ namespace Zlepper.RimWorld.ModSdk.XsdOneOne;
 [XmlType("choice", Namespace = XmlSchema.Namespace)]
 public class XsdChoiceGroup : XsdGroup
 {
+    public override void Sort()
+    {
+        base.Sort();
+    }
 }

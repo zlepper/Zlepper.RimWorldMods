@@ -2,58 +2,33 @@
   <xs:element name="Defs">
     <xs:complexType>
       <xs:choice minOccurs="0" maxOccurs="unbounded">
-        <xs:element name="BackstoryDef" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.BackstoryDef" />
-        <xs:element name="BodyTypeDef" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.BodyTypeDef" />
-        <xs:element name="Def" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.Def" />
-        <xs:element name="DefWithWorkerClass" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.DefWithWorkerClass" />
-        <xs:element name="InteractionDef" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.InteractionDef" />
-        <xs:element name="SkillDef" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.SkillDef" />
-        <xs:element name="WorkTypeDef" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.WorkTypeDef" />
+        <xs:element name="BackstoryDef" type="BackstoryDef" />
+        <xs:element name="BodyTypeDef" type="BodyTypeDef" />
+        <xs:element name="Def" type="Def" />
+        <xs:element name="DefWithWorkerClass" type="DefWithWorkerClass" />
+        <xs:element name="InteractionDef" type="InteractionDef" />
+        <xs:element name="SkillDef" type="SkillDef" />
+        <xs:element name="ThingDef" type="ThingDef" />
+        <xs:element name="WorkTypeDef" type="WorkTypeDef" />
       </xs:choice>
     </xs:complexType>
   </xs:element>
-  <xs:simpleType name="defName">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="[a-zA-Z0-9\-_]*" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:simpleType name="defLabel">
-    <xs:restriction base="xs:string">
-      <xs:pattern value="[^\[\]\{\}]*" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.BackstoryDef">
-    <xs:all>
-      <xs:element minOccurs="0" name="skillGains">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li">
-              <xs:complexType>
-                <xs:sequence>
-                  <xs:element name="key" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.SkillDef.Enumeration" />
-                  <xs:element name="value" type="xs:int" />
-                </xs:sequence>
-              </xs:complexType>
-            </xs:element>
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="selectionWeight" type="xs:string" />
-    </xs:all>
-  </xs:complexType>
-  <xs:simpleType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.SkillDef.Enumeration">
-    <xs:restriction base="xs:string">
-      <xs:enumeration value="MySkill" />
-    </xs:restriction>
-  </xs:simpleType>
-  <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.BodyTypeDef">
+  <xs:complexType name="BackstoryDef">
     <xs:complexContent>
-      <xs:extension base="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.Def">
+      <xs:extension base="Def">
         <xs:all>
-          <xs:element minOccurs="0" name="woundAnchors">
+          <xs:element minOccurs="0" name="selectionWeight" type="xs:string" />
+          <xs:element minOccurs="0" name="skillGains">
             <xs:complexType>
               <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="li" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.BodyTypeDef.WoundAnchor" />
+                <xs:element name="li">
+                  <xs:complexType>
+                    <xs:sequence>
+                      <xs:element name="key" type="SkillDef.Enumeration" />
+                      <xs:element name="value" type="xs:int" />
+                    </xs:sequence>
+                  </xs:complexType>
+                </xs:element>
               </xs:choice>
             </xs:complexType>
           </xs:element>
@@ -61,12 +36,33 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.BodyTypeDef.WoundAnchor">
-    <xs:all>
-      <xs:element minOccurs="0" name="tag" type="xs:string" />
-    </xs:all>
+  <xs:complexType name="BodyTypeDef">
+    <xs:complexContent>
+      <xs:extension base="Def">
+        <xs:all>
+          <xs:element minOccurs="0" name="woundAnchors">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="li" type="WoundAnchor" />
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+        </xs:all>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.Def">
+  <xs:complexType name="CompProperties">
+    <xs:all>
+      <xs:element minOccurs="0" name="compClass" type="xs:string" />
+    </xs:all>
+    <xs:attribute name="Class" type="CompProperties.SubTypes" />
+  </xs:complexType>
+  <xs:simpleType name="CompProperties.SubTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CompProperties_Foo" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Def">
     <xs:all>
       <xs:element minOccurs="0" name="defName" type="defName">
         <xs:annotation>
@@ -81,96 +77,131 @@
       <xs:element minOccurs="0" name="testField" type="xs:string" />
     </xs:all>
   </xs:complexType>
-  <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.DefWithWorkerClass">
+  <xs:simpleType name="defLabel">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[^\[\]\{\}]*" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:simpleType name="defName">
+    <xs:restriction base="xs:string">
+      <xs:pattern value="[a-zA-Z0-9\-_]*" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="DefWithWorkerClass">
     <xs:complexContent>
-      <xs:extension base="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.Def">
+      <xs:extension base="Def">
         <xs:all>
           <xs:element minOccurs="0" name="workerClass" type="xs:string" />
         </xs:all>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.InteractionDef">
+  <xs:complexType name="InteractionDef">
     <xs:complexContent>
-      <xs:extension base="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.Def">
+      <xs:extension base="Def">
         <xs:all>
+          <xs:element minOccurs="0" name="details" type="InteractionDetails" />
           <xs:element minOccurs="0" name="socialFightBaseChance" type="xs:float" />
-          <xs:element minOccurs="0" name="details" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.InteractionDetails" />
         </xs:all>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.InteractionDetails">
+  <xs:simpleType name="InteractionDef.Enumeration">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:complexType name="InteractionDetails">
     <xs:all>
-      <xs:element minOccurs="0" name="stringDetails" type="xs:string" />
       <xs:element minOccurs="0" name="doubleDetails" type="xs:double" />
+      <xs:element minOccurs="0" name="stringDetails" type="xs:string" />
     </xs:all>
   </xs:complexType>
-  <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.SkillDef">
+  <xs:complexType name="SkillDef">
     <xs:complexContent>
-      <xs:extension base="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.Def">
+      <xs:extension base="Def">
         <xs:all>
-          <xs:element minOccurs="0" name="skillLabel" type="xs:string" />
-          <xs:element minOccurs="0" name="usuallyDefinedInBackstories" type="xs:boolean" />
-          <xs:element minOccurs="0" name="pawnCreatorSummaryVisible" type="xs:boolean" />
           <xs:element minOccurs="0" name="disablingWorkTags">
             <xs:complexType>
               <xs:choice minOccurs="0" maxOccurs="unbounded">
                 <xs:element name="li">
                   <xs:simpleType>
                     <xs:restriction base="xs:string">
-                      <xs:enumeration value="None" />
                       <xs:enumeration value="ManualDumb" />
                       <xs:enumeration value="ManualSkilled" />
+                      <xs:enumeration value="None" />
                     </xs:restriction>
                   </xs:simpleType>
                 </xs:element>
               </xs:choice>
             </xs:complexType>
           </xs:element>
-          <xs:element minOccurs="0" name="lessonInteraction" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.InteractionDef.Enumeration" />
+          <xs:element minOccurs="0" name="lessonInteraction" type="InteractionDef.Enumeration" />
+          <xs:element minOccurs="0" name="pawnCreatorSummaryVisible" type="xs:boolean" />
+          <xs:element minOccurs="0" name="skillLabel" type="xs:string" />
+          <xs:element minOccurs="0" name="usuallyDefinedInBackstories" type="xs:boolean" />
         </xs:all>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:simpleType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.InteractionDef.Enumeration">
-    <xs:restriction base="xs:string" />
+  <xs:simpleType name="SkillDef.Enumeration">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="MySkill" />
+    </xs:restriction>
   </xs:simpleType>
-  <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.WorkTypeDef">
+  <xs:complexType name="StatModifier">
+    <xs:all>
+      <xs:element minOccurs="0" name="MySkill" type="xs:float" />
+    </xs:all>
+  </xs:complexType>
+  <xs:complexType name="ThingDef">
     <xs:complexContent>
-      <xs:extension base="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.Def">
+      <xs:extension base="Def">
+        <xs:all>
+          <xs:element minOccurs="0" name="comps">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="li" type="CompProperties" />
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+        </xs:all>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="WorkTypeDef">
+    <xs:complexContent>
+      <xs:extension base="Def">
         <xs:all>
           <xs:element minOccurs="0" name="intField" type="xs:int" />
+          <xs:element minOccurs="0" name="relevantSkills">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="li" type="SkillDef.Enumeration" />
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="statModifier" type="StatModifier" />
           <xs:element minOccurs="0" name="workTags">
             <xs:complexType>
               <xs:choice minOccurs="0" maxOccurs="unbounded">
                 <xs:element name="li">
                   <xs:simpleType>
                     <xs:restriction base="xs:string">
-                      <xs:enumeration value="None" />
                       <xs:enumeration value="ManualDumb" />
                       <xs:enumeration value="ManualSkilled" />
+                      <xs:enumeration value="None" />
                     </xs:restriction>
                   </xs:simpleType>
                 </xs:element>
               </xs:choice>
             </xs:complexType>
           </xs:element>
-          <xs:element minOccurs="0" name="relevantSkills">
-            <xs:complexType>
-              <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="li" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.SkillDef.Enumeration" />
-              </xs:choice>
-            </xs:complexType>
-          </xs:element>
-          <xs:element minOccurs="0" name="statModifier" type="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.StatModifier" />
         </xs:all>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
-  <xs:complexType name="Zlepper.RimWorld.ModSdk.Tests.Utilities.RimWorldVerseCopy.StatModifier">
+  <xs:complexType name="WoundAnchor">
     <xs:all>
-      <xs:element minOccurs="0" name="MySkill" type="xs:float" />
+      <xs:element minOccurs="0" name="tag" type="xs:string" />
     </xs:all>
   </xs:complexType>
 </xs:schema>

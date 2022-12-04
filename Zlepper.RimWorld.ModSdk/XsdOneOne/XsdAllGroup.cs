@@ -6,4 +6,11 @@ namespace Zlepper.RimWorld.ModSdk.XsdOneOne;
 [XmlType("all", Namespace = XmlSchema.Namespace)]
 public class XsdAllGroup : XsdGroup
 {
+    public override void Sort()
+    {
+        base.Sort();
+        SortElements();
+    }
+    
+    
 }

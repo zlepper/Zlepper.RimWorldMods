@@ -14,4 +14,9 @@ public class XsdPattern : XsdFacet
     {
         
     }
+
+    public override void Sort()
+    {
+        
+    }
 }

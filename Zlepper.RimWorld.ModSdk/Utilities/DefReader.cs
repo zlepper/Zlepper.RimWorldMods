@@ -13,8 +13,10 @@ public class DefReader
 {
     private readonly Dictionary<string, List<Type>> _defTypesByDefElementName;
 
-    public DefReader(List<Type> defClasses, DefContext defContext)
+    public DefReader(IEnumerable<Type> allTypes, DefContext defContext)
     {
+        var defClasses = allTypes.Where(defContext.IsDef);
+        
         _defTypesByDefElementName = new Dictionary<string, List<Type>>();
         
         foreach (var defClass in defClasses)

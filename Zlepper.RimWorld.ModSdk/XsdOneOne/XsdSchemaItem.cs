@@ -14,4 +14,6 @@ public abstract class XsdSchemaItem : XsdNode
     [DefaultValue(Occurs.One)]
     [XmlAttribute("maxOccurs")]
     public Occurs MaxOccurs = Occurs.One;
+
+    public abstract string GetSortKey();
 }

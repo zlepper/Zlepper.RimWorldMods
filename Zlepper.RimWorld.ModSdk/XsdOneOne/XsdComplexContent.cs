@@ -7,4 +7,8 @@ namespace Zlepper.RimWorld.ModSdk.XsdOneOne;
 public class XsdComplexContent : XsdNode
 {
     [XmlElement("extension")] public XsdExtension? Extension;
+    public override void Sort()
+    {
+        Extension?.Sort();
+    }
 }

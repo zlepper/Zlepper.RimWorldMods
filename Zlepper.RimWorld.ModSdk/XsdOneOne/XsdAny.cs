@@ -8,4 +8,14 @@ public class XsdAny : XsdSchemaItem
 {
     [XmlAttribute("processContents")]
     public XmlSchemaContentProcessing ProcessContents = XmlSchemaContentProcessing.Skip;
+
+    public override void Sort()
+    {
+        
+    }
+
+    public override string GetSortKey()
+    {
+        return "";
+    }
 }

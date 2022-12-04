@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Xml.Schema;
 using System.Xml.Serialization;
@@ -13,4 +14,9 @@ public class XsdRestriction : XsdNode
     [XmlElement("pattern", typeof(XsdPattern))]
     [XmlElement("enumeration", typeof(XsdEnumeration))]
     public List<XsdFacet> Facets = new();
+
+    public override void Sort()
+    {
+        Facets.Sort((a, b) => string.Compare(a.Value, b.Value, StringComparison.InvariantCultureIgnoreCase));
+    }
 }
