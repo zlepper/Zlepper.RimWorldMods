@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Reflection;
-using System.Xml;
 using System.Xml.Schema;
 using Zlepper.RimWorld.ModSdk.XsdOneOne;
 
@@ -14,13 +13,18 @@ public class DefToSchemaConverter
     private readonly IReadOnlyDictionary<Type, List<string>> _currentlyDefinedDefs;
     private readonly XsdSchema _schema;
     private readonly CustomStringTypes _customStringTypes;
+    private readonly SchemaTypeSkipper _skipper;
+    private readonly TimeMeasuringTool _timeMeasuringTool;
 
-    public DefToSchemaConverter(DefContext defContext, IReadOnlyDictionary<Type, List<string>> currentlyDefinedDefs)
+    public DefToSchemaConverter(DefContext defContext, IReadOnlyDictionary<Type, List<string>> currentlyDefinedDefs,
+        TimeMeasuringTool? timeMeasuringTool = null)
     {
         _schema = new(rimWorldXmlNamespace);
         _defContext = defContext;
         _currentlyDefinedDefs = currentlyDefinedDefs;
+        _timeMeasuringTool = timeMeasuringTool ?? new();
         _customStringTypes = new CustomStringTypes(_schema);
+        _skipper = new SchemaTypeSkipper(defContext, _timeMeasuringTool);
     }
 
 
@@ -121,7 +125,7 @@ public class DefToSchemaConverter
         if (depth > 100)
             throw new UnwindingStackOverflowException("Dug too deep");
 
-        if (ShouldSkip(defType))
+        if (_skipper.ShouldSkip(defType))
         {
             throw new UnwindingStackOverflowException(
                 $"Type {defType} is an entity, which should not be hit normally. ");
@@ -189,7 +193,7 @@ public class DefToSchemaConverter
 
             if (subTypes.Count > 0)
             {
-                var attributeType = GetClassPropertyAttributeType(subTypes, defType);
+                var attributeType = GetClassPropertyAttributeType(subTypes, defType, depth + 1);
 
                 var attr = new XsdAttribute(ClassAttributeName)
                 {
@@ -198,11 +202,25 @@ public class DefToSchemaConverter
 
                 if (type.ComplexContent?.Extension is { } ext)
                 {
-                    ext.Attributes.Add(attr);   
+                    ext.Attributes.Add(attr);
                 }
                 else
                 {
                     type.Attributes.Add(attr);
+                }
+
+                foreach (var subType in subTypes)
+                {
+                    foreach (var fieldInfo in GetDefFieldsForDefType(subType))
+                    {
+                        var fieldElement = GetFieldElement(fieldInfo, depth);
+                        if (fieldElement == null)
+                        {
+                            continue;
+                        }
+
+                        fields.Elements.Add(fieldElement);
+                    }
                 }
             }
         }
@@ -212,7 +230,7 @@ public class DefToSchemaConverter
 
     public const string ClassAttributeName = "Class";
 
-    private XsdSimpleType GetClassPropertyAttributeType(IEnumerable<Type> possibleClasses, Type parentClass)
+    private XsdSimpleType GetClassPropertyAttributeType(IEnumerable<Type> possibleClasses, Type parentClass, int depth)
     {
         var typeName = GetTypeNameForXml(parentClass) + ".SubTypes";
         var existing = _schema.Types
@@ -228,12 +246,18 @@ public class DefToSchemaConverter
         {
             Name = typeName,
             Restriction = new XsdRestriction()
-            {
-                Facets = possibleClasses.Select(c => new XsdEnumeration(GetTypeNameForXml(c))).ToList<XsdFacet>()
-            }
         };
 
         _schema.Types.Add(type);
+
+        type.Restriction.Facets =
+            possibleClasses.Select(c =>
+            {
+                var possibleType = CreateXmlSchemaForClass(c, depth + 1);
+
+                return new XsdEnumeration(possibleType.Name!);
+            }).ToList<XsdFacet>();
+
 
         return type;
     }
@@ -336,7 +360,9 @@ public class DefToSchemaConverter
                     MaxOccurs = Occurs.Unbounded
                 };
 
-                foreach (var concreteDefType in _currentlyDefinedDefs.Keys.Where(t => t.IsSubclassOf(field.FieldType)))
+                var concreteDefTypes = GetAllSubTypesOf(field.FieldType);
+
+                foreach (var concreteDefType in concreteDefTypes)
                 {
                     var defOptionsType = CreateDefOptionsType(concreteDefType);
 
@@ -377,46 +403,30 @@ public class DefToSchemaConverter
         return type;
     }
 
-    private static bool HasCustomLoadMethod(Type defType)
+    private readonly Dictionary<Type, bool> _hasCustomLoadMethodCache = new();
+
+    private bool HasCustomLoadMethod(Type defType)
     {
-        return defType.GetMethod("LoadDataFromXmlCustom",
+        if (_hasCustomLoadMethodCache.TryGetValue(defType, out var c))
+        {
+            return c;
+        }
+
+        return _hasCustomLoadMethodCache[defType] = defType.GetMethod("LoadDataFromXmlCustom",
             BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic) != null;
     }
 
-    private static bool HasCustomFromStringMethod(Type defType)
+    private readonly Dictionary<Type, bool> _hasCustomFromStringMethod = new();
+
+    private bool HasCustomFromStringMethod(Type defType)
     {
-        return defType.GetMethod("FromString",
+        if (_hasCustomFromStringMethod.TryGetValue(defType, out var c))
+        {
+            return c;
+        }
+
+        return _hasCustomFromStringMethod[defType] = defType.GetMethod("FromString",
             BindingFlags.Instance | BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic) != null;
-    }
-
-    private bool ShouldSkip(Type type)
-    {
-        if (type.IsConstructedGenericType)
-        {
-            return type.GetGenericArguments().Any(ShouldSkip);
-        }
-
-        var isEntity = _defContext.GetBaseTypes(type).Any(t => t.FullName == "Verse.Entity");
-        var isMap = type.FullName == "Verse.Map";
-        var isIdeo = type.FullName == "RimWorld.Ideo";
-        var isFaction = type.FullName == "RimWorld.Faction";
-        var isSteamRelated = type.Namespace?.StartsWith("Verse.Steam") ?? false;
-
-        return isEntity || isMap || isIdeo || isSteamRelated || isFaction;
-    }
-
-    private bool ShouldSkip(FieldInfo field)
-    {
-        if (ShouldSkip(field.FieldType))
-        {
-            return true;
-        }
-
-        var isInternalField = field.IsPrivate && field.Name.EndsWith("Int");
-
-        var invalidName = field.Name.StartsWith("<");
-
-        return isInternalField || field.IsSpecialName || field.IsLiteral || invalidName;
     }
 
 
@@ -429,7 +439,7 @@ public class DefToSchemaConverter
             return null;
         }
 
-        if (ShouldSkip(field))
+        if (_skipper.ShouldSkip(field))
         {
             return null;
         }
@@ -504,6 +514,11 @@ public class DefToSchemaConverter
 
     private XsdElement? InferXmlSchemaElement(FieldInfo field, Type type, int depth)
     {
+        if (_skipper.ShouldSkip(field))
+        {
+            return null;
+        }
+
         if (WellKnownFieldTypes.TryGetValue(type.FullName, out var wellKnownType))
         {
             return new XsdElement(field.Name)
@@ -605,8 +620,10 @@ public class DefToSchemaConverter
                 return InferXmlSchemaElement(field, innerType, depth);
             }
 
-            if (genericTypeDefinitionFullName == typeof(Predicate<>).FullName ||
-                genericTypeDefinitionFullName == typeof(Func<,>).FullName)
+            if (genericTypeDefinitionFullName.StartsWith("System.Predicate") ||
+                genericTypeDefinitionFullName.StartsWith("System.Func") ||
+                genericTypeDefinitionFullName.StartsWith("System.Action") ||
+                genericTypeDefinitionFullName.StartsWith("System.Delegate"))
             {
                 return null;
             }
@@ -619,10 +636,12 @@ public class DefToSchemaConverter
         {
             var schemaType = CreateXmlSchemaForClass(type, depth + 1);
 
-            return new XsdElement(field.Name)
+            var el = new XsdElement(field.Name)
             {
                 SchemaTypeName = schemaType.Name,
             };
+
+            return el;
         }
         catch (UnwindingStackOverflowException e)
         {
@@ -638,9 +657,45 @@ public class DefToSchemaConverter
         }
     }
 
-    private List<Type> GetAllSubTypesOf(Type type)
+    private Dictionary<Type, HashSet<Type>>? _subTypeCache;
+
+    private HashSet<Type> GetAllSubTypesOf(Type type)
     {
-        return _allTypes.Where(t => t.IsSubclassOf(type)).ToList();
+        if (_subTypeCache == null)
+        {
+            _subTypeCache = new(_allTypes.Count);
+
+            foreach (var t in _allTypes)
+            {
+                if (_skipper.ShouldSkip(t))
+                {
+                    continue;
+                }
+
+                var next = t;
+                while (next.BaseType != null && next.BaseType.FullName != typeof(object).FullName)
+                {
+                    if (_subTypeCache.TryGetValue(next.BaseType, out var e))
+                    {
+                        e.Add(t);
+                    }
+                    else
+                    {
+                        _subTypeCache[next.BaseType] = new HashSet<Type> {t};
+                    }
+
+                    next = next.BaseType;
+                }
+            }
+        }
+
+
+        if (_subTypeCache.TryGetValue(type, out var cached))
+        {
+            return cached;
+        }
+
+        return new HashSet<Type>();
     }
 
     private XsdSimpleType CreateDefOptionsType(Type defType)
@@ -700,17 +755,8 @@ public class DefToSchemaConverter
     {
         return defType.GetFields(BindingFlags.Instance | BindingFlags.Public | BindingFlags.NonPublic |
                                  BindingFlags.DeclaredOnly)
-            .Where(f => !ShouldSkip(f))
+            .Where(f => !_skipper.ShouldSkip(f))
             .ToList();
-    }
-
-    private static XmlNode[] TextToNodeArray(string text)
-    {
-        var doc = new XmlDocument();
-        return new XmlNode[]
-        {
-            doc.CreateTextNode(text)
-        };
     }
 
     private XsdElement WrapInList(XsdElement mainElement)

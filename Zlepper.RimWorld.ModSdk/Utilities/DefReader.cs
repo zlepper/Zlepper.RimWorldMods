@@ -12,10 +12,11 @@ namespace Zlepper.RimWorld.ModSdk.Utilities;
 public class DefReader
 {
     private readonly Dictionary<string, List<Type>> _defTypesByDefElementName;
+    private readonly TimeMeasuringTool _timeMeasuringTool = new();
 
-    public DefReader(IEnumerable<Type> allTypes, DefContext defContext)
+    public DefReader(IReadOnlyCollection<Type> allTypes, DefContext defContext)
     {
-        var defClasses = allTypes.Where(defContext.IsDef);
+        var defClasses = allTypes.Where(defContext.IsDef).ToList();
         
         _defTypesByDefElementName = new Dictionary<string, List<Type>>();
         
@@ -28,8 +29,12 @@ public class DefReader
                 .TakeWhile(t => !defContext.IsRootDefClass(t))
                 .Append(defClass)
                 .ToList();
-            
         }
+    }
+
+    public void Dump(TaskLoggingHelper logger)
+    {
+        _timeMeasuringTool.Dump(logger);
     }
 
     public IReadOnlyDictionary<Type, List<string>> ReadAllDefFiles(IEnumerable<string> files, TaskLoggingHelper log)
@@ -43,7 +48,7 @@ public class DefReader
                 var xml = File.ReadAllText(file);
 
                 var items = ParseDefContent(xml);
-                
+
                 foreach (var pair in items)
                 {
                     if (result.TryGetValue(pair.Key, out var existing))
@@ -85,7 +90,7 @@ public class DefReader
         {
             if (defElement.NodeType == XmlNodeType.Element)
             {
-                var defName = defElement.Descendants().FirstOrDefault(e => e.Name.LocalName == "defName")?.Value;
+                var defName = defElement.Element("defName")?.Value;
                 
                 if(string.IsNullOrEmpty(defName))
                     continue;

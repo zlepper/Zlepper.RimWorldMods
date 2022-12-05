@@ -53,13 +53,41 @@
   </xs:complexType>
   <xs:complexType name="CompProperties">
     <xs:all>
+      <xs:element minOccurs="0" name="AnotherValue" type="xs:int" />
       <xs:element minOccurs="0" name="compClass" type="xs:string" />
+      <xs:element minOccurs="0" name="SomeValue" type="xs:string" />
     </xs:all>
     <xs:attribute name="Class" type="CompProperties.SubTypes" />
+  </xs:complexType>
+  <xs:complexType name="CompProperties_Foo">
+    <xs:complexContent>
+      <xs:extension base="CompProperties">
+        <xs:all>
+          <xs:element minOccurs="0" name="AnotherValue" type="xs:int" />
+          <xs:element minOccurs="0" name="SomeValue" type="xs:string" />
+        </xs:all>
+        <xs:attribute name="Class" type="CompProperties_Foo.SubTypes" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="CompProperties_Foo.SubTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="CompProperties_FooFoo" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="CompProperties_FooFoo">
+    <xs:complexContent>
+      <xs:extension base="CompProperties_Foo">
+        <xs:all>
+          <xs:element minOccurs="0" name="AnotherValue" type="xs:int" />
+        </xs:all>
+      </xs:extension>
+    </xs:complexContent>
   </xs:complexType>
   <xs:simpleType name="CompProperties.SubTypes">
     <xs:restriction base="xs:string">
       <xs:enumeration value="CompProperties_Foo" />
+      <xs:enumeration value="CompProperties_FooFoo" />
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="Def">

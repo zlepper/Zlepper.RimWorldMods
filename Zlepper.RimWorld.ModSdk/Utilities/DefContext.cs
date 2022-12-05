@@ -23,8 +23,22 @@ public class DefContext
     
     public bool IsDef(Type type)
     {
-        return type.IsClass && !type.IsAbstract &&
-               GetBaseTypes(type).Append(type).Any(IsRootDefClass);
+        if (!type.IsClass || type.IsAbstract) return false;
+
+        if (IsRootDefClass(type))
+        {
+            return true;
+        }
+        
+        foreach (var t in GetBaseTypes(type))
+        {
+            if (IsRootDefClass(t))
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     public bool IsRootDefClass(Type type)
@@ -32,14 +46,16 @@ public class DefContext
         return type.Namespace == RootDefTypeClassNamespace && type.Name == RootDefTypeClassName;
     }
 
+    private static readonly string _objectFullname = typeof(object).FullName;
+
     public IEnumerable<Type> GetBaseTypes(Type type)
     {
-        if (type.BaseType == null || type.BaseType.FullName == typeof(object).FullName)
+        var next = type;
+        while (next.BaseType != null && next.BaseType.FullName != _objectFullname)
         {
-            return Enumerable.Empty<Type>();
+            yield return next.BaseType;
+            next = next.BaseType;
         }
-
-        return Enumerable.Repeat(type.BaseType, 1).Concat(GetBaseTypes(type.BaseType!));
     }
 
     public string GetDefElementName(Type defType)

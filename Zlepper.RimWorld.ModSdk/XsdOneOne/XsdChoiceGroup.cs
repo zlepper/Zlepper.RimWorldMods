@@ -9,5 +9,6 @@ public class XsdChoiceGroup : XsdGroup
     public override void Sort()
     {
         base.Sort();
+        SortElements();
     }
 }

@@ -24,20 +24,28 @@ public class GenerateXdsFilesForDefs : Task
     {
         try
         {
+            NextMeasure();
             using var context = GetReferencedAssemblies();
-
+            NextMeasure("Get referenced assemblies");
+            
             var assemblies = context.GetAssemblies().ToList();
+            NextMeasure("Get assemblies");
 
             var allTypes = GetAllTypes(assemblies);
+            NextMeasure("Get all types");
 
             var currentlyDefinedDefs = GetCurrentDefinedDefs(allTypes);
+            NextMeasure("Get currently defined defs");
 
-            var converter = new DefToSchemaConverter(_defContext, currentlyDefinedDefs);
+            var schemaMeasures = new TimeMeasuringTool();
+            var converter = new DefToSchemaConverter(_defContext, currentlyDefinedDefs, schemaMeasures);
 
             var schema = converter.CreateSchema(allTypes);
-
+            NextMeasure("Create schema");
+            schemaMeasures.Dump(Log);
 
             XmlUtilities.WriteSchemaToFile(XmlSchemaFileName, schema);
+            NextMeasure("Write schema to file");
         }
         catch (Exception e)
         {
@@ -45,6 +53,17 @@ public class GenerateXdsFilesForDefs : Task
         }
 
         return !Log.HasLoggedErrors;
+    }
+
+    private readonly Stopwatch _stopwatch = new();
+    
+    private void NextMeasure(string finishedText = "")
+    {
+        if (_stopwatch.IsRunning)
+        {
+            Log.LogMessage( "Finished {0} in {1}ms", finishedText, _stopwatch.ElapsedMilliseconds);
+        }
+        _stopwatch.Restart();
     }
 
     private IReadOnlyDictionary<Type, List<string>> GetCurrentDefinedDefs(List<Type> defClasses)
@@ -57,7 +76,10 @@ public class GenerateXdsFilesForDefs : Task
 
         var defReader = new DefReader(defClasses, _defContext);
 
-        return defReader.ReadAllDefFiles(files, Log);
+        var d = defReader.ReadAllDefFiles(files, Log);
+
+        defReader.Dump(Log);
+        return d;
     }
 
     private List<Type> GetAllTypes(IEnumerable<Assembly> assemblies)

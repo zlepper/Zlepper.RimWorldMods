@@ -19,4 +19,11 @@ public class CompProperties
 public class CompProperties_Foo : CompProperties
 {
     public string SomeValue = null!;
+
+    public Action DoSomething = null!;
+}
+
+public class CompProperties_FooFoo : CompProperties_Foo
+{
+    public int AnotherValue;
 }
