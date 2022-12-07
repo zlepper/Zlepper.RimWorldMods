@@ -5,10 +5,9 @@ using Verse.Sound;
 
 namespace Zlepper.RimWorld.CraftingEnhancements;
 
-[HarmonyPatch(typeof(Dialog_BillConfig), nameof(Dialog_BillConfig.DoWindowContents))]
-public static class Dialog_BillConfig_DoWindowContents_Patches
+[HarmonyPatch(typeof(Dialog_BillConfig), nameof(Dialog_BillConfig.DoWindowContents), typeof(Rect))]
+public static class Dialog_BillConfig_DoWindowContents_AddOutputCopyButtons
 {
-    [HarmonyPatch(nameof(Dialog_BillConfig.DoWindowContents), typeof(Rect))]
     [HarmonyTranspiler]
     public static IEnumerable<CodeInstruction> AddCopyButtons(IEnumerable<CodeInstruction> instructions)
     {
@@ -18,8 +17,6 @@ public static class Dialog_BillConfig_DoWindowContents_Patches
         var targetCountField = AccessTools.Field(typeof(BillRepeatModeDefOf), nameof(BillRepeatModeDefOf.TargetCount));
         var labelMethod = AccessTools.Method(typeof(Listing_Standard), nameof(Listing_Standard.Label),
             new[] {typeof(string), typeof(float), typeof(string)});
-        var targetCountEditBufferField = AccessTools.Field(typeof(Dialog_BillConfig), "targetCountEditBuffer");
-        var unpauseCountEditBufferField = AccessTools.Field(typeof(Dialog_BillConfig), "unpauseCountEditBuffer");
 
         for (var i = 0; i < insts.Count; i++)
         {
@@ -64,7 +61,7 @@ public static class Dialog_BillConfig_DoWindowContents_Patches
                                     // Load "listing" local variable
                                     new CodeInstruction(listingInstruction.opcode, listingInstruction.operand),
                                     // Call injected method
-                                    CodeInstruction.Call(typeof(Dialog_BillConfig_DoWindowContents_Patches),
+                                    CodeInstruction.Call(typeof(Dialog_BillConfig_DoWindowContents_AddOutputCopyButtons),
                                         nameof(AddCopyButtons_New), new[]
                                         {
                                             typeof(Bill_Production),

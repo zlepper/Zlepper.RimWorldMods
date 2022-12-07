@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <LanguageData>
-    <ZRCE_CopyRepeatParameters>Copy repeat parameters.</ZRCE_CopyRepeatParameters>
-    <ZRCE_PasteRepeatParameters>Paste repeat parameters.</ZRCE_PasteRepeatParameters>
+    <ZRCE_CopyRepeatParameters>Copy parameters.</ZRCE_CopyRepeatParameters>
+    <ZRCE_PasteRepeatParameters>Paste parameters.</ZRCE_PasteRepeatParameters>
+    <ZRCE_ApplyRepeatParametersToAllBillsInTable>Apply repeat parameters to all bills in table.</ZRCE_ApplyRepeatParametersToAllBillsInTable>
+    <ZRCE_ApplyFitlerParametersToAllBillsInTable>Apply material filter to all bills in table.</ZRCE_ApplyFitlerParametersToAllBillsInTable>
 </LanguageData>

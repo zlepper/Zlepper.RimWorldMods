@@ -2,4 +2,12 @@
 <LanguageData>
     <ZRCE_CopyRepeatParameters>Copy parameters.</ZRCE_CopyRepeatParameters>
     <ZRCE_PasteRepeatParameters>Paste parameters.</ZRCE_PasteRepeatParameters>
+    
+    <ZRCE_ApplyRepeatParametersToAllBillsInTable>Apply repeat parameters to all bills in table.</ZRCE_ApplyRepeatParametersToAllBillsInTable>
+    <ZRCE_NoRecipesAvailableForPasting>No other recipes available for pasting against.</ZRCE_NoRecipesAvailableForPasting>
+    <ZRCE_ApplyRepeatToRecipesMessage>Applied repeat settings to {0} recipes.</ZRCE_ApplyRepeatToRecipesMessage>
+    
+    
+    <ZRCE_ApplyFitlerParametersToAllBillsInTable>Apply material filter to all bills in table.</ZRCE_ApplyFitlerParametersToAllBillsInTable>
+    <ZRCE_ApplyMaterialFilterToRecipesMessage>Applied filter to {0} recipes.</ZRCE_ApplyMaterialFilterToRecipesMessage>
 </LanguageData>
