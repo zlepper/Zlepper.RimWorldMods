@@ -26,6 +26,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.ModSdk.Tes
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.CraftingEnhancements", "Zlepper.RimWorld.CraftingEnhancements\Zlepper.RimWorld.CraftingEnhancements.csproj", "{ED110AC6-A3FB-4F07-8E4F-6751E96F5321}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Zlepper.RimWorld.RoyaltyImprovements", "Zlepper.RimWorld.RoyaltyImprovements\Zlepper.RimWorld.RoyaltyImprovements.csproj", "{7976EA79-6BD8-4531-8EF1-2F5E2679C475}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,5 +86,9 @@ Global
 		{ED110AC6-A3FB-4F07-8E4F-6751E96F5321}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED110AC6-A3FB-4F07-8E4F-6751E96F5321}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED110AC6-A3FB-4F07-8E4F-6751E96F5321}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7976EA79-6BD8-4531-8EF1-2F5E2679C475}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7976EA79-6BD8-4531-8EF1-2F5E2679C475}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7976EA79-6BD8-4531-8EF1-2F5E2679C475}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7976EA79-6BD8-4531-8EF1-2F5E2679C475}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

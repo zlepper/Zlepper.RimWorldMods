@@ -1,0 +1,20 @@
+<Project Sdk="$(MSBuildProjectDirectory)\..\Zlepper.RimWorld.ModSdk">
+
+    <PropertyGroup>
+        <IncludeHugsLib>true</IncludeHugsLib>
+        <IncludeHarmony>true</IncludeHarmony>
+        <RimWorldModName>Zlepper's Royalty Improvements</RimWorldModName>
+        <RimWorldPackageId>Zlepper.RimWorld.RoyaltyImprovements</RimWorldPackageId>
+        <Authors>Zlepper</Authors>
+        <Description>Improves various things around Royalty that i find dissatisfying.</Description>
+        <RimWorldModUrl>https://github.com/zlepper/Zlepper.RimWorldMods/tree/master/Zlepper.RimWorld.RoyaltyImprovements</RimWorldModUrl>
+        <RootNamespace>Zlepper.RimWorld.RoyaltyImprovements</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Zlepper.RimWorld.ModSdk\Zlepper.RimWorld.ModSdk.csproj" ReferenceOutputAssembly="false" />
+    </ItemGroup>
+
+
+</Project>
+ 

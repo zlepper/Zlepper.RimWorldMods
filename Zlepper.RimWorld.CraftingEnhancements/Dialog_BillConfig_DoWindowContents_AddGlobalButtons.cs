@@ -8,7 +8,7 @@ namespace Zlepper.RimWorld.CraftingEnhancements;
 public class Dialog_BillConfig_DoWindowContents_AddGlobalButtons
 {
     [HarmonyPostfix]
-    public static void Postfix(Bill_Production ___bill, Rect inRect)
+    public static void Postfix(Bill_Production ___bill)
     {
         var buttonRect = new Rect(20, 51, 24, 24);
         if (___bill.billStack.Count > 1)
