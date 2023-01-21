@@ -192,6 +192,12 @@
         <xs:element name="WorldObjectDef" type="WorldObjectDef" />
         <xs:element name="XenotypeDef" type="XenotypeDef" />
         <xs:element name="XenotypeIconDef" type="XenotypeIconDef" />
+        <xs:element name="Zlepper.RimWorld.PersonalitySurgery.PassionThingDef" type="Zlepper.RimWorld.PersonalitySurgery.PassionThingDef" />
+        <xs:element name="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractPassionRecipeDef" type="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractPassionRecipeDef" />
+        <xs:element name="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractTraitRecipeDef" type="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractTraitRecipeDef" />
+        <xs:element name="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallPassionRecipeDef" type="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallPassionRecipeDef" />
+        <xs:element name="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallTraitRecipeDef" type="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallTraitRecipeDef" />
+        <xs:element name="Zlepper.RimWorld.PersonalitySurgery.TraitThingDef" type="Zlepper.RimWorld.PersonalitySurgery.TraitThingDef" />
       </xs:choice>
     </xs:complexType>
   </xs:element>
@@ -4471,6 +4477,15 @@
               </xs:restriction>
             </xs:simpleType>
           </xs:element>
+          <xs:element minOccurs="0" name="Passion">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="Major" />
+                <xs:enumeration value="Minor" />
+                <xs:enumeration value="None" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
           <xs:element minOccurs="0" name="pathCost" type="xs:int" />
           <xs:element minOccurs="0" name="pathCostIgnoreRepeat" type="xs:boolean" />
           <xs:element minOccurs="0" name="pawnFlyer" type="PawnFlyerProperties" />
@@ -4543,6 +4558,7 @@
           <xs:element minOccurs="0" name="seeThroughFog" type="xs:boolean" />
           <xs:element minOccurs="0" name="selectable" type="xs:boolean" />
           <xs:element minOccurs="0" name="size" type="IntVec2" />
+          <xs:element minOccurs="0" name="SkillDef" type="SkillDef.Enumeration" />
           <xs:element minOccurs="0" name="skyfaller" type="SkyfallerProperties" />
           <xs:element minOccurs="0" name="slagDef" type="ThingDef.Enumeration" />
           <xs:element minOccurs="0" name="smallVolume" type="xs:boolean" />
@@ -4671,6 +4687,8 @@
               </xs:choice>
             </xs:complexType>
           </xs:element>
+          <xs:element minOccurs="0" name="Trait" type="TraitDef.Enumeration" />
+          <xs:element minOccurs="0" name="TraitDegree" type="xs:int" />
           <xs:element minOccurs="0" name="traversedThought" type="ThoughtDef.Enumeration" />
           <xs:element minOccurs="0" name="uiIconForStackCount" type="xs:int" />
           <xs:element minOccurs="0" name="uiIconPath" type="xs:string" />
@@ -6026,6 +6044,8 @@
     <xs:restriction base="xs:string">
       <xs:enumeration value="TerrainDef" />
       <xs:enumeration value="ThingDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.PassionThingDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.TraitThingDef" />
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="BuildingProperties">
@@ -11425,6 +11445,7 @@
       <xs:enumeration value="CompProperties_WakeUpDormant" />
       <xs:enumeration value="CompProperties_WasteProducer" />
       <xs:enumeration value="CompProperties_WindSource" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.CompPropertiesLabel" />
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="ConceptDef">
@@ -12111,6 +12132,15 @@
       <xs:element name="WorldObjectDef" type="WorldObjectDef.Enumeration" />
       <xs:element name="XenotypeDef" type="XenotypeDef.Enumeration" />
       <xs:element name="XenotypeIconDef" type="XenotypeIconDef.Enumeration" />
+      <xs:element name="Zlepper.RimWorld.PersonalitySurgery.PassionThingDef" type="Zlepper.RimWorld.PersonalitySurgery.PassionThingDef.Enumeration" />
+      <xs:element name="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseBioRecipeDef" type="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseBioRecipeDef.Enumeration" />
+      <xs:element name="Zlepper.RimWorld.PersonalitySurgery.Recipes.BasePassionRecipeDef" type="Zlepper.RimWorld.PersonalitySurgery.Recipes.BasePassionRecipeDef.Enumeration" />
+      <xs:element name="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseTraitRecipeDef" type="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseTraitRecipeDef.Enumeration" />
+      <xs:element name="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractPassionRecipeDef" type="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractPassionRecipeDef.Enumeration" />
+      <xs:element name="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractTraitRecipeDef" type="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractTraitRecipeDef.Enumeration" />
+      <xs:element name="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallPassionRecipeDef" type="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallPassionRecipeDef.Enumeration" />
+      <xs:element name="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallTraitRecipeDef" type="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallTraitRecipeDef.Enumeration" />
+      <xs:element name="Zlepper.RimWorld.PersonalitySurgery.TraitThingDef" type="Zlepper.RimWorld.PersonalitySurgery.TraitThingDef.Enumeration" />
     </xs:choice>
   </xs:complexType>
   <xs:simpleType name="defLabel">
@@ -13280,9 +13310,46 @@
       <xs:element minOccurs="0" name="carryThingAfterJob" type="xs:boolean" />
       <xs:element minOccurs="0" name="castEdgeShadows" type="xs:boolean" />
       <xs:element minOccurs="0" name="casualInterruptible" type="xs:boolean" />
-      <xs:element minOccurs="0" name="category" type="xs:string" />
+      <xs:element minOccurs="0" name="category" type="AbilityCategoryDef.Enumeration" />
+      <xs:element minOccurs="0" name="category" type="StatCategoryDef.Enumeration" />
       <xs:element minOccurs="0" name="category" type="KeyBindingCategoryDef.Enumeration" />
+      <xs:element minOccurs="0" name="category" type="xs:string" />
+      <xs:element minOccurs="0" name="category">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Normal" />
+            <xs:enumeration value="Structure" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="category" type="IncidentCategoryDef.Enumeration" />
       <xs:element minOccurs="0" name="category" type="StyleItemCategoryDef.Enumeration" />
+      <xs:element minOccurs="0" name="category">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Fixed" />
+            <xs:enumeration value="GameCondition" />
+            <xs:enumeration value="Misc" />
+            <xs:enumeration value="PlayerPawnFilter" />
+            <xs:enumeration value="PlayerPawnModifier" />
+            <xs:enumeration value="Rule" />
+            <xs:enumeration value="StartingImportant" />
+            <xs:enumeration value="StartingItem" />
+            <xs:enumeration value="Undefined" />
+            <xs:enumeration value="WorldThing" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="category">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Aggro" />
+            <xs:enumeration value="Malicious" />
+            <xs:enumeration value="Misc" />
+            <xs:enumeration value="Undefined" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
       <xs:element minOccurs="0" name="category">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -13301,43 +13368,6 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
-      <xs:element minOccurs="0" name="category" type="IncidentCategoryDef.Enumeration" />
-      <xs:element minOccurs="0" name="category">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Aggro" />
-            <xs:enumeration value="Malicious" />
-            <xs:enumeration value="Misc" />
-            <xs:enumeration value="Undefined" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-      <xs:element minOccurs="0" name="category">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Fixed" />
-            <xs:enumeration value="GameCondition" />
-            <xs:enumeration value="Misc" />
-            <xs:enumeration value="PlayerPawnFilter" />
-            <xs:enumeration value="PlayerPawnModifier" />
-            <xs:enumeration value="Rule" />
-            <xs:enumeration value="StartingImportant" />
-            <xs:enumeration value="StartingItem" />
-            <xs:enumeration value="Undefined" />
-            <xs:enumeration value="WorldThing" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-      <xs:element minOccurs="0" name="category" type="AbilityCategoryDef.Enumeration" />
-      <xs:element minOccurs="0" name="category">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Normal" />
-            <xs:enumeration value="Structure" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-      <xs:element minOccurs="0" name="category" type="StatCategoryDef.Enumeration" />
       <xs:element minOccurs="0" name="categoryDef" type="IdeoPresetCategoryDef.Enumeration" />
       <xs:element minOccurs="0" name="categoryTag" type="xs:string" />
       <xs:element minOccurs="0" name="causesNeed" type="NeedDef.Enumeration" />
@@ -13456,27 +13486,6 @@
       <xs:element minOccurs="0" name="comps">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="CompProperties" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="comps">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="HediffCompProperties" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="comps">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="SurgeryOutcomeComp" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="comps">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="AbilityCompProperties" />
           </xs:choice>
         </xs:complexType>
@@ -13491,6 +13500,13 @@
       <xs:element minOccurs="0" name="comps">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="HediffCompProperties" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="comps">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="WorldObjectCompProperties" />
           </xs:choice>
         </xs:complexType>
@@ -13498,7 +13514,21 @@
       <xs:element minOccurs="0" name="comps">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="PreceptComp" />
+            <xs:element name="li" type="SurgeryOutcomeComp" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="comps">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="CompProperties" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="comps">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="CompProperties_RitualVisualEffect" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -13512,7 +13542,7 @@
       <xs:element minOccurs="0" name="comps">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="CompProperties_RitualVisualEffect" />
+            <xs:element name="li" type="PreceptComp" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -13868,8 +13898,8 @@
       <xs:element minOccurs="0" name="dialogMilitaryAidSent" type="xs:string" />
       <xs:element minOccurs="0" name="diedThought" type="ThoughtDef.Enumeration" />
       <xs:element minOccurs="0" name="diedThoughtFemale" type="ThoughtDef.Enumeration" />
-      <xs:element minOccurs="0" name="difficulty" type="xs:float" />
       <xs:element minOccurs="0" name="difficulty" type="xs:int" />
+      <xs:element minOccurs="0" name="difficulty" type="xs:float" />
       <xs:element minOccurs="0" name="directOrderable" type="xs:boolean" />
       <xs:element minOccurs="0" name="directTestable" type="xs:boolean" />
       <xs:element minOccurs="0" name="disableAdaptiveTraining" type="xs:boolean" />
@@ -14093,7 +14123,6 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
-      <xs:element minOccurs="0" name="disallowedTraits" type="BackstoryTrait" />
       <xs:element minOccurs="0" name="disallowedTraits">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -14101,6 +14130,7 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="disallowedTraits" type="BackstoryTrait" />
       <xs:element minOccurs="0" name="disallowedTraitsWithDegree" type="TraitRequirement" />
       <xs:element minOccurs="0" name="disallowFarmingCamps" type="xs:boolean" />
       <xs:element minOccurs="0" name="disallowHuntingCamps" type="xs:boolean" />
@@ -14222,8 +14252,8 @@ It will fade out linearly until the camera distance reaches its max.</xs:documen
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
-      <xs:element minOccurs="0" name="durationDays" type="FloatRange" />
       <xs:element minOccurs="0" name="durationDays" type="xs:float" />
+      <xs:element minOccurs="0" name="durationDays" type="FloatRange" />
       <xs:element minOccurs="0" name="durationRandomRange" type="FloatRange" />
       <xs:element minOccurs="0" name="durationRange" type="IntRange" />
       <xs:element minOccurs="0" name="durationTicks" type="IntRange" />
@@ -14629,6 +14659,7 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="forcedSlowdown" type="xs:boolean" />
+      <xs:element minOccurs="0" name="forcedTraits" type="BackstoryTrait" />
       <xs:element minOccurs="0" name="forcedTraits">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -14636,7 +14667,6 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
           </xs:choice>
         </xs:complexType>
       </xs:element>
-      <xs:element minOccurs="0" name="forcedTraits" type="BackstoryTrait" />
       <xs:element minOccurs="0" name="forcedTraits" type="TraitRequirement" />
       <xs:element minOccurs="0" name="forceExitAndRemoveMapCountdownDurationDays" type="xs:float" />
       <xs:element minOccurs="0" name="forceFaceUpPosture" type="xs:boolean" />
@@ -14776,8 +14806,8 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
       </xs:element>
       <xs:element minOccurs="0" name="geneToleranceBuildupFactorImmune" type="xs:float" />
       <xs:element minOccurs="0" name="geneToleranceBuildupFactorResist" type="xs:float" />
-      <xs:element minOccurs="0" name="genStep" type="GenStepDef.Enumeration" />
       <xs:element minOccurs="0" name="genStep" type="GenStep" />
+      <xs:element minOccurs="0" name="genStep" type="GenStepDef.Enumeration" />
       <xs:element minOccurs="0" name="genSteps">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -14819,16 +14849,16 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="graphic" type="Graphic" />
-      <xs:element minOccurs="0" name="graphicData" type="GraphicData" />
-      <xs:element minOccurs="0" name="graphicData" type="GraphicData" />
-      <xs:element minOccurs="0" name="graphicData" type="GraphicData" />
       <xs:element minOccurs="0" name="graphicData" type="GeneGraphicData" />
+      <xs:element minOccurs="0" name="graphicData" type="GraphicData" />
+      <xs:element minOccurs="0" name="graphicData" type="GraphicData" />
+      <xs:element minOccurs="0" name="graphicData" type="GraphicData" />
       <xs:element minOccurs="0" name="graphicPath" type="xs:string" />
       <xs:element minOccurs="0" name="graphLabelY" type="xs:string" />
       <xs:element minOccurs="0" name="groupAbility" type="xs:boolean" />
       <xs:element minOccurs="0" name="groupable" type="xs:boolean" />
-      <xs:element minOccurs="0" name="groupDef" type="AbilityGroupDef.Enumeration" />
       <xs:element minOccurs="0" name="groupDef" type="MemeGroupDef.Enumeration" />
+      <xs:element minOccurs="0" name="groupDef" type="AbilityGroupDef.Enumeration" />
       <xs:element minOccurs="0" name="groupLabel" type="xs:string" />
       <xs:element minOccurs="0" name="growthRate" type="xs:float" />
       <xs:element minOccurs="0" name="growthVatSpeedFactor" type="xs:float" />
@@ -15303,8 +15333,8 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
       <xs:element minOccurs="0" name="listOrder" type="xs:int" />
       <xs:element minOccurs="0" name="listOrder" type="xs:int" />
       <xs:element minOccurs="0" name="listOrderPriority" type="xs:float" />
-      <xs:element minOccurs="0" name="listPriority" type="xs:int" />
       <xs:element minOccurs="0" name="listPriority" type="xs:float" />
+      <xs:element minOccurs="0" name="listPriority" type="xs:int" />
       <xs:element minOccurs="0" name="listVisible" type="xs:boolean" />
       <xs:element minOccurs="0" name="logEntryDef" type="LogEntryDef.Enumeration" />
       <xs:element minOccurs="0" name="logRulesInitiator" type="Verse.Grammar.RulePack" />
@@ -15373,8 +15403,8 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
           <xs:documentation>The number of instances of this sound that can play at almost exactly the same moment. Handles cases like six gunners all firing their identical guns at the same time because a target came into view of all of them at the same time. Ordinarily this would make a painfully loud sound, but you can reduce it with this.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element minOccurs="0" name="maxSize" type="xs:int" />
       <xs:element minOccurs="0" name="maxSize" type="xs:float" />
+      <xs:element minOccurs="0" name="maxSize" type="xs:int" />
       <xs:element minOccurs="0" name="maxSpaceBetweenRootGroups" type="xs:int" />
       <xs:element minOccurs="0" name="maxSpeakerDistance" type="xs:int" />
       <xs:element minOccurs="0" name="maxTechLevel">
@@ -15524,8 +15554,8 @@ This setting may not work for on-camera sounds.</xs:documentation>
       <xs:element minOccurs="0" name="minRoyalTitle" type="RoyalTitleDef.Enumeration" />
       <xs:element minOccurs="0" name="minSettlementTemperatureChanceCurve" type="SimpleCurve" />
       <xs:element minOccurs="0" name="minSeverity" type="xs:float" />
-      <xs:element minOccurs="0" name="minSize" type="xs:float" />
       <xs:element minOccurs="0" name="minSize" type="xs:int" />
+      <xs:element minOccurs="0" name="minSize" type="xs:float" />
       <xs:element minOccurs="0" name="minTechLevel">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -15768,13 +15798,13 @@ This must match what the game expects from the sound Def with this name.</xs:doc
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="orbital" type="xs:boolean" />
+      <xs:element minOccurs="0" name="order" type="xs:int" />
+      <xs:element minOccurs="0" name="order" type="xs:int" />
+      <xs:element minOccurs="0" name="order" type="xs:float" />
+      <xs:element minOccurs="0" name="order" type="xs:int" />
+      <xs:element minOccurs="0" name="order" type="xs:int" />
       <xs:element minOccurs="0" name="order" type="xs:float" />
       <xs:element minOccurs="0" name="order" type="xs:float" />
-      <xs:element minOccurs="0" name="order" type="xs:float" />
-      <xs:element minOccurs="0" name="order" type="xs:int" />
-      <xs:element minOccurs="0" name="order" type="xs:int" />
-      <xs:element minOccurs="0" name="order" type="xs:int" />
-      <xs:element minOccurs="0" name="order" type="xs:int" />
       <xs:element minOccurs="0" name="order" type="xs:int" />
       <xs:element minOccurs="0" name="orderedTakeGroup" type="OrderedTakeGroupDef.Enumeration" />
       <xs:element minOccurs="0" name="otherMeme" type="MemeDef.Enumeration" />
@@ -15836,6 +15866,24 @@ This must match what the game expects from the sound Def with this name.</xs:doc
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
+      <xs:element minOccurs="0" name="Passion">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Major" />
+            <xs:enumeration value="Minor" />
+            <xs:enumeration value="None" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="Passion">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Major" />
+            <xs:enumeration value="Minor" />
+            <xs:enumeration value="None" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
       <xs:element minOccurs="0" name="passionMod" type="PassionMod" />
       <xs:element minOccurs="0" name="passionModType">
         <xs:simpleType>
@@ -15846,6 +15894,7 @@ This must match what the game expects from the sound Def with this name.</xs:doc
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
+      <xs:element minOccurs="0" name="PassionThing" type="Zlepper.RimWorld.PersonalitySurgery.PassionThingDef.Enumeration" />
       <xs:element minOccurs="0" name="passOnDirectly" type="xs:boolean" />
       <xs:element minOccurs="0" name="pathCost" type="xs:int" />
       <xs:element minOccurs="0" name="pathCostIgnoreRepeat" type="xs:boolean" />
@@ -16042,8 +16091,8 @@ Sustainers will choose a different random pitch for each sample.</xs:documentati
       <xs:element minOccurs="0" name="priceImpact" type="xs:boolean" />
       <xs:element minOccurs="0" name="priceOffset" type="xs:float" />
       <xs:element minOccurs="0" name="prioritizeSustains" type="xs:boolean" />
-      <xs:element minOccurs="0" name="priority" type="xs:float" />
       <xs:element minOccurs="0" name="priority" type="xs:int" />
+      <xs:element minOccurs="0" name="priority" type="xs:float" />
       <xs:element minOccurs="0" name="priorityInType" type="xs:int" />
       <xs:element minOccurs="0" name="priorityMode">
         <xs:annotation>
@@ -16841,8 +16890,8 @@ Sustained sounds should usually prioritize nearest, so if a new fire starts burn
       <xs:element minOccurs="0" name="roomlessScore" type="xs:float" />
       <xs:element minOccurs="0" name="roomRequirementCountCurve" type="SimpleCurve" />
       <xs:element minOccurs="0" name="roomRewardCrateFactor" type="xs:float" />
-      <xs:element minOccurs="0" name="root" type="ThingSetMaker" />
       <xs:element minOccurs="0" name="root" type="RimWorld.QuestGen.QuestNode" />
+      <xs:element minOccurs="0" name="root" type="ThingSetMaker" />
       <xs:element minOccurs="0" name="rootBiomes">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -17068,6 +17117,8 @@ Sustained sounds should usually prioritize nearest, so if a new fire starts burn
       <xs:element minOccurs="0" name="sittingOffset" type="xs:float" />
       <xs:element minOccurs="0" name="size" type="IntVec2" />
       <xs:element minOccurs="0" name="sketchResolverDef" type="SketchResolverDef.Enumeration" />
+      <xs:element minOccurs="0" name="Skill" type="SkillDef.Enumeration" />
+      <xs:element minOccurs="0" name="SkillDef" type="SkillDef.Enumeration" />
       <xs:element minOccurs="0" name="skillGains">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -17274,14 +17325,14 @@ Only works for on-camera sounds.</xs:documentation>
       <xs:element minOccurs="0" name="stages">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="ThoughtStage" />
+            <xs:element name="li" type="HediffStage" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="stages">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="HediffStage" />
+            <xs:element name="li" type="ThoughtStage" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -17324,7 +17375,6 @@ Only works for on-camera sounds.</xs:documentation>
       <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
       <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
       <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
-      <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
       <xs:element minOccurs="0" name="statFactors">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -17332,6 +17382,7 @@ Only works for on-camera sounds.</xs:documentation>
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
       <xs:element minOccurs="0" name="statFactorsExplanationHeader" type="xs:string" />
       <xs:element minOccurs="0" name="staticSunShadowHeight" type="xs:float" />
       <xs:element minOccurs="0" name="statOffsets" type="StatModifier" />
@@ -17536,6 +17587,13 @@ Only used if the sustainer is looped.</xs:documentation>
       <xs:element minOccurs="0" name="tags">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="tags">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="ResearchProjectTagDef.Enumeration" />
           </xs:choice>
         </xs:complexType>
@@ -17557,21 +17615,14 @@ Only used if the sustainer is looped.</xs:documentation>
       <xs:element minOccurs="0" name="tags">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="tags">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="BodyPartTagDef.Enumeration" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="tags">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="xs:string" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="tags">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="xs:string" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -18024,6 +18075,11 @@ Only used if the sustainer is looped.</xs:documentation>
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="trainable" type="TrainableDef.Enumeration" />
+      <xs:element minOccurs="0" name="Trait" type="TraitDef.Enumeration" />
+      <xs:element minOccurs="0" name="Trait" type="TraitDef.Enumeration" />
+      <xs:element minOccurs="0" name="TraitDegree" type="xs:int" />
+      <xs:element minOccurs="0" name="TraitDegree" type="xs:int" />
+      <xs:element minOccurs="0" name="TraitThing" type="Zlepper.RimWorld.PersonalitySurgery.TraitThingDef.Enumeration" />
       <xs:element minOccurs="0" name="traversedThought" type="ThoughtDef.Enumeration" />
       <xs:element minOccurs="0" name="treeDef" type="ThingDef.Enumeration" />
       <xs:element minOccurs="0" name="treeGenStepDef" type="GenStepDef.Enumeration" />
@@ -18062,9 +18118,9 @@ Only used if the sustainer is looped.</xs:documentation>
       </xs:element>
       <xs:element minOccurs="0" name="uiIconScale" type="xs:float" />
       <xs:element minOccurs="0" name="uiIconThing" type="ThingDef.Enumeration" />
+      <xs:element minOccurs="0" name="uiOrder" type="xs:float" />
+      <xs:element minOccurs="0" name="uiOrder" type="xs:float" />
       <xs:element minOccurs="0" name="uiOrder" type="xs:int" />
-      <xs:element minOccurs="0" name="uiOrder" type="xs:float" />
-      <xs:element minOccurs="0" name="uiOrder" type="xs:float" />
       <xs:element minOccurs="0" name="uiOrder" type="xs:int" />
       <xs:element minOccurs="0" name="unfinishedThingDef" type="ThingDef.Enumeration" />
       <xs:element minOccurs="0" name="unlockedMeditationTypesTemp">
@@ -18121,8 +18177,8 @@ Only used if the sustainer is looped.</xs:documentation>
       <xs:element minOccurs="0" name="veneratedAnimalsCountOffset" type="xs:int" />
       <xs:element minOccurs="0" name="veneratedAnimalsCountOverride" type="xs:int" />
       <xs:element minOccurs="0" name="verb" type="xs:string" />
-      <xs:element minOccurs="0" name="verb" type="VerbProperties" />
       <xs:element minOccurs="0" name="verb" type="xs:string" />
+      <xs:element minOccurs="0" name="verb" type="VerbProperties" />
       <xs:element minOccurs="0" name="verbProperties" type="VerbProperties" />
       <xs:element minOccurs="0" name="verbs">
         <xs:complexType>
@@ -18254,10 +18310,10 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="worker" type="GatheringWorker" />
       <xs:element minOccurs="0" name="worker" type="PreceptWorker" />
       <xs:element minOccurs="0" name="worker" type="WeaponTraitWorker" />
       <xs:element minOccurs="0" name="worker" type="RoyalTitlePermitWorker" />
-      <xs:element minOccurs="0" name="worker" type="GatheringWorker" />
       <xs:element minOccurs="0" name="workerClass" type="xs:string" />
       <xs:element minOccurs="0" name="workerClass" type="xs:string" />
       <xs:element minOccurs="0" name="workerClass" type="xs:string" />
@@ -18611,6 +18667,15 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:enumeration value="WorldObjectDef" />
       <xs:enumeration value="XenotypeDef" />
       <xs:enumeration value="XenotypeIconDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.PassionThingDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseBioRecipeDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.BasePassionRecipeDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseTraitRecipeDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractPassionRecipeDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractTraitRecipeDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallPassionRecipeDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallTraitRecipeDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.TraitThingDef" />
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="EffecterDef">
@@ -46321,7 +46386,6 @@ This value must match what the game expects from the SubSoundDef with this name.
       <xs:enumeration value="ResearchSpeed" />
       <xs:enumeration value="ResearchSpeedFactor" />
       <xs:enumeration value="RestFallRateFactor" />
-      <xs:enumeration value="RestFallRateFactor" />
       <xs:enumeration value="RestRateMultiplier" />
       <xs:enumeration value="RoyalFavorValue" />
       <xs:enumeration value="SellPriceFactor" />
@@ -60821,4 +60885,171 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="xenotypeChances" type="XenotypeChance" />
     </xs:all>
   </xs:complexType>
+  <xs:complexType name="Zlepper.RimWorld.PersonalitySurgery.CompPropertiesLabel">
+    <xs:complexContent>
+      <xs:extension base="CompProperties">
+        <xs:all />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="Zlepper.RimWorld.PersonalitySurgery.PassionThingDef">
+    <xs:complexContent>
+      <xs:extension base="ThingDef">
+        <xs:all>
+          <xs:element minOccurs="0" name="Passion">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="Major" />
+                <xs:enumeration value="Minor" />
+                <xs:enumeration value="None" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element minOccurs="0" name="SkillDef" type="SkillDef.Enumeration" />
+        </xs:all>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="Zlepper.RimWorld.PersonalitySurgery.PassionThingDef.Enumeration">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:complexType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseBioRecipeDef">
+    <xs:complexContent>
+      <xs:extension base="RecipeDef">
+        <xs:all>
+          <xs:element minOccurs="0" name="Passion">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="Major" />
+                <xs:enumeration value="Minor" />
+                <xs:enumeration value="None" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element minOccurs="0" name="PassionThing" type="Zlepper.RimWorld.PersonalitySurgery.PassionThingDef.Enumeration" />
+          <xs:element minOccurs="0" name="Skill" type="SkillDef.Enumeration" />
+          <xs:element minOccurs="0" name="Trait" type="TraitDef.Enumeration" />
+          <xs:element minOccurs="0" name="TraitDegree" type="xs:int" />
+          <xs:element minOccurs="0" name="TraitThing" type="Zlepper.RimWorld.PersonalitySurgery.TraitThingDef.Enumeration" />
+        </xs:all>
+        <xs:attribute name="Class" type="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseBioRecipeDef.SubTypes" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseBioRecipeDef.Enumeration">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseBioRecipeDef.SubTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.BasePassionRecipeDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseTraitRecipeDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractPassionRecipeDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractTraitRecipeDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallPassionRecipeDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallTraitRecipeDef" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.BasePassionRecipeDef">
+    <xs:complexContent>
+      <xs:extension base="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseBioRecipeDef">
+        <xs:all>
+          <xs:element minOccurs="0" name="Passion">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="Major" />
+                <xs:enumeration value="Minor" />
+                <xs:enumeration value="None" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element minOccurs="0" name="PassionThing" type="Zlepper.RimWorld.PersonalitySurgery.PassionThingDef.Enumeration" />
+          <xs:element minOccurs="0" name="Skill" type="SkillDef.Enumeration" />
+        </xs:all>
+        <xs:attribute name="Class" type="Zlepper.RimWorld.PersonalitySurgery.Recipes.BasePassionRecipeDef.SubTypes" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.BasePassionRecipeDef.Enumeration">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.BasePassionRecipeDef.SubTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractPassionRecipeDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallPassionRecipeDef" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseTraitRecipeDef">
+    <xs:complexContent>
+      <xs:extension base="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseBioRecipeDef">
+        <xs:all>
+          <xs:element minOccurs="0" name="Trait" type="TraitDef.Enumeration" />
+          <xs:element minOccurs="0" name="TraitDegree" type="xs:int" />
+          <xs:element minOccurs="0" name="TraitThing" type="Zlepper.RimWorld.PersonalitySurgery.TraitThingDef.Enumeration" />
+        </xs:all>
+        <xs:attribute name="Class" type="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseTraitRecipeDef.SubTypes" />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseTraitRecipeDef.Enumeration">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:simpleType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseTraitRecipeDef.SubTypes">
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractTraitRecipeDef" />
+      <xs:enumeration value="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallTraitRecipeDef" />
+    </xs:restriction>
+  </xs:simpleType>
+  <xs:complexType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractPassionRecipeDef">
+    <xs:complexContent>
+      <xs:extension base="Zlepper.RimWorld.PersonalitySurgery.Recipes.BasePassionRecipeDef">
+        <xs:all />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractPassionRecipeDef.Enumeration">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:complexType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractTraitRecipeDef">
+    <xs:complexContent>
+      <xs:extension base="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseTraitRecipeDef">
+        <xs:all />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.ExtractTraitRecipeDef.Enumeration">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:complexType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallPassionRecipeDef">
+    <xs:complexContent>
+      <xs:extension base="Zlepper.RimWorld.PersonalitySurgery.Recipes.BasePassionRecipeDef">
+        <xs:all />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallPassionRecipeDef.Enumeration">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:complexType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallTraitRecipeDef">
+    <xs:complexContent>
+      <xs:extension base="Zlepper.RimWorld.PersonalitySurgery.Recipes.BaseTraitRecipeDef">
+        <xs:all />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="Zlepper.RimWorld.PersonalitySurgery.Recipes.InstallTraitRecipeDef.Enumeration">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:complexType name="Zlepper.RimWorld.PersonalitySurgery.TraitThingDef">
+    <xs:complexContent>
+      <xs:extension base="ThingDef">
+        <xs:all>
+          <xs:element minOccurs="0" name="Trait" type="TraitDef.Enumeration" />
+          <xs:element minOccurs="0" name="TraitDegree" type="xs:int" />
+        </xs:all>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="Zlepper.RimWorld.PersonalitySurgery.TraitThingDef.Enumeration">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
 </xs:schema>

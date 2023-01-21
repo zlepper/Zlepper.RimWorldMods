@@ -13,6 +13,7 @@ namespace Zlepper.RimWorld.ModSdk.Tasks;
 public class GenerateXdsFilesForDefs : Task
 {
     [Required] public ITaskItem[] References { get; set; } = null!;
+    [Required] public ITaskItem[] RimWorldCompilationResult { get; set; } = null!;
 
     [Required] public ITaskItem[] RimWorldDefFiles { get; set; } = null!;
 
@@ -109,6 +110,7 @@ public class GenerateXdsFilesForDefs : Task
     {
         var coreAssembly = typeof(string).Assembly;
         var assemblyPaths = References
+            .Concat(RimWorldCompilationResult)
             .Select(reference =>
             {
                 var fullPath = reference.GetMetadata("FullPath");
@@ -122,6 +124,7 @@ public class GenerateXdsFilesForDefs : Task
                 return null;
             })
             .OfType<string>()
+            .Where(s => s.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
             .Prepend(coreAssembly.Location)
             .ToList();
 

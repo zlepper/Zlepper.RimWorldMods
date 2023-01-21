@@ -46321,7 +46321,6 @@ This value must match what the game expects from the SubSoundDef with this name.
       <xs:enumeration value="ResearchSpeed" />
       <xs:enumeration value="ResearchSpeedFactor" />
       <xs:enumeration value="RestFallRateFactor" />
-      <xs:enumeration value="RestFallRateFactor" />
       <xs:enumeration value="RestRateMultiplier" />
       <xs:enumeration value="RoyalFavorValue" />
       <xs:enumeration value="SellPriceFactor" />

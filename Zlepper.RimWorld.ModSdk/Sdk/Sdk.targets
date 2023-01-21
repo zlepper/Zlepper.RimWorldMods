@@ -181,8 +181,8 @@
         <DefsXsdFileName>Defs/DefsSchema.xsd</DefsXsdFileName>
     </PropertyGroup>
     
-    <Target Name="GenerateDefXsds" AfterTargets="Build" Inputs="@(RimWorldDefFiles);@(Reference)" Outputs="$(DefsXsdFileName)" Condition="'@(RimWorldResourceDefs)' != ''">
-        <GenerateXdsFilesForDefs References="@(Reference)" RimWorldDefFiles="@(RimWorldDefFiles)" XmlSchemaFileName="$(DefsXsdFileName)" />
+    <Target Name="GenerateDefXsds" AfterTargets="Build;CopyMod" Inputs="@(RimWorldDefFiles);@(Reference);@(RimWorldCompilationResult)" Outputs="$(DefsXsdFileName)" Condition="'@(RimWorldResourceDefs)' != ''">
+        <GenerateXdsFilesForDefs References="@(Reference)" RimWorldCompilationResult="@(RimWorldCompilationResult)" RimWorldDefFiles="@(RimWorldDefFiles)" XmlSchemaFileName="$(DefsXsdFileName)" />
     </Target>
     
     <Target Name="LinkXsds" AfterTargets="GenerateDefXsds" Condition="Exists('$(DefsXsdFileName)') and '@(RimWorldResourceDefs)' != ''">
