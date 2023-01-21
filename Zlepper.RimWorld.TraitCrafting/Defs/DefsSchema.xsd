@@ -6105,6 +6105,7 @@
       <xs:element minOccurs="0" name="instrumentRange" type="xs:float" />
       <xs:element minOccurs="0" name="isEdifice" type="xs:boolean" />
       <xs:element minOccurs="0" name="isFence" type="xs:boolean" />
+      <xs:element minOccurs="0" name="isHopper" type="xs:boolean" />
       <xs:element minOccurs="0" name="isInert" type="xs:boolean" />
       <xs:element minOccurs="0" name="isInsectCocoon" type="xs:boolean" />
       <xs:element minOccurs="0" name="isMealSource" type="xs:boolean" />

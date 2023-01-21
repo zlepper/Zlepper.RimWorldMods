@@ -11,6 +11,17 @@
   </supportedVersions>
   <modDependencies>
     <li>
+      <packageId>VanillaExpanded.VPsycastsE</packageId>
+      <displayName>Vanilla Psycasts Expanded</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2842502659</steamWorkshopUrl>
+    </li>
+    <li>
+      <packageId>OskarPotocki.VanillaFactionsExpanded.Core</packageId>
+      <displayName>Vanilla Expanded Framework</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2023507013</steamWorkshopUrl>
+      <downloadUrl />
+    </li>
+    <li>
       <packageId>brrainz.harmony</packageId>
       <displayName>Harmony</displayName>
       <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
@@ -24,6 +35,8 @@
     </li>
   </modDependencies>
   <loadAfter>
+    <li>VanillaExpanded.VPsycastsE</li>
+    <li>OskarPotocki.VanillaFactionsExpanded.Core</li>
     <li>brrainz.harmony</li>
     <li>UnlimitedHugs.HugsLib</li>
   </loadAfter>

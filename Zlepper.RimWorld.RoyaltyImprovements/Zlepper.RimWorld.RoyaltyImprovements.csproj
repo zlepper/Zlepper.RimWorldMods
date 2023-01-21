@@ -13,6 +13,7 @@
 
     <ItemGroup>
         <ProjectReference Include="..\Zlepper.RimWorld.ModSdk\Zlepper.RimWorld.ModSdk.csproj" ReferenceOutputAssembly="false" />
+        <RimWorldSteamModDependency Include="vanillaexpanded.vpsycastse;oskarpotocki.vanillafactionsexpanded.core" />
     </ItemGroup>
 
 

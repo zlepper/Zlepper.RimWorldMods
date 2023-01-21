@@ -111,7 +111,7 @@ public class DefToSchemaConverter
             catch (UnwindingStackOverflowException e)
             {
                 throw new UnwindingStackOverflowException(
-                    $"Detected possible stackoverflow when checking def {defType}",
+                    $"Detected possible stackoverflow when checking def {defType}\n{e.Message}",
                     e);
             }
         }
@@ -646,7 +646,7 @@ public class DefToSchemaConverter
         catch (UnwindingStackOverflowException e)
         {
             throw new UnwindingStackOverflowException(
-                $"Detected possible stackoverflow: Can't handle field {field.Name} of type {type} on class {field.DeclaringType}. Full field type: {field.FieldType}. Base base type: {type.BaseType}",
+                $"Detected possible stackoverflow: Can't handle field {field.Name} of type {type} on class {field.DeclaringType}. Full field type: {field.FieldType}. Base base type: {type.BaseType}\n{e.Message}",
                 e);
         }
         catch (NotImplementedException e)

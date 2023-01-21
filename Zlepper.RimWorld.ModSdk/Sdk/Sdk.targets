@@ -102,6 +102,8 @@
             <Output TaskParameter="MatchedReferences" ItemName="Reference"/>
             <Output TaskParameter="ModDefFiles" ItemName="RimWorldDefFiles"/>
         </CreateModAssemblyReferences>
+        
+        <Message Importance="high" Text="@(Reference)" />
     </Target>
 
 

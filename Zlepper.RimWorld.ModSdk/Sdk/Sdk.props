@@ -16,7 +16,7 @@
 
 
     <Target Name="ValidateModSdkPath" BeforeTargets="BeforeBuild">
-        <Error Condition="'$(_ModSdkDllPath)' == ''" Text="ModSdk could not find itself, this is probably a bug in the Zlepper.RimWorld.ModSdk."/>
+        <Error Condition="'$(_ModSdkDllPath)' == ''" Text="ModSdk could not find itself, this is probably a bug in the Zlepper.RimWorld.ModSdk. Looking from: '$(MSBuildThisFileDirectory)' for configuration '$(Configuration)'"/>
     </Target>
 
     <UsingTask Condition="'$(_ModSdkDllPath)' != '' and '$(_UsingDevModSdkDll)' == 'true'" TaskName="Zlepper.RimWorld.ModSdk.Tasks.GenerateAboutXml"
@@ -58,7 +58,7 @@
 
     <!-- Default properties to control most of the code that is generated -->
     <PropertyGroup>
-        <TargetFramework>net472</TargetFramework>
+        <TargetFramework>net480</TargetFramework>
         <Nullable>enable</Nullable>
         <LangVersion>10</LangVersion>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>

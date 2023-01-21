@@ -10,12 +10,13 @@ public class DefGenerator_Patch
     {
         try
         {
+            var recipes = new List<RecipeDef>();
             foreach (var (extractRecipe, installRecipe, traitItem) in TraitRecipeGenerator.GenerateDefs())
             {
                 DefGenerator.AddImpliedDef(extractRecipe);
-                DefGenerator.AddImpliedDef<RecipeDef>(extractRecipe);
+                recipes.Add(extractRecipe);
                 DefGenerator.AddImpliedDef(installRecipe);
-                DefGenerator.AddImpliedDef<RecipeDef>(installRecipe);
+                recipes.Add(installRecipe);
                 DefGenerator.AddImpliedDef(traitItem);
                 DefGenerator.AddImpliedDef<ThingDef>(traitItem);
             }
@@ -24,14 +25,21 @@ public class DefGenerator_Patch
             foreach (var (extractRecipe, installRecipe, passionItem) in PassionRecipeGenerator.GenerateDefs())
             {
                 DefGenerator.AddImpliedDef(extractRecipe);
-                DefGenerator.AddImpliedDef<RecipeDef>(extractRecipe);
+                recipes.Add(extractRecipe);
                 DefGenerator.AddImpliedDef(installRecipe);
-                DefGenerator.AddImpliedDef<RecipeDef>(installRecipe);
+                recipes.Add(installRecipe);
                 
                 DefGenerator.AddImpliedDef(passionItem);
                 DefGenerator.AddImpliedDef<ThingDef>(passionItem);
             }
 
+            recipes.SortBy(r => r.defName);
+            
+            foreach (var recipe in recipes)
+            {
+                DefGenerator.AddImpliedDef(recipe);
+            }
+            
             DefGeneratorHelpers.RemoveFromDatabase(PersonalitySurgeryDefs.SurgeryExtractBioTraitItem);
             DefGeneratorHelpers.RemoveFromDatabase(PersonalitySurgeryDefs.SurgeryExtractBioProperty);
             DefGeneratorHelpers.RemoveFromDatabase(PersonalitySurgeryDefs.SurgeryInstallBioProperty);

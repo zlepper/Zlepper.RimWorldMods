@@ -63,13 +63,15 @@ public class SchemaTypeSkipper
         var isClosedFunction = IsFunctionName(type.FullName!);
         var isComplexSketch = type.FullName == "RimWorld.ComplexSketch";
         var isWorldObject = _defContext.GetBaseTypes(type).Any(t => t.FullName == "RimWorld.Planet.WorldObject");
+        var isWorldComponent = _defContext.GetBaseTypes(type).Any(t => t.FullName == "RimWorld.Planet.WorldComponent");
+        var isMapComponent = _defContext.GetBaseTypes(type).Any(t => t.FullName == "Verse.MapComponent");
         var isObject = type.FullName == typeof(object).FullName;
         var isUnityType = type.FullName!.StartsWith("UnityEngine.");
         var isGenStepParams = type.FullName == "Verse.GenStepParams";
 
 
         return isEntity || isMap || isIdeo || isSteamRelated || isFaction || isDisposable || isClosedFunction ||
-               isComplexSketch || isWorldObject || isObject || isUnityType || isGenStepParams;
+               isComplexSketch || isWorldObject || isObject || isUnityType || isGenStepParams || isWorldComponent || isMapComponent;
     }
 
     private static bool IsFunctionName(string genericTypeDefinitionFullName)
