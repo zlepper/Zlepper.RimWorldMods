@@ -86,14 +86,15 @@ public class DefReader
         var result = new Dictionary<Type, List<string>>();
 
         
-        foreach (var defElement in element.Descendants())
+        foreach (var defElement in element.Nodes().OfType<XElement>())
         {
             if (defElement.NodeType == XmlNodeType.Element)
             {
-                var defName = defElement.Element("defName")?.Value;
-                
-                if(string.IsNullOrEmpty(defName))
+                var defName = defElement.Element(element.Name.Namespace + "defName")?.Value;
+                if (string.IsNullOrEmpty(defName))
+                {
                     continue;
+                }
 
                 var defElementName = defElement.Name.LocalName;
                 if (_defTypesByDefElementName.TryGetValue(defElementName, out var defTypes))

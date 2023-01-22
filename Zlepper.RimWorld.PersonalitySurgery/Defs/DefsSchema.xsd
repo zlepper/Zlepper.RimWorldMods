@@ -3568,6 +3568,7 @@
       <xs:element minOccurs="0" name="SubcoreSoftscanner" type="xs:float" />
       <xs:element minOccurs="0" name="SunBlocker" type="xs:float" />
       <xs:element minOccurs="0" name="SunLamp" type="xs:float" />
+      <xs:element minOccurs="0" name="SurgeryExtractBioTraitItem" type="xs:float" />
       <xs:element minOccurs="0" name="Synthread" type="xs:float" />
       <xs:element minOccurs="0" name="Table1x2c" type="xs:float" />
       <xs:element minOccurs="0" name="Table2x2c" type="xs:float" />
@@ -5905,6 +5906,7 @@
       <xs:enumeration value="SubcoreSoftscanner" />
       <xs:enumeration value="SunBlocker" />
       <xs:enumeration value="SunLamp" />
+      <xs:enumeration value="SurgeryExtractBioTraitItem" />
       <xs:enumeration value="Synthread" />
       <xs:enumeration value="Table1x2c" />
       <xs:enumeration value="Table2x2c" />
@@ -13310,20 +13312,8 @@
       <xs:element minOccurs="0" name="carryThingAfterJob" type="xs:boolean" />
       <xs:element minOccurs="0" name="castEdgeShadows" type="xs:boolean" />
       <xs:element minOccurs="0" name="casualInterruptible" type="xs:boolean" />
-      <xs:element minOccurs="0" name="category" type="AbilityCategoryDef.Enumeration" />
-      <xs:element minOccurs="0" name="category" type="StatCategoryDef.Enumeration" />
-      <xs:element minOccurs="0" name="category" type="KeyBindingCategoryDef.Enumeration" />
       <xs:element minOccurs="0" name="category" type="xs:string" />
-      <xs:element minOccurs="0" name="category">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Normal" />
-            <xs:enumeration value="Structure" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-      <xs:element minOccurs="0" name="category" type="IncidentCategoryDef.Enumeration" />
-      <xs:element minOccurs="0" name="category" type="StyleItemCategoryDef.Enumeration" />
+      <xs:element minOccurs="0" name="category" type="KeyBindingCategoryDef.Enumeration" />
       <xs:element minOccurs="0" name="category">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -13343,16 +13333,6 @@
       <xs:element minOccurs="0" name="category">
         <xs:simpleType>
           <xs:restriction base="xs:string">
-            <xs:enumeration value="Aggro" />
-            <xs:enumeration value="Malicious" />
-            <xs:enumeration value="Misc" />
-            <xs:enumeration value="Undefined" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-      <xs:element minOccurs="0" name="category">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
             <xs:enumeration value="Attachment" />
             <xs:enumeration value="Building" />
             <xs:enumeration value="Ethereal" />
@@ -13365,6 +13345,28 @@
             <xs:enumeration value="Plant" />
             <xs:enumeration value="Projectile" />
             <xs:enumeration value="PsychicEmitter" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="category" type="IncidentCategoryDef.Enumeration" />
+      <xs:element minOccurs="0" name="category" type="StatCategoryDef.Enumeration" />
+      <xs:element minOccurs="0" name="category" type="StyleItemCategoryDef.Enumeration" />
+      <xs:element minOccurs="0" name="category">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Normal" />
+            <xs:enumeration value="Structure" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="category" type="AbilityCategoryDef.Enumeration" />
+      <xs:element minOccurs="0" name="category">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Aggro" />
+            <xs:enumeration value="Malicious" />
+            <xs:enumeration value="Misc" />
+            <xs:enumeration value="Undefined" />
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
@@ -13486,20 +13488,6 @@
       <xs:element minOccurs="0" name="comps">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="AbilityCompProperties" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="comps">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="RitualOutcomeComp" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="comps">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="HediffCompProperties" />
           </xs:choice>
         </xs:complexType>
@@ -13507,14 +13495,7 @@
       <xs:element minOccurs="0" name="comps">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="WorldObjectCompProperties" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="comps">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="SurgeryOutcomeComp" />
+            <xs:element name="li" type="PreceptComp" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -13535,6 +13516,27 @@
       <xs:element minOccurs="0" name="comps">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="AbilityCompProperties" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="comps">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="RitualOutcomeComp" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="comps">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="SurgeryOutcomeComp" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="comps">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="StorytellerCompProperties" />
           </xs:choice>
         </xs:complexType>
@@ -13542,7 +13544,7 @@
       <xs:element minOccurs="0" name="comps">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="PreceptComp" />
+            <xs:element name="li" type="WorldObjectCompProperties" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -14123,6 +14125,7 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="disallowedTraits" type="BackstoryTrait" />
       <xs:element minOccurs="0" name="disallowedTraits">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -14130,7 +14133,6 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
-      <xs:element minOccurs="0" name="disallowedTraits" type="BackstoryTrait" />
       <xs:element minOccurs="0" name="disallowedTraitsWithDegree" type="TraitRequirement" />
       <xs:element minOccurs="0" name="disallowFarmingCamps" type="xs:boolean" />
       <xs:element minOccurs="0" name="disallowHuntingCamps" type="xs:boolean" />
@@ -14192,8 +14194,8 @@
       <xs:element minOccurs="0" name="displayOrderInImpact" type="xs:int" />
       <xs:element minOccurs="0" name="displayOrderInIssue" type="xs:int" />
       <xs:element minOccurs="0" name="displayOrderOffset" type="xs:int" />
-      <xs:element minOccurs="0" name="displayPriority" type="xs:float" />
       <xs:element minOccurs="0" name="displayPriority" type="xs:int" />
+      <xs:element minOccurs="0" name="displayPriority" type="xs:float" />
       <xs:element minOccurs="0" name="displayPriorityInCategory" type="xs:int" />
       <xs:element minOccurs="0" name="displayPriorityInGenepack" type="xs:float" />
       <xs:element minOccurs="0" name="displayPriorityInXenotype" type="xs:float" />
@@ -14252,8 +14254,8 @@ It will fade out linearly until the camera distance reaches its max.</xs:documen
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
-      <xs:element minOccurs="0" name="durationDays" type="xs:float" />
       <xs:element minOccurs="0" name="durationDays" type="FloatRange" />
+      <xs:element minOccurs="0" name="durationDays" type="xs:float" />
       <xs:element minOccurs="0" name="durationRandomRange" type="FloatRange" />
       <xs:element minOccurs="0" name="durationRange" type="IntRange" />
       <xs:element minOccurs="0" name="durationTicks" type="IntRange" />
@@ -14659,7 +14661,6 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="forcedSlowdown" type="xs:boolean" />
-      <xs:element minOccurs="0" name="forcedTraits" type="BackstoryTrait" />
       <xs:element minOccurs="0" name="forcedTraits">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -14668,6 +14669,7 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="forcedTraits" type="TraitRequirement" />
+      <xs:element minOccurs="0" name="forcedTraits" type="BackstoryTrait" />
       <xs:element minOccurs="0" name="forceExitAndRemoveMapCountdownDurationDays" type="xs:float" />
       <xs:element minOccurs="0" name="forceFaceUpPosture" type="xs:boolean" />
       <xs:element minOccurs="0" name="forceFleck" type="FleckDef.Enumeration" />
@@ -14806,8 +14808,8 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
       </xs:element>
       <xs:element minOccurs="0" name="geneToleranceBuildupFactorImmune" type="xs:float" />
       <xs:element minOccurs="0" name="geneToleranceBuildupFactorResist" type="xs:float" />
-      <xs:element minOccurs="0" name="genStep" type="GenStep" />
       <xs:element minOccurs="0" name="genStep" type="GenStepDef.Enumeration" />
+      <xs:element minOccurs="0" name="genStep" type="GenStep" />
       <xs:element minOccurs="0" name="genSteps">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -14849,8 +14851,8 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="graphic" type="Graphic" />
-      <xs:element minOccurs="0" name="graphicData" type="GeneGraphicData" />
       <xs:element minOccurs="0" name="graphicData" type="GraphicData" />
+      <xs:element minOccurs="0" name="graphicData" type="GeneGraphicData" />
       <xs:element minOccurs="0" name="graphicData" type="GraphicData" />
       <xs:element minOccurs="0" name="graphicData" type="GraphicData" />
       <xs:element minOccurs="0" name="graphicPath" type="xs:string" />
@@ -15325,8 +15327,8 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
       <xs:element minOccurs="0" name="linkWithSite" type="SitePartDef.Enumeration" />
       <xs:element minOccurs="0" name="listedForRoles" type="xs:boolean" />
       <xs:element minOccurs="0" name="listOrder" type="xs:int" />
-      <xs:element minOccurs="0" name="listOrder" type="xs:float" />
       <xs:element minOccurs="0" name="listOrder" type="xs:int" />
+      <xs:element minOccurs="0" name="listOrder" type="xs:float" />
       <xs:element minOccurs="0" name="listOrder" type="xs:int" />
       <xs:element minOccurs="0" name="listOrder" type="xs:int" />
       <xs:element minOccurs="0" name="listOrder" type="xs:int" />
@@ -15403,8 +15405,8 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
           <xs:documentation>The number of instances of this sound that can play at almost exactly the same moment. Handles cases like six gunners all firing their identical guns at the same time because a target came into view of all of them at the same time. Ordinarily this would make a painfully loud sound, but you can reduce it with this.</xs:documentation>
         </xs:annotation>
       </xs:element>
-      <xs:element minOccurs="0" name="maxSize" type="xs:float" />
       <xs:element minOccurs="0" name="maxSize" type="xs:int" />
+      <xs:element minOccurs="0" name="maxSize" type="xs:float" />
       <xs:element minOccurs="0" name="maxSpaceBetweenRootGroups" type="xs:int" />
       <xs:element minOccurs="0" name="maxSpeakerDistance" type="xs:int" />
       <xs:element minOccurs="0" name="maxTechLevel">
@@ -15554,8 +15556,8 @@ This setting may not work for on-camera sounds.</xs:documentation>
       <xs:element minOccurs="0" name="minRoyalTitle" type="RoyalTitleDef.Enumeration" />
       <xs:element minOccurs="0" name="minSettlementTemperatureChanceCurve" type="SimpleCurve" />
       <xs:element minOccurs="0" name="minSeverity" type="xs:float" />
-      <xs:element minOccurs="0" name="minSize" type="xs:int" />
       <xs:element minOccurs="0" name="minSize" type="xs:float" />
+      <xs:element minOccurs="0" name="minSize" type="xs:int" />
       <xs:element minOccurs="0" name="minTechLevel">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -15804,8 +15806,8 @@ This must match what the game expects from the sound Def with this name.</xs:doc
       <xs:element minOccurs="0" name="order" type="xs:int" />
       <xs:element minOccurs="0" name="order" type="xs:int" />
       <xs:element minOccurs="0" name="order" type="xs:float" />
-      <xs:element minOccurs="0" name="order" type="xs:float" />
       <xs:element minOccurs="0" name="order" type="xs:int" />
+      <xs:element minOccurs="0" name="order" type="xs:float" />
       <xs:element minOccurs="0" name="orderedTakeGroup" type="OrderedTakeGroupDef.Enumeration" />
       <xs:element minOccurs="0" name="otherMeme" type="MemeDef.Enumeration" />
       <xs:element minOccurs="0" name="outcomeChances">
@@ -16064,8 +16066,8 @@ Sustainers will choose a different random pitch for each sample.</xs:documentati
       <xs:element minOccurs="0" name="prefersNudity" type="xs:boolean" />
       <xs:element minOccurs="0" name="prefersSlabBed" type="xs:boolean" />
       <xs:element minOccurs="0" name="pregnant" type="xs:boolean" />
-      <xs:element minOccurs="0" name="prerequisite" type="RoyalTitlePermitDef.Enumeration" />
       <xs:element minOccurs="0" name="prerequisite" type="GeneDef.Enumeration" />
+      <xs:element minOccurs="0" name="prerequisite" type="RoyalTitlePermitDef.Enumeration" />
       <xs:element minOccurs="0" name="prerequisites">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -17169,6 +17171,13 @@ Sustained sounds should usually prioritize nearest, so if a new fire starts burn
       <xs:element minOccurs="0" name="slavesOnly" type="xs:boolean" />
       <xs:element minOccurs="0" name="slavesOnly" type="xs:boolean" />
       <xs:element minOccurs="0" name="sleepCanInterrupt" type="xs:boolean" />
+      <xs:element minOccurs="0" name="slot" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The special sound slot this sound takes. If a sound with this slot is playing, new sounds in this slot will not play.
+
+Only works for on-camera sounds.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element minOccurs="0" name="slot">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -17176,13 +17185,6 @@ Sustained sounds should usually prioritize nearest, so if a new fire starts burn
             <xs:enumeration value="Childhood" />
           </xs:restriction>
         </xs:simpleType>
-      </xs:element>
-      <xs:element minOccurs="0" name="slot" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>The special sound slot this sound takes. If a sound with this slot is playing, new sounds in this slot will not play.
-
-Only works for on-camera sounds.</xs:documentation>
-        </xs:annotation>
       </xs:element>
       <xs:element minOccurs="0" name="smallVolume" type="xs:boolean" />
       <xs:element minOccurs="0" name="smeltable" type="xs:boolean" />
@@ -17318,14 +17320,14 @@ Only works for on-camera sounds.</xs:documentation>
       <xs:element minOccurs="0" name="stages">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="RitualStage" />
+            <xs:element name="li" type="HediffStage" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="stages">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="HediffStage" />
+            <xs:element name="li" type="RitualStage" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -17374,7 +17376,6 @@ Only works for on-camera sounds.</xs:documentation>
       <xs:element minOccurs="0" name="stateEffecter" type="EffecterDef.Enumeration" />
       <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
       <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
-      <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
       <xs:element minOccurs="0" name="statFactors">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -17382,6 +17383,7 @@ Only works for on-camera sounds.</xs:documentation>
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
       <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
       <xs:element minOccurs="0" name="statFactorsExplanationHeader" type="xs:string" />
       <xs:element minOccurs="0" name="staticSunShadowHeight" type="xs:float" />
@@ -17594,6 +17596,13 @@ Only used if the sustainer is looped.</xs:documentation>
       <xs:element minOccurs="0" name="tags">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="tags">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="ResearchProjectTagDef.Enumeration" />
           </xs:choice>
         </xs:complexType>
@@ -17622,21 +17631,14 @@ Only used if the sustainer is looped.</xs:documentation>
       <xs:element minOccurs="0" name="tags">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="tags">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="BodyPartTagDef.Enumeration" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="tags">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="xs:string" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="tags">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="xs:string" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -18091,18 +18093,18 @@ Only used if the sustainer is looped.</xs:documentation>
       <xs:element minOccurs="0" name="type">
         <xs:simpleType>
           <xs:restriction base="xs:string">
-            <xs:enumeration value="Expirable" />
-            <xs:enumeration value="PermanentHistorical" />
-            <xs:enumeration value="Volatile" />
+            <xs:enumeration value="Float" />
+            <xs:enumeration value="Int" />
+            <xs:enumeration value="Time" />
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
       <xs:element minOccurs="0" name="type">
         <xs:simpleType>
           <xs:restriction base="xs:string">
-            <xs:enumeration value="Float" />
-            <xs:enumeration value="Int" />
-            <xs:enumeration value="Time" />
+            <xs:enumeration value="Expirable" />
+            <xs:enumeration value="PermanentHistorical" />
+            <xs:enumeration value="Volatile" />
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
@@ -18118,9 +18120,9 @@ Only used if the sustainer is looped.</xs:documentation>
       </xs:element>
       <xs:element minOccurs="0" name="uiIconScale" type="xs:float" />
       <xs:element minOccurs="0" name="uiIconThing" type="ThingDef.Enumeration" />
-      <xs:element minOccurs="0" name="uiOrder" type="xs:float" />
-      <xs:element minOccurs="0" name="uiOrder" type="xs:float" />
       <xs:element minOccurs="0" name="uiOrder" type="xs:int" />
+      <xs:element minOccurs="0" name="uiOrder" type="xs:float" />
+      <xs:element minOccurs="0" name="uiOrder" type="xs:float" />
       <xs:element minOccurs="0" name="uiOrder" type="xs:int" />
       <xs:element minOccurs="0" name="unfinishedThingDef" type="ThingDef.Enumeration" />
       <xs:element minOccurs="0" name="unlockedMeditationTypesTemp">
@@ -18310,9 +18312,9 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
           </xs:choice>
         </xs:complexType>
       </xs:element>
-      <xs:element minOccurs="0" name="worker" type="GatheringWorker" />
-      <xs:element minOccurs="0" name="worker" type="PreceptWorker" />
       <xs:element minOccurs="0" name="worker" type="WeaponTraitWorker" />
+      <xs:element minOccurs="0" name="worker" type="PreceptWorker" />
+      <xs:element minOccurs="0" name="worker" type="GatheringWorker" />
       <xs:element minOccurs="0" name="worker" type="RoyalTitlePermitWorker" />
       <xs:element minOccurs="0" name="workerClass" type="xs:string" />
       <xs:element minOccurs="0" name="workerClass" type="xs:string" />
@@ -28978,6 +28980,7 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="SubcoreSoftscanner" type="xs:float" />
       <xs:element minOccurs="0" name="SunBlocker" type="xs:float" />
       <xs:element minOccurs="0" name="SunLamp" type="xs:float" />
+      <xs:element minOccurs="0" name="SurgeryExtractBioTraitItem" type="xs:float" />
       <xs:element minOccurs="0" name="Synthread" type="xs:float" />
       <xs:element minOccurs="0" name="Table1x2c" type="xs:float" />
       <xs:element minOccurs="0" name="Table2x2c" type="xs:float" />
@@ -33276,6 +33279,7 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="SubcoreSoftscanner" type="xs:float" />
       <xs:element minOccurs="0" name="SunBlocker" type="xs:float" />
       <xs:element minOccurs="0" name="SunLamp" type="xs:float" />
+      <xs:element minOccurs="0" name="SurgeryExtractBioTraitItem" type="xs:float" />
       <xs:element minOccurs="0" name="Synthread" type="xs:float" />
       <xs:element minOccurs="0" name="Table1x2c" type="xs:float" />
       <xs:element minOccurs="0" name="Table2x2c" type="xs:float" />
@@ -34315,6 +34319,8 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:enumeration value="SmeltApparel" />
       <xs:enumeration value="SmeltWeapon" />
       <xs:enumeration value="Sterilize" />
+      <xs:enumeration value="SurgeryExtractBioProperty" />
+      <xs:enumeration value="SurgeryInstallBioProperty" />
       <xs:enumeration value="TerminatePregnancy" />
       <xs:enumeration value="Tesseron" />
       <xs:enumeration value="TubalLigation" />
@@ -34650,6 +34656,7 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:enumeration value="PassiveCooler" />
       <xs:enumeration value="Pemmican" />
       <xs:enumeration value="PenoxycylineProduction" />
+      <xs:enumeration value="PersonalitySurgery" />
       <xs:enumeration value="Piano" />
       <xs:enumeration value="PlateArmor" />
       <xs:enumeration value="PoweredArmor" />
@@ -49390,6 +49397,8 @@ This value must match what the game expects from the SubSoundDef with this name.
       <xs:enumeration value="Neurotrainers" />
       <xs:enumeration value="NeurotrainersPsycast" />
       <xs:enumeration value="NeurotrainersSkill" />
+      <xs:enumeration value="PersonalitySurgeryPassionCategory" />
+      <xs:enumeration value="PersonalitySurgeryTraitCategory" />
       <xs:enumeration value="PlantFoodRaw" />
       <xs:enumeration value="PlantMatter" />
       <xs:enumeration value="Plants" />
@@ -50874,6 +50883,7 @@ This value must match what the game expects from the SubSoundDef with this name.
       <xs:enumeration value="SubcoreSoftscanner" />
       <xs:enumeration value="SunBlocker" />
       <xs:enumeration value="SunLamp" />
+      <xs:enumeration value="SurgeryExtractBioTraitItem" />
       <xs:enumeration value="Synthread" />
       <xs:enumeration value="Table1x2c" />
       <xs:enumeration value="Table2x2c" />
@@ -52110,6 +52120,7 @@ This value must match what the game expects from the SubSoundDef with this name.
       <xs:element minOccurs="0" name="SubcoreSoftscanner" type="xs:int" />
       <xs:element minOccurs="0" name="SunBlocker" type="xs:int" />
       <xs:element minOccurs="0" name="SunLamp" type="xs:int" />
+      <xs:element minOccurs="0" name="SurgeryExtractBioTraitItem" type="xs:int" />
       <xs:element minOccurs="0" name="Synthread" type="xs:int" />
       <xs:element minOccurs="0" name="Table1x2c" type="xs:int" />
       <xs:element minOccurs="0" name="Table2x2c" type="xs:int" />
@@ -53974,6 +53985,7 @@ This value must match what the game expects from the SubSoundDef with this name.
       <xs:element minOccurs="0" name="SubcoreSoftscanner" type="xs:float" />
       <xs:element minOccurs="0" name="SunBlocker" type="xs:float" />
       <xs:element minOccurs="0" name="SunLamp" type="xs:float" />
+      <xs:element minOccurs="0" name="SurgeryExtractBioTraitItem" type="xs:float" />
       <xs:element minOccurs="0" name="Synthread" type="xs:float" />
       <xs:element minOccurs="0" name="Table1x2c" type="xs:float" />
       <xs:element minOccurs="0" name="Table2x2c" type="xs:float" />

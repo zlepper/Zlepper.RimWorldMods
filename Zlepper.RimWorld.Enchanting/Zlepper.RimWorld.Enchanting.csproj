@@ -14,5 +14,9 @@
         <ProjectReference Include="..\Zlepper.RimWorld.ModSdk\Zlepper.RimWorld.ModSdk.csproj" ReferenceOutputAssembly="false" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Textures" />
+    </ItemGroup>
+
 </Project>
  

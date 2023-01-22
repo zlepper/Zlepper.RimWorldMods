@@ -1,0 +1,83 @@
+﻿<Defs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="rimworld DefsSchema.xsd" xmlns="rimworld">
+    <ThingCategoryDef>
+        <defName>Enchanting</defName>
+        <parent>Artifacts</parent>
+        <label>Enchanting</label>
+    </ThingCategoryDef>
+    
+    <ThingCategoryDef>
+        <defName>soulgems</defName>
+        <parent>Enchanting</parent>
+        <label>Soul gems</label>
+    </ThingCategoryDef>
+    
+    <ThingDef>
+        <defName>soulGemEmpty</defName>
+        <thingClass>ThingWithComps</thingClass>
+        <drawGUIOverlay>true</drawGUIOverlay>
+        <label>Soul gem</label>
+        <selectable>true</selectable>
+        <techLevel>Archotech</techLevel>
+        <description>A soul gem that is ready to be charged with an (un)suspecting soul for use in enchanting equipment.</description>
+        <category>Item</category>
+        <stackLimit>75</stackLimit>
+        <useHitPoints>false</useHitPoints>
+        <graphicData>
+            <texPath>soulgem/normal</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <onGroundRandomRotateAngle>35</onGroundRandomRotateAngle>
+        </graphicData>
+        <drawerType>MapMeshOnly</drawerType>
+        <tickerType>Never</tickerType>
+        <pathCost>2</pathCost>
+        <comps>
+            <li Class="CompProperties_Forbiddable" />
+        </comps>
+        <tradeTags>
+            <li>Enchanting</li>
+        </tradeTags>
+        <statBases>
+            <MarketValue>100</MarketValue>
+        </statBases>
+        <thingCategories>
+            <li>soulgems</li>
+        </thingCategories>
+    </ThingDef>
+    
+    <ThingDef>
+        <defName>soulGemCharged</defName>
+        <thingClass>ThingWithComps</thingClass>
+        <drawGUIOverlay>true</drawGUIOverlay>
+        <label>Soul gem (Charged)</label>
+        <selectable>true</selectable>
+        <techLevel>Archotech</techLevel>
+        <description>A soul gem that has been charged and is ready for use in enchanting.</description>
+        <category>Item</category>
+        <stackLimit>75</stackLimit>
+        <useHitPoints>false</useHitPoints>
+        <graphicData>
+            <texPath>soulgem/normal</texPath>
+            <graphicClass>Graphic_Single</graphicClass>
+            <onGroundRandomRotateAngle>35</onGroundRandomRotateAngle>
+            <shaderType>MoteGlow</shaderType>
+        </graphicData>
+        <drawerType>MapMeshOnly</drawerType>
+        <tickerType>Never</tickerType>
+        <pathCost>2</pathCost>
+        <comps>
+            <li Class="CompProperties_Forbiddable" />
+        </comps>
+        <tradeTags>
+            <li>Enchanting</li>
+        </tradeTags>
+        <statBases>
+            <MarketValue>200</MarketValue>
+        </statBases>
+        <thingCategories>
+            <li>soulgems</li>
+        </thingCategories>
+    </ThingDef>
+    
+    
+    
+</Defs>

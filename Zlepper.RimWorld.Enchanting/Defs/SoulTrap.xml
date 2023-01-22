@@ -1,0 +1,50 @@
+﻿<Defs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="rimworld DefsSchema.xsd" xmlns="rimworld">
+    <AbilityDef ParentName="PsycastBase">
+        <defName>SoulTrap</defName>
+        <label>Soul Trap</label>
+        <description>Marks a target for trapping in a nearby Soul gem.</description>
+        <level>1</level>
+        <iconPath>soultrap/psycast_ability</iconPath>
+        <hostile>true</hostile>
+        <statBases>
+            <Ability_EntropyGain>8</Ability_EntropyGain>
+            <Ability_PsyfocusCost>0.02</Ability_PsyfocusCost>
+            <Ability_Duration>120</Ability_Duration>
+        </statBases>
+        <verbProperties>
+            <warmupTime>0.25</warmupTime>
+            <range>24.9</range>
+            <targetParams>
+                <canTargetSelf>true</canTargetSelf>
+                <canTargetAnimals>true</canTargetAnimals>
+                <onlyTargetPsychicSensitive>false</onlyTargetPsychicSensitive>
+            </targetParams>
+        </verbProperties>
+        <comps>
+            <li Class="CompProperties_AbilityGiveHediff">
+                <compClass>CompAbilityEffect_GiveHediff</compClass>
+                <hediffDef>SoulTrapped</hediffDef>
+                <psychic>false</psychic>
+                <applicableToMechs>false</applicableToMechs>
+            </li>
+            <li Class="CompProperties_AbilityFleckOnTarget">
+                <fleckDef>PsycastPsychicEffect</fleckDef>
+            </li>
+        </comps>
+    </AbilityDef>
+    
+    <HediffDef>
+        <hediffClass>HediffWithComps</hediffClass>
+        <defName>SoulTrapped</defName>
+        <label>soul trapped</label>
+        <description>The soul of this pawn/animal will be captured if a soul gem is nearby when they die.</description>
+        <isBad>true</isBad>
+        <makesAlert>false</makesAlert>
+        <comps>
+            <li Class="HediffCompProperties_Disappears">
+                <showRemainingTime>true</showRemainingTime>
+            </li>
+            <li Class="Zlepper.RimWorld.Enchanting.HediffCompProperties_SoulTrapped" />
+        </comps>
+    </HediffDef>
+</Defs>

@@ -633,6 +633,7 @@
       <xs:enumeration value="Smokepop" />
       <xs:enumeration value="SmokepopMech" />
       <xs:enumeration value="SolarPinhole" />
+      <xs:enumeration value="SoulTrap" />
       <xs:enumeration value="Speech" />
       <xs:enumeration value="Stun" />
       <xs:enumeration value="Trial" />
@@ -3539,6 +3540,8 @@
       <xs:element minOccurs="0" name="SoftScannerGlow_West" type="xs:float" />
       <xs:element minOccurs="0" name="SolarGenerator" type="xs:float" />
       <xs:element minOccurs="0" name="SolarPinhole" type="xs:float" />
+      <xs:element minOccurs="0" name="soulGemCharged" type="xs:float" />
+      <xs:element minOccurs="0" name="soulGemEmpty" type="xs:float" />
       <xs:element minOccurs="0" name="Spacedrone" type="xs:float" />
       <xs:element minOccurs="0" name="SpacedroneIncoming" type="xs:float" />
       <xs:element minOccurs="0" name="Spark" type="xs:float" />
@@ -5862,6 +5865,8 @@
       <xs:enumeration value="SoilRich" />
       <xs:enumeration value="SolarGenerator" />
       <xs:enumeration value="SolarPinhole" />
+      <xs:enumeration value="soulGemCharged" />
+      <xs:enumeration value="soulGemEmpty" />
       <xs:enumeration value="Spacedrone" />
       <xs:enumeration value="SpacedroneIncoming" />
       <xs:enumeration value="Spark" />
@@ -23154,6 +23159,7 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:enumeration value="HediffCompProperties_SkillDecay" />
       <xs:enumeration value="HediffCompProperties_TendDuration" />
       <xs:enumeration value="HediffCompProperties_VerbGiver" />
+      <xs:enumeration value="Zlepper.RimWorld.Enchanting.HediffCompProperties_SoulTrapped" />
     </xs:restriction>
   </xs:simpleType>
   <xs:complexType name="HediffDef">
@@ -23468,6 +23474,7 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:enumeration value="SmokeleafAddiction" />
       <xs:enumeration value="SmokeleafHigh" />
       <xs:enumeration value="SmokeleafTolerance" />
+      <xs:enumeration value="SoulTrapped" />
       <xs:enumeration value="SpeedBoost" />
       <xs:enumeration value="Stab" />
       <xs:enumeration value="Sterilized" />
@@ -28900,6 +28907,8 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="SoftScannerGlow_West" type="xs:float" />
       <xs:element minOccurs="0" name="SolarGenerator" type="xs:float" />
       <xs:element minOccurs="0" name="SolarPinhole" type="xs:float" />
+      <xs:element minOccurs="0" name="soulGemCharged" type="xs:float" />
+      <xs:element minOccurs="0" name="soulGemEmpty" type="xs:float" />
       <xs:element minOccurs="0" name="Spacedrone" type="xs:float" />
       <xs:element minOccurs="0" name="SpacedroneIncoming" type="xs:float" />
       <xs:element minOccurs="0" name="Spark" type="xs:float" />
@@ -33198,6 +33207,8 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="SoftScannerGlow_West" type="xs:float" />
       <xs:element minOccurs="0" name="SolarGenerator" type="xs:float" />
       <xs:element minOccurs="0" name="SolarPinhole" type="xs:float" />
+      <xs:element minOccurs="0" name="soulGemCharged" type="xs:float" />
+      <xs:element minOccurs="0" name="soulGemEmpty" type="xs:float" />
       <xs:element minOccurs="0" name="Spacedrone" type="xs:float" />
       <xs:element minOccurs="0" name="SpacedroneIncoming" type="xs:float" />
       <xs:element minOccurs="0" name="Spark" type="xs:float" />
@@ -45951,6 +45962,7 @@ This value must match what the game expects from the SubSoundDef with this name.
       <xs:enumeration value="CapacityEffects" />
       <xs:enumeration value="Drug" />
       <xs:enumeration value="DrugAddiction" />
+      <xs:enumeration value="Enchanting" />
       <xs:enumeration value="EquippedStatOffsets" />
       <xs:enumeration value="Genetics" />
       <xs:enumeration value="Implant" />
@@ -49320,6 +49332,7 @@ This value must match what the game expects from the SubSoundDef with this name.
       <xs:enumeration value="Drugs" />
       <xs:enumeration value="EggsFertilized" />
       <xs:enumeration value="EggsUnfertilized" />
+      <xs:enumeration value="Enchanting" />
       <xs:enumeration value="FoodMeals" />
       <xs:enumeration value="FoodRaw" />
       <xs:enumeration value="Foods" />
@@ -49342,6 +49355,7 @@ This value must match what the game expects from the SubSoundDef with this name.
       <xs:enumeration value="Plants" />
       <xs:enumeration value="ResourcesRaw" />
       <xs:enumeration value="Root" />
+      <xs:enumeration value="soulgems" />
       <xs:enumeration value="StoneBlocks" />
       <xs:enumeration value="StoneChunks" />
       <xs:enumeration value="Stumps" />
@@ -50797,6 +50811,8 @@ This value must match what the game expects from the SubSoundDef with this name.
       <xs:enumeration value="SoftScannerGlow_West" />
       <xs:enumeration value="SolarGenerator" />
       <xs:enumeration value="SolarPinhole" />
+      <xs:enumeration value="soulGemCharged" />
+      <xs:enumeration value="soulGemEmpty" />
       <xs:enumeration value="Spacedrone" />
       <xs:enumeration value="SpacedroneIncoming" />
       <xs:enumeration value="Spark" />
@@ -52033,6 +52049,8 @@ This value must match what the game expects from the SubSoundDef with this name.
       <xs:element minOccurs="0" name="SoftScannerGlow_West" type="xs:int" />
       <xs:element minOccurs="0" name="SolarGenerator" type="xs:int" />
       <xs:element minOccurs="0" name="SolarPinhole" type="xs:int" />
+      <xs:element minOccurs="0" name="soulGemCharged" type="xs:int" />
+      <xs:element minOccurs="0" name="soulGemEmpty" type="xs:int" />
       <xs:element minOccurs="0" name="Spacedrone" type="xs:int" />
       <xs:element minOccurs="0" name="SpacedroneIncoming" type="xs:int" />
       <xs:element minOccurs="0" name="Spark" type="xs:int" />
@@ -53897,6 +53915,8 @@ This value must match what the game expects from the SubSoundDef with this name.
       <xs:element minOccurs="0" name="SoftScannerGlow_West" type="xs:float" />
       <xs:element minOccurs="0" name="SolarGenerator" type="xs:float" />
       <xs:element minOccurs="0" name="SolarPinhole" type="xs:float" />
+      <xs:element minOccurs="0" name="soulGemCharged" type="xs:float" />
+      <xs:element minOccurs="0" name="soulGemEmpty" type="xs:float" />
       <xs:element minOccurs="0" name="Spacedrone" type="xs:float" />
       <xs:element minOccurs="0" name="SpacedroneIncoming" type="xs:float" />
       <xs:element minOccurs="0" name="Spark" type="xs:float" />
@@ -60873,8 +60893,17 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
     </xs:complexContent>
   </xs:complexType>
   <xs:simpleType name="Zlepper.RimWorld.Enchanting.EnchantDef.Enumeration">
-    <xs:restriction base="xs:string" />
+    <xs:restriction base="xs:string">
+      <xs:enumeration value="featherWeight" />
+    </xs:restriction>
   </xs:simpleType>
+  <xs:complexType name="Zlepper.RimWorld.Enchanting.HediffCompProperties_SoulTrapped">
+    <xs:complexContent>
+      <xs:extension base="HediffCompProperties">
+        <xs:all />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType name="Zlepper.RimWorld.Enchanting.StatPart_Enchanted">
     <xs:complexContent>
       <xs:extension base="StatPart">
