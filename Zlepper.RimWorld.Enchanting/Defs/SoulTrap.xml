@@ -47,4 +47,24 @@
             <li Class="Zlepper.RimWorld.Enchanting.HediffCompProperties_SoulTrapped" />
         </comps>
     </HediffDef>
+    
+    <Zlepper.RimWorld.Enchanting.ChainedFlecksDef>
+        <defName>SoulTrapped</defName>
+        <ChildFlecks>
+            <li>
+                <FleckDef>PsycastPsychicEffect</FleckDef>
+                <Scale>0.5~1.4</Scale>
+                <ChainFleckSpawnType>OnSource</ChainFleckSpawnType>
+            </li>
+            <li>
+                <FleckDef>PsycastPsychicLine</FleckDef>
+                <ChainFleckSpawnType>BetweenSourceAndTarget</ChainFleckSpawnType>
+            </li>
+            <li>
+                <FleckDef>PsycastPsychicEffect</FleckDef>
+                <Scale>0.9~1.2</Scale>
+                <ChainFleckSpawnType>OnTarget</ChainFleckSpawnType>
+            </li>
+        </ChildFlecks>
+    </Zlepper.RimWorld.Enchanting.ChainedFlecksDef>
 </Defs>

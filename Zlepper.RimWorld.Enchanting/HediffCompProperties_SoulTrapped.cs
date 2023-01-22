@@ -54,10 +54,12 @@ public class HediffComp_SoulTrapped : HediffComp
         var charged = GenSpawn.Spawn(EnchantingDefOf.soulGemCharged, nearest.PositionHeld, map,
             WipeMode.VanishOrMoveAside);
 
-        target.holdingOwner.TryAdd(charged);
-        
-        ShowChargeFleck(charged, map);
-        ShowChargeFleck(Pawn, map);
+        var chainedFleckManager = map.GetComponent<MapComponent_ChainedFleckManager>();
+        if (chainedFleckManager != null)
+        {
+            var chainedFlecks = EnchantingDefOf.SoulTrapped.Spawn(Pawn.Corpse, charged);
+            chainedFleckManager.Add(chainedFlecks);
+        }
 
         target.Destroy();
 
@@ -67,11 +69,12 @@ public class HediffComp_SoulTrapped : HediffComp
 
     private static void ShowChargeFleck(Thing charged, Map map)
     {
-        var fleckData = FleckMaker.GetDataStatic(charged.PositionHeld.ToVector3Shifted(), map, FleckDefOf.EntropyPulse, 2) with
-        {
-            rotationRate = Rand.Range(-30, 30),
-            rotation = 90 * Rand.RangeInclusive(0, 3),
-        };
+        var fleckData =
+            FleckMaker.GetDataStatic(charged.PositionHeld.ToVector3Shifted(), map, FleckDefOf.EntropyPulse, 2) with
+            {
+                rotationRate = Rand.Range(-30, 30),
+                rotation = 90 * Rand.RangeInclusive(0, 3),
+            };
         map.flecks.CreateFleck(fleckData);
     }
 
