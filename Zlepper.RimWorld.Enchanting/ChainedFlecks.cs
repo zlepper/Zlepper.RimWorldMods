@@ -26,14 +26,14 @@ public class ChainedFlecksDef : Def
         }
     }
     
-    public ChainedFlecks Spawn(TargetInfo source)
+    public ChainedFlecks Spawn(TargetInfo source, Map map)
     {
-        return new ChainedFlecks(this, source);
+        return new ChainedFlecks(this, source, map);
     }
 
-    public ChainedFlecks Spawn(TargetInfo source, TargetInfo target)
+    public ChainedFlecks Spawn(TargetInfo source, TargetInfo target, Map map)
     {
-        return new ChainedFlecks(this, source, target);
+        return new ChainedFlecks(this, source, target, map);
     }
 }
 
@@ -64,20 +64,23 @@ public class ChainedFlecks
     private readonly ChainedFlecksDef _parent;
     private int _fleckIndex = -1;
     private int _fleckTicksRemaining = 0;
-    private TargetInfo _source;
-    private TargetInfo _target;
+    private readonly TargetInfo _source;
+    private readonly TargetInfo _target;
+    private readonly Map _map;
 
-    public ChainedFlecks(ChainedFlecksDef parent, TargetInfo source, TargetInfo target)
+    public ChainedFlecks(ChainedFlecksDef parent, TargetInfo source, TargetInfo target, Map map)
     {
         _parent = parent;
         _source = source;
         _target = target;
+        _map = map;
     }
 
-    public ChainedFlecks(ChainedFlecksDef parent, TargetInfo source)
+    public ChainedFlecks(ChainedFlecksDef parent, TargetInfo source, Map map)
     {
         _parent = parent;
         _source = source;
+        _map = map;
         _target = source;
     }
 
@@ -96,13 +99,13 @@ public class ChainedFlecks
 
             if (subFleck.ChainFleckSpawnType == ChainFleckSpawnType.BetweenSourceAndTarget)
             {
-                FleckMaker.ConnectingLine(_source.CenterVector3, _target.CenterVector3, subFleck.FleckDef, _source.Map);
+                FleckMaker.ConnectingLine(_source.CenterVector3, _target.CenterVector3, subFleck.FleckDef, _map);
             }
             else
             {
                 var loc = subFleck.ChainFleckSpawnType == ChainFleckSpawnType.OnSource ? _source : _target;
 
-                var creationData = FleckMaker.GetDataStatic(loc.CenterVector3, loc.Map, subFleck.FleckDef,
+                var creationData = FleckMaker.GetDataStatic(loc.CenterVector3, _map, subFleck.FleckDef,
                     subFleck.Scale.RandomInRange);
                 
                 _source.Map.flecks.CreateFleck(creationData);

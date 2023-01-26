@@ -22,6 +22,7 @@
         <category>Item</category>
         <stackLimit>75</stackLimit>
         <useHitPoints>false</useHitPoints>
+        <alwaysHaulable>true</alwaysHaulable>
         <graphicData>
             <texPath>soulgem/normal</texPath>
             <graphicClass>Graphic_Single</graphicClass>
@@ -38,10 +39,12 @@
         </tradeTags>
         <statBases>
             <MarketValue>100</MarketValue>
+            <Mass>0.02</Mass>
         </statBases>
         <thingCategories>
             <li>soulgems</li>
         </thingCategories>
+        <orderedTakeGroup>Soulgems</orderedTakeGroup>
     </ThingDef>
     
     <ThingDef>
@@ -55,6 +58,7 @@
         <category>Item</category>
         <stackLimit>75</stackLimit>
         <useHitPoints>false</useHitPoints>
+        <alwaysHaulable>true</alwaysHaulable>
         <graphicData>
             <texPath>soulgem/normal</texPath>
             <graphicClass>Graphic_Single</graphicClass>
@@ -72,6 +76,7 @@
         </tradeTags>
         <statBases>
             <MarketValue>200</MarketValue>
+            <Mass>0.02</Mass>
         </statBases>
         <thingCategories>
             <li>soulgems</li>
@@ -79,5 +84,8 @@
     </ThingDef>
     
     
-    
+    <OrderedTakeGroupDef>
+        <defName>Soulgems</defName>
+        <label>Soul gems</label>
+    </OrderedTakeGroupDef>
 </Defs>
