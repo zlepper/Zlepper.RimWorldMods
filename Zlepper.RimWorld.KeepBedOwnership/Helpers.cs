@@ -7,6 +7,7 @@ internal static class Helpers
         return map?.listerThings?.ThingsInGroup(ThingRequestGroup.Bed)
             .OfType<Building_Bed>()
             .Where(b => b.OwnersForReading != null && b.OwnersForReading.Contains(___pawn))
+            .Where(ShouldRunForBed)
             .ToList() ?? new List<Building_Bed>();
     }
 
@@ -29,7 +30,7 @@ internal static class Helpers
 
     public static bool ShouldRunForBed(Building_Bed? bed)
     {
-        if (bed is not {Spawned: true} || bed.ForPrisoners || bed.Map == null || bed.Medical) return false;
+        if (bed is not {Spawned: true} || bed.ForPrisoners || bed.Map == null || bed.Medical || !bed.def.building.bed_countsForBedroomOrBarracks) return false;
         return !bed.GetType().ToString().Contains("WhatTheHack");
     }
 }

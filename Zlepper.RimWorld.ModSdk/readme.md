@@ -4,10 +4,9 @@ This is a dotnet sdk that allows you to create mods for RimWorld with less messi
 
 ## Features
 
-* Provides support for C# 10 (At least the features .NetFramework can support).
+* Provides support for C# 11 (At least the features .NetFramework can support).
 * Allows multiple RimWorld versions to be supported at the same time.
-* Automatically references common RimWorld assemblies.
-  * Provides an easy hook for referencing more assemblies.
+* Automatically references RimWorld assemblies.
 * Easily reference other Steam mods for your mod.
   * Harmony and HugsLib have special support, to make them even easier to reference.
   * Other local mods for development can are automatically referenced in an msbuild `<ProjectReference>` is created.
@@ -24,11 +23,11 @@ A word of warning: I develop on Windows and have only tested this on Windows. It
 settings to get it working on other platforms, but I have not done so. If you are using Linux or Mac, 
 please let me know if you want to help get it working for those platforms. 
 
-1. Make sure you have at least a DotNet 6 SDK installed: https://dotnet.microsoft.com/en-us/download
+1. Make sure you have at least a DotNet 7 SDK installed: https://dotnet.microsoft.com/en-us/download
 2. Open your IDE and create a new project, the specific project type does not matter, but I recommend a class library.
 3. Open the .csproj file and replace the content with the following:
 ```xml
-<Project Sdk="Zlepper.RimWorld.ModSdk/0.0.6">
+<Project Sdk="Zlepper.RimWorld.ModSdk/0.0.7">
 
     <PropertyGroup>
         <RimWorldModName>Your mod name</RimWorldModName>
@@ -176,16 +175,6 @@ to tweak them.
   <RimWorldModUrl></RimWorldModUrl>
   
 </PropertyGroup>
-```
-
-### Adding a reference to a RimWorld assembly
-By default the SDK references `Assembly-CSharp` and `UnityEngine.CoreModule` for you. If you need to reference
-another assembly, you can do so by adding a reference to it in the project file. For example, if you want to
-reference `UnityEngine.IMGUIModule`, you can add the following to your project file:
-```xml
-<ItemGroup>
-  <RimWorldAssemblyReference Include="UnityEngine.IMGUIModule" />
-</ItemGroup>
 ```
 
 ### Adding a reference to another mod

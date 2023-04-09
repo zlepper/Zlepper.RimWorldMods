@@ -65,7 +65,7 @@ public class TeleporterVisitor
             }
         }
 
-        Log.Message($"Checked {_cellCheckedCount} cells while recalculating teleporter grid");
+        // Log.Message($"Checked {_cellCheckedCount} cells while recalculating teleporter grid");
     }
 
     private void CheckCell(IntVec3 adjacentCell, VisitedCell cell)
@@ -155,19 +155,19 @@ public class TeleporterVisitor
 
     public void CellUpdated(IntVec3 cell)
     {
-        Log.Message($"Cell updated: {cell}");
+        // Log.Message($"Cell updated: {cell}");
         if (_map.CanEnter(cell))
         {
-            Log.Message("Can enter");
+            // Log.Message("Can enter");
             var existingEntry = _grid[cell];
             if (existingEntry != null)
             {
-                Log.Message("Found existing entry");
+                // Log.Message("Found existing entry");
                 _validQueue.Enqueue(existingEntry, existingEntry.Distance);
             }
             else
             {
-                Log.Message("Newly opened, checking for existing paths");
+                // Log.Message("Newly opened, checking for existing paths");
                 for (var i = 0; i < GenAdj.AdjacentCells.Length; i++)
                 {
                     var adjacentCell = GenAdj.AdjacentCells[i];
@@ -279,7 +279,7 @@ public class TeleporterVisitor
                 
                 if (neighbour.Teleporter != cell.Teleporter)
                 {
-                    Log.Message($"Cell {neighbour.Position} and {cell.Position} are not on the same teleporter");
+                    // Log.Message($"Cell {neighbour.Position} and {cell.Position} are not on the same teleporter");
                     // Different teleporter, so it's still valid, which might now be the shortest path
                     _validQueue.Enqueue(neighbour, neighbour.Distance);
                     continue;
@@ -287,13 +287,13 @@ public class TeleporterVisitor
 
                 if (neighbour.Previous == cell.Position)
                 {
-                    Log.Message($"Neighbour {neighbour.Position} came from {cell.Position}");
+                    // Log.Message($"Neighbour {neighbour.Position} came from {cell.Position}");
                     invalidationQueue.Enqueue(neighbour);
                     _grid[toTest] = null;
                 }
             }
         }
-        Log.Message($"Checked {_cellCheckedCount} cells while invalidating blocked cells. Came across {alreadyChecked.Count} unique cells");
+        // Log.Message($"Checked {_cellCheckedCount} cells while invalidating blocked cells. Came across {alreadyChecked.Count} unique cells");
     }
 
     private bool CanReach(IntVec3 previous, IntVec3 adjacentCell)

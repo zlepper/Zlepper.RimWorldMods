@@ -36,15 +36,7 @@ public class HediffComp_SoulTrapped : HediffComp
             return;
         }
 
-        Thing target;
-        if (nearest.stackCount > 1)
-        {
-            target = nearest.SplitOff(1);
-        }
-        else
-        {
-            target = nearest;
-        }
+        var target = nearest.stackCount > 1 ? nearest.SplitOff(1) : nearest;
 
         var charged = GenSpawn.Spawn(EnchantingDefOf.soulGemCharged, nearest.PositionHeld, map);
 

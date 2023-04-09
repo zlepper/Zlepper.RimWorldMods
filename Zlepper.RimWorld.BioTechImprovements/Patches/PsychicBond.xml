@@ -1,0 +1,8 @@
+﻿<Patch>
+    <Operation Class="PatchOperationReplace">
+        <xpath>Defs/HediffDef[defName="PsychicBond"]/hediffClass</xpath>
+        <value>
+            <hediffClass>Zlepper.RimWorld.BioTechImprovements.Hediff_PsychicBond_Scaling</hediffClass>
+        </value>
+    </Operation>
+</Patch>

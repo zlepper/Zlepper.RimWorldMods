@@ -9,7 +9,7 @@ internal class PatchFindBedFor
     [HarmonyPostfix]
     private static void Postfix(Pawn sleeper, ref Building_Bed? __result)
     {
-        if (__result == null || __result.Medical || !Helpers.ShouldRunForPawn(sleeper)) return;
+        if (__result == null || !Helpers.ShouldRunForBed(__result) || !Helpers.ShouldRunForPawn(sleeper)) return;
         var currentBeds = Helpers.PawnBedsOnMap(sleeper, sleeper.Map);
         
         currentBeds = currentBeds

@@ -18,7 +18,7 @@ public class InstallPassionRecipeDef : BasePassionRecipeDef
         {
             if (gene.Active)
             {
-                if (gene.def.passionMod != null)
+                if (gene.def.passionMod != null && gene.def.passionMod.skill == skillRecord.def)
                 {
                     skillRecord.passion = gene.def.passionMod.NewPassionFor(skillRecord);
                 }

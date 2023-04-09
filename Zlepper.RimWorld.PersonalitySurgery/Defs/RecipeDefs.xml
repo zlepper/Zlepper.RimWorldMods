@@ -16,9 +16,9 @@
         <ingredients>
             <li>
                 <filter>
-                    <thingDefs>
-                        <li>MedicineIndustrial</li>
-                    </thingDefs>
+                    <categories>
+                        <li>Medicine</li>
+                    </categories>
                 </filter>
                 <count>1</count>
             </li>
@@ -52,9 +52,9 @@
         <ingredients>
             <li>
                 <filter>
-                    <thingDefs>
-                        <li>MedicineIndustrial</li>
-                    </thingDefs>
+                    <categories>
+                        <li>Medicine</li>
+                    </categories>
                 </filter>
                 <count>1</count>
             </li>
