@@ -16,6 +16,7 @@ This is a dotnet sdk that allows you to create mods for RimWorld with less messi
 * Implicit `using`s for `RimWorld`, `Verse`, `System`, `System.Collections.Generic` and `System.Linq`.
 * Fully automatically generated `About.xml` file.
 * The `PublishedFileId.txt` is automatically copied back into the project when the mod is build if the mod has been published to Steam.
+* Intellisense in Def files, both for Def classes defined by dependencies and custom classes directly in your mod. 
 
 ## Installation
 
