@@ -10,13 +10,13 @@ public static class WorldPawnGcPatches
     [HarmonyPatch(nameof(WorldPawnGC.AddAllRelationships))]
     static bool AddAllRelationshipsPrefix(Pawn pawn, Dictionary<Pawn, string> keptPawns)
     {
-        return pawn.Faction == Faction.OfPlayer;
+        return pawn.Faction == Faction.OfPlayer || pawn.Faction == Faction.OfEmpire;
     }
     
     [HarmonyPrefix]
     [HarmonyPatch(nameof(WorldPawnGC.AddAllMemories))]
     static bool AddAllMemoriesPrefix(Pawn pawn, Dictionary<Pawn, string> keptPawns)
     {
-        return pawn.Faction == Faction.OfPlayer;
+        return pawn.Faction == Faction.OfPlayer || pawn.Faction == Faction.OfEmpire;
     }
 }

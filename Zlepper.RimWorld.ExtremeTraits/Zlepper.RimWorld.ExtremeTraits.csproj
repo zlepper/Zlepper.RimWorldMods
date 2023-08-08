@@ -13,6 +13,7 @@
     <ItemGroup>
         <ProjectReference Include="..\Zlepper.RimWorld.ModSdk\Zlepper.RimWorld.ModSdk.csproj" ReferenceOutputAssembly="false" />
         <RimWorldLoadBefore Include="Zlepper.RimWorld.PersonalitySurgery" />
+        <RimWorldSteamModDependency Include="biomesteam.biomescaverns" />
     </ItemGroup>
 
 </Project>

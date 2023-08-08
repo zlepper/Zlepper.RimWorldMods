@@ -52,9 +52,13 @@ where T: class
                 for (var i = 0; i < versionNode.ChildNodes.Count; i++)
                 {
                     var liNode = versionNode.ChildNodes[i];
+                    if (liNode.Name == "#comment")
+                    {
+                        continue;
+                    }
                     if (liNode.Name != "li")
                     {
-                        throw new Exception("Found non <li> node");
+                        throw new Exception($"Found non <li> node. Got {liNode.Name}");
                     }
 
                     if (typeof(T) == typeof(string))

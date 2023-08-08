@@ -11,6 +11,11 @@
   </supportedVersions>
   <modDependencies>
     <li>
+      <packageId>BiomesTeam.BiomesCaverns</packageId>
+      <displayName>Biomes! Caverns</displayName>
+      <steamWorkshopUrl>steam://url/CommunityFilePage/2969748433</steamWorkshopUrl>
+    </li>
+    <li>
       <packageId>brrainz.harmony</packageId>
       <displayName>Harmony</displayName>
       <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
@@ -24,6 +29,7 @@
     </li>
   </modDependencies>
   <loadAfter>
+    <li>BiomesTeam.BiomesCaverns</li>
     <li>brrainz.harmony</li>
     <li>UnlimitedHugs.HugsLib</li>
   </loadAfter>

@@ -2,13 +2,14 @@
 using HarmonyLib;
 using UnityEngine;
 using VanillaPsycastsExpanded.Skipmaster;
+using VFECore;
 
 namespace Zlepper.RimWorld.RoyaltyImprovements.Teleporting;
 
-[HarmonyPatch(typeof(Skipdoor), nameof(Skipdoor.DrawAt), typeof(Vector3), typeof(bool))]
+[HarmonyPatch(typeof(DoorTeleporter), nameof(DoorTeleporter.DrawAt), typeof(Vector3), typeof(bool))]
 public static class Skipdoor_Patches
 {
-    private static readonly FieldInfo DistortionAmountField = AccessTools.Field(typeof(Skipdoor), "distortAmount") ??
+    private static readonly FieldInfo DistortionAmountField = AccessTools.Field(typeof(DoorTeleporter), "distortAmount") ??
                                                               throw new Exception(
                                                                   "Failed to get field 'distortAmount' from Skipdoor");
 
