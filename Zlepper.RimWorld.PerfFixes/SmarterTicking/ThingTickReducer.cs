@@ -8,7 +8,7 @@ public sealed class ThingTickReducer
 
     private readonly int _minTicksBetweenChecks;
     private readonly int _maxTicketsBetweenChecks;
-    private readonly Random r = new();
+    private readonly Random _r = new();
     
     public ThingTickReducer(int minTicksBetweenChecks, int maxTicketsBetweenChecks)
     {
@@ -26,7 +26,7 @@ public sealed class ThingTickReducer
         var doTick = ticks < 0;
         if (doTick)
         {
-            ticks = r.Next(_minTicksBetweenChecks, _maxTicketsBetweenChecks);
+            ticks = _r.Next(_minTicksBetweenChecks, _maxTicketsBetweenChecks);
         }
         _cache.Set(id, ticks);
 

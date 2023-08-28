@@ -17,6 +17,11 @@ public static class TraitRecipeGenerator
 
         foreach (var traitDef in DefDatabase<TraitDef>.AllDefs)
         {
+            if (traitDef.GetGenderSpecificCommonality(Gender.None) == 0)
+            {
+                continue;
+            }
+            
             foreach (var degreeData in traitDef.degreeDatas)
             {
                 var traitItemThing = DefGeneratorHelpers.CreateCopy<TraitThingDef>(PersonalitySurgeryDefs.SurgeryExtractBioTraitItem);

@@ -20,7 +20,7 @@ public class Alert_ActiveHostiles : Alert
         {
             foreach (var pawn in map.mapPawns.AllPawns)
             {
-                if (!pawn.Downed && pawn.Spawned && pawn.HostileTo(playerFaction))
+                if (!pawn.Downed && pawn.Spawned && pawn.HostileTo(playerFaction) && pawn.MentalStateDef != MentalStateDefOf.PanicFlee)
                 {
                     hostiles.Add(pawn);
                 }

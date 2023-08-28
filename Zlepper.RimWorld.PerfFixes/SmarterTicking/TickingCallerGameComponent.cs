@@ -13,6 +13,7 @@ public class TickingCallerGameComponent : GameComponent
         Toils_BedPatches.Ticker.Tick();
         RestUtility_ShouldWakeUp_Patches.Ticker.Tick();
         ForbidUtility_CaresAboutForbidden_Patches.Tick();
+        MeditationUtility_PsyfocusGainPerTick_Patches.Tick();
     }
 
     public override void StartedNewGame()
