@@ -107,8 +107,8 @@
             <Output TaskParameter="MatchedReferences" ItemName="Reference"/>
             <Output TaskParameter="ModDefFiles" ItemName="RimWorldDefFiles"/>
         </CreateModAssemblyReferences>
-        
-        <Message Importance="high" Text="@(Reference)" />
+        <Message Importance="high" Text="Resolved Rimworld references:" />
+        <Message Importance="high" Text="@(Reference, '%0a')" />
     </Target>
 
 
