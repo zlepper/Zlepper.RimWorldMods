@@ -16,6 +16,11 @@
         <StartProgram>$(RimWorldPath)/RimWorldWin64.exe</StartProgram>
     </PropertyGroup>
 
+    <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
+        <StartAction>Program</StartAction>
+        <StartProgram>$(RimWorldPath)/RimWorldLinux</StartProgram>
+    </PropertyGroup>
+
     <!-- Yell at people if they forgot to set some parameters, or the values are very wrong.  -->
     <Target Name="ValidateParameters" BeforeTargets="BeforeBuild">
         <Error Condition="'$(RimWorldPath)' == ''" Text="RimWorldPath is not set"/>
