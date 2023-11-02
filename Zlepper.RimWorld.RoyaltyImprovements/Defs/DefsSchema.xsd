@@ -108,6 +108,7 @@
         <xs:element name="MentalFitDef" type="MentalFitDef" />
         <xs:element name="MentalStateDef" type="MentalStateDef" />
         <xs:element name="MessageTypeDef" type="MessageTypeDef" />
+        <xs:element name="ModSettingsFramework.ModOptionCategoryDef" type="ModSettingsFramework.ModOptionCategoryDef" />
         <xs:element name="MVCF.ModDef" type="MVCF.ModDef" />
         <xs:element name="NeedDef" type="NeedDef" />
         <xs:element name="OptionCategoryDef" type="OptionCategoryDef" />
@@ -120,6 +121,7 @@
         <xs:element name="PawnsArrivalModeDef" type="PawnsArrivalModeDef" />
         <xs:element name="PawnTableDef" type="PawnTableDef" />
         <xs:element name="PipeSystem.PipeNetDef" type="PipeSystem.PipeNetDef" />
+        <xs:element name="PipeSystem.ProcessDef" type="PipeSystem.ProcessDef" />
         <xs:element name="PlaceDef" type="PlaceDef" />
         <xs:element name="PreceptDef" type="PreceptDef" />
         <xs:element name="PrisonerInteractionModeDef" type="PrisonerInteractionModeDef" />
@@ -1879,6 +1881,26 @@
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  <xs:complexType name="AnimalBehaviours.HediffCompProperties_GasProducer">
+    <xs:complexContent>
+      <xs:extension base="HediffCompProperties">
+        <xs:all>
+          <xs:element minOccurs="0" name="amount" type="xs:int" />
+          <xs:element minOccurs="0" name="gasType">
+            <xs:simpleType>
+              <xs:restriction base="xs:string">
+                <xs:enumeration value="BlindSmoke" />
+                <xs:enumeration value="RotStink" />
+                <xs:enumeration value="ToxGas" />
+                <xs:enumeration value="Unused" />
+              </xs:restriction>
+            </xs:simpleType>
+          </xs:element>
+          <xs:element minOccurs="0" name="timer" type="xs:int" />
+        </xs:all>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType name="AnimalBehaviours.HediffCompProperties_HeatPusher">
     <xs:complexContent>
       <xs:extension base="HediffCompProperties">
@@ -1956,6 +1978,16 @@
           <xs:element minOccurs="0" name="radius" type="xs:int" />
           <xs:element minOccurs="0" name="showEffect" type="xs:boolean" />
           <xs:element minOccurs="0" name="tickInterval" type="xs:int" />
+        </xs:all>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="AnimalBehaviours.HediffCompProperties_Polluter">
+    <xs:complexContent>
+      <xs:extension base="HediffCompProperties">
+        <xs:all>
+          <xs:element minOccurs="0" name="amount" type="xs:int" />
+          <xs:element minOccurs="0" name="timer" type="xs:int" />
         </xs:all>
       </xs:extension>
     </xs:complexContent>
@@ -8341,8 +8373,8 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
-      <xs:element minOccurs="0" name="ability" type="AbilityDef.Enumeration" />
       <xs:element minOccurs="0" name="ability" type="VFECore.Abilities.AbilityDef.Enumeration" />
+      <xs:element minOccurs="0" name="ability" type="AbilityDef.Enumeration" />
       <xs:element minOccurs="0" name="absorbDamageSound" type="SoundDef.Enumeration" />
       <xs:element minOccurs="0" name="accelerationFactor" type="xs:float" />
       <xs:element minOccurs="0" name="AcceptedDefnames">
@@ -8375,6 +8407,7 @@
       <xs:element minOccurs="0" name="activationDescKey" type="xs:string" />
       <xs:element minOccurs="0" name="activationIconTexPath" type="xs:string" />
       <xs:element minOccurs="0" name="activationLabelKey" type="xs:string" />
+      <xs:element minOccurs="0" name="activeAlways" type="xs:boolean" />
       <xs:element minOccurs="0" name="activeSound" type="SoundDef.Enumeration" />
       <xs:element minOccurs="0" name="activeSound" type="SoundDef.Enumeration" />
       <xs:element minOccurs="0" name="activeSound" type="SoundDef.Enumeration" />
@@ -8458,8 +8491,8 @@
       <xs:element minOccurs="0" name="blockMeleeAttack" type="xs:boolean" />
       <xs:element minOccurs="0" name="blockRangedAttack" type="xs:boolean" />
       <xs:element minOccurs="0" name="blocksRangedWeapons" type="xs:boolean" />
-      <xs:element minOccurs="0" name="bodyPart" type="BodyPartDef.Enumeration" />
       <xs:element minOccurs="0" name="bodypart" type="BodyPartDef.Enumeration" />
+      <xs:element minOccurs="0" name="bodyPart" type="BodyPartDef.Enumeration" />
       <xs:element minOccurs="0" name="bodyPartsToRestore">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -8636,7 +8669,6 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
-      <xs:element minOccurs="0" name="customAmountToDig" type="xs:int" />
       <xs:element minOccurs="0" name="customAmountToDig">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -8644,6 +8676,7 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="customAmountToDig" type="xs:int" />
       <xs:element minOccurs="0" name="customAmountToDig" type="xs:int" />
       <xs:element minOccurs="0" name="customAmountToDigIfRocksOrBricks" type="xs:int" />
       <xs:element minOccurs="0" name="customizable" type="xs:boolean" />
@@ -8657,6 +8690,7 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="customThingToDig" type="xs:string" />
       <xs:element minOccurs="0" name="customThingToDig">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -8664,7 +8698,6 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
-      <xs:element minOccurs="0" name="customThingToDig" type="xs:string" />
       <xs:element minOccurs="0" name="customThingToEat">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -8673,10 +8706,10 @@
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="cycleCountOnSpawn" type="xs:int" />
-      <xs:element minOccurs="0" name="damage" type="DamageDef.Enumeration" />
       <xs:element minOccurs="0" name="damage" type="xs:int" />
-      <xs:element minOccurs="0" name="damage" type="DamageDef.Enumeration" />
       <xs:element minOccurs="0" name="damage" type="xs:float" />
+      <xs:element minOccurs="0" name="damage" type="DamageDef.Enumeration" />
+      <xs:element minOccurs="0" name="damage" type="DamageDef.Enumeration" />
       <xs:element minOccurs="0" name="damage" type="DamageDef.Enumeration" />
       <xs:element minOccurs="0" name="damageAmountBase" type="xs:int" />
       <xs:element minOccurs="0" name="damageDef" type="xs:string" />
@@ -8817,8 +8850,8 @@
       <xs:element minOccurs="0" name="durationDays" type="xs:float" />
       <xs:element minOccurs="0" name="durationSeconds" type="xs:float" />
       <xs:element minOccurs="0" name="edgeLengthRange" type="FloatRange" />
-      <xs:element minOccurs="0" name="effect" type="xs:boolean" />
       <xs:element minOccurs="0" name="effect" type="EffecterDef.Enumeration" />
+      <xs:element minOccurs="0" name="effect" type="xs:boolean" />
       <xs:element minOccurs="0" name="effectCharged" type="EffecterDef.Enumeration" />
       <xs:element minOccurs="0" name="effecter" type="EffecterDef.Enumeration" />
       <xs:element minOccurs="0" name="effecter" type="EffecterDef.Enumeration" />
@@ -8866,8 +8899,8 @@
       <xs:element minOccurs="0" name="enableAfterTicks" type="xs:int" />
       <xs:element minOccurs="0" name="endSound" type="SoundDef.Enumeration" />
       <xs:element minOccurs="0" name="endTime" type="xs:float" />
-      <xs:element minOccurs="0" name="energyLossPerDamage" type="xs:float" />
       <xs:element minOccurs="0" name="EnergyLossPerDamage" type="xs:float" />
+      <xs:element minOccurs="0" name="energyLossPerDamage" type="xs:float" />
       <xs:element minOccurs="0" name="energyOnReset" type="xs:float" />
       <xs:element minOccurs="0" name="energyPerSecond" type="xs:float" />
       <xs:element minOccurs="0" name="EnergyShieldEnergyMax" type="xs:float" />
@@ -8966,6 +8999,7 @@
       <xs:element minOccurs="0" name="fuelMultiplier" type="xs:float" />
       <xs:element minOccurs="0" name="fullyDestroyThing" type="xs:boolean" />
       <xs:element minOccurs="0" name="gainThoughtOnCompletion" type="ThoughtDef.Enumeration" />
+      <xs:element minOccurs="0" name="gasType" type="xs:string" />
       <xs:element minOccurs="0" name="gasType">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -8976,7 +9010,6 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
-      <xs:element minOccurs="0" name="gasType" type="xs:string" />
       <xs:element minOccurs="0" name="gatheringIntervalDays" type="xs:int" />
       <xs:element minOccurs="0" name="gatheringIntervalTicks" type="xs:int" />
       <xs:element minOccurs="0" name="gender">
@@ -9051,8 +9084,8 @@
       <xs:element minOccurs="0" name="heatPushMaxTemperature" type="xs:float" />
       <xs:element minOccurs="0" name="heatPushMinTemperature" type="xs:float" />
       <xs:element minOccurs="0" name="hediff" type="HediffDef.Enumeration" />
-      <xs:element minOccurs="0" name="hediff" type="HediffDef.Enumeration" />
       <xs:element minOccurs="0" name="hediff" type="xs:string" />
+      <xs:element minOccurs="0" name="hediff" type="HediffDef.Enumeration" />
       <xs:element minOccurs="0" name="hediff" type="HediffDef.Enumeration" />
       <xs:element minOccurs="0" name="hediff" type="HediffDef.Enumeration" />
       <xs:element minOccurs="0" name="hediff" type="HediffDef.Enumeration" />
@@ -9196,8 +9229,8 @@
       <xs:element minOccurs="0" name="justVanish" type="xs:boolean" />
       <xs:element minOccurs="0" name="key" type="xs:string" />
       <xs:element minOccurs="0" name="killPawnAfterDestroying" type="xs:boolean" />
-      <xs:element minOccurs="0" name="label" type="xs:string" />
       <xs:element minOccurs="0" name="Label" type="xs:string" />
+      <xs:element minOccurs="0" name="label" type="xs:string" />
       <xs:element minOccurs="0" name="largeOverdoseChance" type="xs:float" />
       <xs:element minOccurs="0" name="leaflessPlantKillChance" type="xs:float" />
       <xs:element minOccurs="0" name="leavingsFilter" type="ThingFilter" />
@@ -9298,8 +9331,8 @@
       <xs:element minOccurs="0" name="maxIngredientCount" type="xs:int" />
       <xs:element minOccurs="0" name="maxLight" type="xs:float" />
       <xs:element minOccurs="0" name="maxOutputStackSize" type="xs:int" />
-      <xs:element minOccurs="0" name="maxPawnsToSpawn" type="IntRange" />
       <xs:element minOccurs="0" name="maxPawnsToSpawn" type="xs:int" />
+      <xs:element minOccurs="0" name="maxPawnsToSpawn" type="IntRange" />
       <xs:element minOccurs="0" name="maxPlants" type="xs:int" />
       <xs:element minOccurs="0" name="maxRadius" type="xs:float" />
       <xs:element minOccurs="0" name="maxRadius" type="xs:float" />
@@ -9420,6 +9453,7 @@
       <xs:element minOccurs="0" name="notOnlyAffectColonists" type="xs:boolean" />
       <xs:element minOccurs="0" name="notOnlyAffectColonists" type="xs:boolean" />
       <xs:element minOccurs="0" name="notWorkingKey" type="xs:string" />
+      <xs:element minOccurs="0" name="notWorkingKey" type="xs:string" />
       <xs:element minOccurs="0" name="numberOfHediffs" type="xs:int" />
       <xs:element minOccurs="0" name="numberOfInputs" type="xs:int" />
       <xs:element minOccurs="0" name="numberOfOffspring" type="xs:int" />
@@ -9478,8 +9512,8 @@
       <xs:element minOccurs="0" name="pawnLoadedSound" type="SoundDef.Enumeration" />
       <xs:element minOccurs="0" name="pawnsLeftToSpawnKey" type="xs:string" />
       <xs:element minOccurs="0" name="pawnSpawnIntervalDays" type="FloatRange" />
-      <xs:element minOccurs="0" name="pawnSpawnRadius" type="xs:int" />
       <xs:element minOccurs="0" name="pawnSpawnRadius" type="IntRange" />
+      <xs:element minOccurs="0" name="pawnSpawnRadius" type="xs:int" />
       <xs:element minOccurs="0" name="pawnToSpawn" type="PawnKindDef.Enumeration" />
       <xs:element minOccurs="0" name="pawnToTurnInto" type="xs:string" />
       <xs:element minOccurs="0" name="percentageDrain" type="xs:float" />
@@ -9533,6 +9567,13 @@
       <xs:element minOccurs="0" name="prepareEffecterDef" type="EffecterDef.Enumeration" />
       <xs:element minOccurs="0" name="preventConditionStacking" type="xs:boolean" />
       <xs:element minOccurs="0" name="preventRotInNegativeTemp" type="xs:boolean" />
+      <xs:element minOccurs="0" name="processes">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="PipeSystem.ProcessDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="produceEggs" type="xs:boolean" />
       <xs:element minOccurs="0" name="progressPerDegreePerTick" type="xs:float" />
       <xs:element minOccurs="0" name="progressPerDegreePerTick" type="xs:float" />
@@ -9550,7 +9591,6 @@
       <xs:element minOccurs="0" name="radius" type="xs:float" />
       <xs:element minOccurs="0" name="radius" type="xs:int" />
       <xs:element minOccurs="0" name="radius" type="xs:int" />
-      <xs:element minOccurs="0" name="radius" type="xs:int" />
       <xs:element minOccurs="0" name="radius" type="xs:float" />
       <xs:element minOccurs="0" name="radius" type="xs:float" />
       <xs:element minOccurs="0" name="radius" type="xs:int" />
@@ -9562,12 +9602,13 @@
       <xs:element minOccurs="0" name="radius" type="xs:int" />
       <xs:element minOccurs="0" name="radius" type="xs:float" />
       <xs:element minOccurs="0" name="radius" type="xs:int" />
-      <xs:element minOccurs="0" name="radius" type="xs:float" />
-      <xs:element minOccurs="0" name="radius" type="xs:float" />
+      <xs:element minOccurs="0" name="radius" type="xs:int" />
       <xs:element minOccurs="0" name="radius" type="xs:float" />
       <xs:element minOccurs="0" name="radius" type="xs:float" />
       <xs:element minOccurs="0" name="radius" type="xs:float" />
       <xs:element minOccurs="0" name="radius" type="xs:int" />
+      <xs:element minOccurs="0" name="radius" type="xs:float" />
+      <xs:element minOccurs="0" name="radius" type="xs:float" />
       <xs:element minOccurs="0" name="radius" type="xs:float" />
       <xs:element minOccurs="0" name="radius" type="xs:int" />
       <xs:element minOccurs="0" name="radiusCheckInspectPaneKey" type="xs:string" />
@@ -9615,6 +9656,7 @@
       <xs:element minOccurs="0" name="ratio" type="xs:int" />
       <xs:element minOccurs="0" name="ratio" type="xs:int" />
       <xs:element minOccurs="0" name="ratio" type="xs:int" />
+      <xs:element minOccurs="0" name="reactivateEffect" type="EffecterDef.Enumeration" />
       <xs:element minOccurs="0" name="reactivateEffect" type="EffecterDef.Enumeration" />
       <xs:element minOccurs="0" name="readyEffecter" type="EffecterDef.Enumeration" />
       <xs:element minOccurs="0" name="rechargeHitPointsIntervalTicks" type="xs:int" />
@@ -9686,7 +9728,7 @@
       <xs:element minOccurs="0" name="results">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="PipeSystem.Result" />
+            <xs:element name="li" type="PipeSystem.CompProperties_ResourceProcessor.Result" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -9758,6 +9800,7 @@
       <xs:element minOccurs="0" name="showAllowAutoRefuelToggle" type="xs:boolean" />
       <xs:element minOccurs="0" name="showAlways" type="xs:boolean" />
       <xs:element minOccurs="0" name="showBufferInfo" type="xs:boolean" />
+      <xs:element minOccurs="0" name="showBufferInfo" type="xs:boolean" />
       <xs:element minOccurs="0" name="showContentsInInspectPane" type="xs:boolean" />
       <xs:element minOccurs="0" name="showDeepCountLeft" type="xs:boolean" />
       <xs:element minOccurs="0" name="showEffect" type="xs:boolean" />
@@ -9775,6 +9818,8 @@
       <xs:element minOccurs="0" name="showOverallStats" type="xs:boolean" />
       <xs:element minOccurs="0" name="showPowerNeededIfOff" type="xs:boolean" />
       <xs:element minOccurs="0" name="showProgressBar" type="xs:boolean" />
+      <xs:element minOccurs="0" name="showProgressBar" type="xs:boolean" />
+      <xs:element minOccurs="0" name="showResultItem" type="xs:boolean" />
       <xs:element minOccurs="0" name="showSetArea" type="xs:boolean" />
       <xs:element minOccurs="0" name="showSleepingZs" type="xs:boolean" />
       <xs:element minOccurs="0" name="showWhenDrafted" type="xs:boolean" />
@@ -9796,6 +9841,7 @@
       <xs:element minOccurs="0" name="sound" type="SoundDef.Enumeration" />
       <xs:element minOccurs="0" name="sound" type="SoundDef.Enumeration" />
       <xs:element minOccurs="0" name="soundActivate" type="SoundDef.Enumeration" />
+      <xs:element minOccurs="0" name="soundAmbient" type="SoundDef.Enumeration" />
       <xs:element minOccurs="0" name="soundAmbient" type="SoundDef.Enumeration" />
       <xs:element minOccurs="0" name="soundAmbientPowered" type="SoundDef.Enumeration" />
       <xs:element minOccurs="0" name="soundAmbientProducingPower" type="SoundDef.Enumeration" />
@@ -10008,6 +10054,7 @@
       <xs:element minOccurs="0" name="ticksToBuild" type="xs:int" />
       <xs:element minOccurs="0" name="ticksToCreateFilth" type="xs:int" />
       <xs:element minOccurs="0" name="ticksToDig" type="xs:int" />
+      <xs:element minOccurs="0" name="ticksToFill" type="xs:int" />
       <xs:element minOccurs="0" name="ticksToRecharge" type="xs:int" />
       <xs:element minOccurs="0" name="tilePollutionPerDissolution" type="xs:float" />
       <xs:element minOccurs="0" name="timeInYears" type="xs:float" />
@@ -14093,6 +14140,7 @@
       <xs:enumeration value="MVCF.Comps.CompProperties_VerbGiver" />
       <xs:enumeration value="MVCF.Comps.CompProperties_VerbProps" />
       <xs:enumeration value="MVCF.Comps.CompProperties_VerbsFromInventory" />
+      <xs:enumeration value="PipeSystem.CompProperties_AdvancedResourceProcessor" />
       <xs:enumeration value="PipeSystem.CompProperties_ConvertResourceToThing" />
       <xs:enumeration value="PipeSystem.CompProperties_ConvertThingToResource" />
       <xs:enumeration value="PipeSystem.CompProperties_DeepExtractor" />
@@ -14297,8 +14345,14 @@
       <xs:enumeration value="ConditionalStatAffecter_Unclothed" />
       <xs:enumeration value="VanillaGenesExpanded.ConditionalStatAffecter_Armor" />
       <xs:enumeration value="VanillaGenesExpanded.ConditionalStatAffecter_BelowZero" />
+      <xs:enumeration value="VanillaGenesExpanded.ConditionalStatAffecter_Darkness" />
       <xs:enumeration value="VanillaGenesExpanded.ConditionalStatAffecter_DryLand" />
+      <xs:enumeration value="VanillaGenesExpanded.ConditionalStatAffecter_Indoors" />
+      <xs:enumeration value="VanillaGenesExpanded.ConditionalStatAffecter_InLight" />
+      <xs:enumeration value="VanillaGenesExpanded.ConditionalStatAffecter_InPain" />
+      <xs:enumeration value="VanillaGenesExpanded.ConditionalStatAffecter_InPollution" />
       <xs:enumeration value="VanillaGenesExpanded.ConditionalStatAffecter_NoSunlight" />
+      <xs:enumeration value="VanillaGenesExpanded.ConditionalStatAffecter_Outdoors" />
       <xs:enumeration value="VanillaGenesExpanded.ConditionalStatAffecter_OverFortyDegrees" />
       <xs:enumeration value="VanillaGenesExpanded.ConditionalStatAffecter_Water" />
     </xs:restriction>
@@ -14760,6 +14814,7 @@
       <xs:element name="MentalFitDef" type="MentalFitDef.Enumeration" />
       <xs:element name="MentalStateDef" type="MentalStateDef.Enumeration" />
       <xs:element name="MessageTypeDef" type="MessageTypeDef.Enumeration" />
+      <xs:element name="ModSettingsFramework.ModOptionCategoryDef" type="ModSettingsFramework.ModOptionCategoryDef.Enumeration" />
       <xs:element name="MVCF.ModDef" type="MVCF.ModDef.Enumeration" />
       <xs:element name="NeedDef" type="NeedDef.Enumeration" />
       <xs:element name="OptionCategoryDef" type="OptionCategoryDef.Enumeration" />
@@ -14772,6 +14827,7 @@
       <xs:element name="PawnsArrivalModeDef" type="PawnsArrivalModeDef.Enumeration" />
       <xs:element name="PawnTableDef" type="PawnTableDef.Enumeration" />
       <xs:element name="PipeSystem.PipeNetDef" type="PipeSystem.PipeNetDef.Enumeration" />
+      <xs:element name="PipeSystem.ProcessDef" type="PipeSystem.ProcessDef.Enumeration" />
       <xs:element name="PlaceDef" type="PlaceDef.Enumeration" />
       <xs:element name="PreceptDef" type="PreceptDef.Enumeration" />
       <xs:element name="PrisonerInteractionModeDef" type="PrisonerInteractionModeDef.Enumeration" />
@@ -14895,21 +14951,21 @@
       <xs:element minOccurs="0" name="activeOnWeatherPerceived" type="WeatherDef.Enumeration" />
       <xs:element minOccurs="0" name="addFire" type="xs:boolean" />
       <xs:element minOccurs="0" name="allowDeepDrill" type="xs:boolean" />
+      <xs:element minOccurs="0" name="allowedBiomes">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="BiomeDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="allowedBiomes">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="BiomeDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="AllowedBiomes">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="BiomeDef.Enumeration" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="allowedBiomes">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="BiomeDef.Enumeration" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="allowedBiomes">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="BiomeDef.Enumeration" />
@@ -14940,6 +14996,13 @@
       <xs:element minOccurs="0" name="apparelGenerationCommonalityOffset" type="xs:float" />
       <xs:element minOccurs="0" name="applyAuto" type="xs:boolean" />
       <xs:element minOccurs="0" name="applyDamageToExplosionCellsNeighbors" type="xs:boolean" />
+      <xs:element minOccurs="0" name="applySkinColorWithGenes">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="GeneDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="applyToCaster" type="xs:boolean" />
       <xs:element minOccurs="0" name="applyToSelf" type="xs:boolean" />
       <xs:element minOccurs="0" name="applyToSelf" type="xs:boolean" />
@@ -15015,6 +15078,7 @@
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="coma" type="HediffDef.Enumeration" />
+      <xs:element minOccurs="0" name="constructionSkillRequirement" type="VFECore.ConstructionSkillRequirement" />
       <xs:element minOccurs="0" name="copyPropertiesFrom" type="xs:string" />
       <xs:element minOccurs="0" name="copyPropertiesFrom" type="xs:string" />
       <xs:element minOccurs="0" name="CostToMake" type="ThingDefCountClass" />
@@ -15047,14 +15111,14 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
-      <xs:element minOccurs="0" name="DisallowedBiomes">
+      <xs:element minOccurs="0" name="disallowedBiomes">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="BiomeDef.Enumeration" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
-      <xs:element minOccurs="0" name="disallowedBiomes">
+      <xs:element minOccurs="0" name="DisallowedBiomes">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="BiomeDef.Enumeration" />
@@ -15116,6 +15180,13 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="excludedAbilities">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="VFECore.Abilities.AbilityDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="excludeFromCommConsole" type="xs:boolean" />
       <xs:element minOccurs="0" name="excludeFromQuests" type="xs:boolean" />
       <xs:element minOccurs="0" name="explosionArmorPenetration" type="xs:float" />
@@ -15166,6 +15237,7 @@
       <xs:element minOccurs="0" name="fleckToSpawnInArea" type="FleckDef.Enumeration" />
       <xs:element minOccurs="0" name="forcedBodyType" type="BodyTypeDef.Enumeration" />
       <xs:element minOccurs="0" name="forcedFaction" type="FactionDef.Enumeration" />
+      <xs:element minOccurs="0" name="forcedMissRadius" type="xs:float" />
       <xs:element minOccurs="0" name="forcedPointsRange" type="IntRange" />
       <xs:element minOccurs="0" name="forcedStrategy" type="RaidStrategyDef.Enumeration" />
       <xs:element minOccurs="0" name="forcedTrait" type="TraitDef.Enumeration" />
@@ -15208,6 +15280,7 @@
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="giveRandomAbilities" type="xs:boolean" />
+      <xs:element minOccurs="0" name="globalSkillLossMultiplier" type="xs:float" />
       <xs:element minOccurs="0" name="goodwillImpactForBerserk" type="xs:int" />
       <xs:element minOccurs="0" name="goodwillImpactForNeuroquake" type="xs:int" />
       <xs:element minOccurs="0" name="graphicData" type="GraphicData" />
@@ -15390,6 +15463,7 @@
       <xs:element minOccurs="0" name="preExplosionSpawnThingCount" type="xs:int" />
       <xs:element minOccurs="0" name="preExplosionSpawnThingDef" type="ThingDef.Enumeration" />
       <xs:element minOccurs="0" name="preGenClear" type="xs:boolean" />
+      <xs:element minOccurs="0" name="pregnancySpeedFactor" type="xs:float" />
       <xs:element minOccurs="0" name="prerequisites">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -15529,6 +15603,7 @@
       <xs:element minOccurs="0" name="siegeParameterSet" type="xs:string" />
       <xs:element minOccurs="0" name="siegeParameterSetDef" type="VFECore.SiegeParameterSetDef.Enumeration" />
       <xs:element minOccurs="0" name="size" type="xs:float" />
+      <xs:element minOccurs="0" name="skillDegradation" type="xs:boolean" />
       <xs:element minOccurs="0" name="skillDisables">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -15546,8 +15621,8 @@
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="skullGraphicPath" type="xs:string" />
-      <xs:element minOccurs="0" name="skyfaller" type="xs:string" />
       <xs:element minOccurs="0" name="skyfaller" type="ThingDef.Enumeration" />
+      <xs:element minOccurs="0" name="skyfaller" type="xs:string" />
       <xs:element minOccurs="0" name="sound" type="SoundDef.Enumeration" />
       <xs:element minOccurs="0" name="soundOnDamage" type="SoundDef.Enumeration" />
       <xs:element minOccurs="0" name="soundOnImpact" type="SoundDef.Enumeration" />
@@ -15831,6 +15906,7 @@
       <xs:enumeration value="VanillaPsycastsExpanded.PawnKindAbilityExtension_Psycasts" />
       <xs:enumeration value="VanillaPsycastsExpanded.Skipmaster.AbilityExtension_Clamor" />
       <xs:enumeration value="VanillaPsycastsExpanded.Skipmaster.AbilityExtension_Wallraise" />
+      <xs:enumeration value="VanillaPsycastsExpanded.Technomancer.PsyringExclusionExtension" />
       <xs:enumeration value="VanillaStorytellersExpanded.StorytellerDefExtension" />
       <xs:enumeration value="VFE.Mechanoids.MechanoidExtension" />
       <xs:enumeration value="VFECore.Abilities.AbilityExtension_AbilityMod" />
@@ -16415,6 +16491,13 @@
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="allowedRoads">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="RoadDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="allowedSeasons">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -16746,6 +16829,7 @@
       <xs:element minOccurs="0" name="attackersDownPercentageRangeForAutoFlee" type="FloatRange" />
       <xs:element minOccurs="0" name="autoAccept" type="xs:boolean" />
       <xs:element minOccurs="0" name="autocastPlayerDefault" type="xs:boolean" />
+      <xs:element minOccurs="0" name="autoExtract" type="xs:boolean" />
       <xs:element minOccurs="0" name="autoFlee" type="xs:boolean" />
       <xs:element minOccurs="0" name="autoRebuildable" type="xs:boolean" />
       <xs:element minOccurs="0" name="autoStripCorpses" type="xs:boolean" />
@@ -17172,6 +17256,28 @@
       <xs:element minOccurs="0" name="castTimeStatFactors" type="StatModifier" />
       <xs:element minOccurs="0" name="castTimeStatOffsets" type="StatModifier" />
       <xs:element minOccurs="0" name="casualInterruptible" type="xs:boolean" />
+      <xs:element minOccurs="0" name="category" type="StatCategoryDef.Enumeration" />
+      <xs:element minOccurs="0" name="category">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Fixed" />
+            <xs:enumeration value="GameCondition" />
+            <xs:enumeration value="Misc" />
+            <xs:enumeration value="PlayerPawnFilter" />
+            <xs:enumeration value="PlayerPawnModifier" />
+            <xs:enumeration value="Rule" />
+            <xs:enumeration value="StartingImportant" />
+            <xs:enumeration value="StartingItem" />
+            <xs:enumeration value="Undefined" />
+            <xs:enumeration value="WorldThing" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="category" type="AbilityCategoryDef.Enumeration" />
+      <xs:element minOccurs="0" name="category" type="IncidentCategoryDef.Enumeration" />
+      <xs:element minOccurs="0" name="category" type="ThingCategoryDef.Enumeration" />
+      <xs:element minOccurs="0" name="category" type="xs:string" />
+      <xs:element minOccurs="0" name="category" type="StyleItemCategoryDef.Enumeration" />
       <xs:element minOccurs="0" name="category">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -17190,6 +17296,7 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
+      <xs:element minOccurs="0" name="category" type="KeyBindingCategoryDef.Enumeration" />
       <xs:element minOccurs="0" name="category">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -17198,27 +17305,6 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
-      <xs:element minOccurs="0" name="category" type="IncidentCategoryDef.Enumeration" />
-      <xs:element minOccurs="0" name="category" type="StyleItemCategoryDef.Enumeration" />
-      <xs:element minOccurs="0" name="category">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Fixed" />
-            <xs:enumeration value="GameCondition" />
-            <xs:enumeration value="Misc" />
-            <xs:enumeration value="PlayerPawnFilter" />
-            <xs:enumeration value="PlayerPawnModifier" />
-            <xs:enumeration value="Rule" />
-            <xs:enumeration value="StartingImportant" />
-            <xs:enumeration value="StartingItem" />
-            <xs:enumeration value="Undefined" />
-            <xs:enumeration value="WorldThing" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-      <xs:element minOccurs="0" name="category" type="AbilityCategoryDef.Enumeration" />
-      <xs:element minOccurs="0" name="category" type="KeyBindingCategoryDef.Enumeration" />
-      <xs:element minOccurs="0" name="category" type="StatCategoryDef.Enumeration" />
       <xs:element minOccurs="0" name="category">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -17229,7 +17315,6 @@
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
-      <xs:element minOccurs="0" name="category" type="xs:string" />
       <xs:element minOccurs="0" name="categoryDef" type="IdeoPresetCategoryDef.Enumeration" />
       <xs:element minOccurs="0" name="categoryTag" type="xs:string" />
       <xs:element minOccurs="0" name="causefireChance" type="xs:float" />
@@ -17363,41 +17448,6 @@
       <xs:element minOccurs="0" name="comps">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="CompProperties_RitualVisualEffect" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="comps">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="CompProperties" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="comps">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="SurgeryOutcomeComp" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="comps">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="RitualOutcomeComp" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="comps">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="HediffCompProperties" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="comps">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="AbilityCompProperties" />
           </xs:choice>
         </xs:complexType>
@@ -17412,6 +17462,20 @@
       <xs:element minOccurs="0" name="comps">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="SurgeryOutcomeComp" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="comps">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="CompProperties_RitualVisualEffect" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="comps">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="StorytellerCompProperties" />
           </xs:choice>
         </xs:complexType>
@@ -17420,6 +17484,27 @@
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="WorldObjectCompProperties" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="comps">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="HediffCompProperties" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="comps">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="RitualOutcomeComp" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="comps">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="CompProperties" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -17525,6 +17610,7 @@
       <xs:element minOccurs="0" name="costList" type="ThingDefCountClass" />
       <xs:element minOccurs="0" name="costListForDifficulty" type="CostListForDifficulty" />
       <xs:element minOccurs="0" name="costStuffCount" type="xs:int" />
+      <xs:element minOccurs="0" name="count" type="xs:int" />
       <xs:element minOccurs="0" name="countsAsAddedPartOrImplant" type="xs:boolean" />
       <xs:element minOccurs="0" name="countsTowardsPreceptLimit" type="xs:boolean" />
       <xs:element minOccurs="0" name="coverDef" type="ThingDef.Enumeration" />
@@ -17688,6 +17774,8 @@
       <xs:element minOccurs="0" name="destroyEffect" type="EffecterDef.Enumeration" />
       <xs:element minOccurs="0" name="destroyEffectWater" type="EffecterDef.Enumeration" />
       <xs:element minOccurs="0" name="destroyGearOnDrop" type="xs:boolean" />
+      <xs:element minOccurs="0" name="destroyIngredientsDirectly" type="xs:boolean" />
+      <xs:element minOccurs="0" name="destroyIngredientsOnStart" type="xs:boolean" />
       <xs:element minOccurs="0" name="destroyOnBombDamageThreshold" type="xs:float" />
       <xs:element minOccurs="0" name="destroyOnDrop" type="xs:boolean" />
       <xs:element minOccurs="0" name="destroySoundLarge" type="SoundDef.Enumeration" />
@@ -17808,8 +17896,8 @@
       <xs:element minOccurs="0" name="diedThought" type="ThoughtDef.Enumeration" />
       <xs:element minOccurs="0" name="diedThoughtFemale" type="ThoughtDef.Enumeration" />
       <xs:element minOccurs="0" name="differentProductsByQuality" type="xs:boolean" />
-      <xs:element minOccurs="0" name="difficulty" type="xs:int" />
       <xs:element minOccurs="0" name="difficulty" type="xs:float" />
+      <xs:element minOccurs="0" name="difficulty" type="xs:int" />
       <xs:element minOccurs="0" name="directOrderable" type="xs:boolean" />
       <xs:element minOccurs="0" name="directTestable" type="xs:boolean" />
       <xs:element minOccurs="0" name="disableAdaptiveTraining" type="xs:boolean" />
@@ -18131,8 +18219,8 @@
       <xs:element minOccurs="0" name="displayOrderInImpact" type="xs:int" />
       <xs:element minOccurs="0" name="displayOrderInIssue" type="xs:int" />
       <xs:element minOccurs="0" name="displayOrderOffset" type="xs:int" />
-      <xs:element minOccurs="0" name="displayPriority" type="xs:int" />
       <xs:element minOccurs="0" name="displayPriority" type="xs:float" />
+      <xs:element minOccurs="0" name="displayPriority" type="xs:int" />
       <xs:element minOccurs="0" name="displayPriorityInCategory" type="xs:int" />
       <xs:element minOccurs="0" name="displayPriorityInGenepack" type="xs:float" />
       <xs:element minOccurs="0" name="displayPriorityInXenotype" type="xs:float" />
@@ -18403,6 +18491,7 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="extractTicks" type="xs:int" />
       <xs:element minOccurs="0" name="extraDeteriorationFactor" type="xs:float" />
       <xs:element minOccurs="0" name="extraDraftedPerceivedPathCost" type="xs:int" />
       <xs:element minOccurs="0" name="extraInfoLines">
@@ -18629,8 +18718,8 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="forcedSlowdown" type="xs:boolean" />
-      <xs:element minOccurs="0" name="forcedTraits" type="TraitRequirement" />
       <xs:element minOccurs="0" name="forcedTraits" type="BackstoryTrait" />
+      <xs:element minOccurs="0" name="forcedTraits" type="TraitRequirement" />
       <xs:element minOccurs="0" name="forcedTraits">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -18799,8 +18888,8 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
       </xs:element>
       <xs:element minOccurs="0" name="geneToleranceBuildupFactorImmune" type="xs:float" />
       <xs:element minOccurs="0" name="geneToleranceBuildupFactorResist" type="xs:float" />
-      <xs:element minOccurs="0" name="genStep" type="GenStepDef.Enumeration" />
       <xs:element minOccurs="0" name="genStep" type="GenStep" />
+      <xs:element minOccurs="0" name="genStep" type="GenStepDef.Enumeration" />
       <xs:element minOccurs="0" name="genSteps">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -18848,11 +18937,11 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="graphic" type="Graphic" />
+      <xs:element minOccurs="0" name="graphicData" type="GraphicData" />
+      <xs:element minOccurs="0" name="graphicData" type="GraphicData" />
       <xs:element minOccurs="0" name="graphicData" type="GeneGraphicData" />
       <xs:element minOccurs="0" name="graphicData" type="GraphicData" />
       <xs:element minOccurs="0" name="graphicData" type="VFECore.ExpandableGraphicData" />
-      <xs:element minOccurs="0" name="graphicData" type="GraphicData" />
-      <xs:element minOccurs="0" name="graphicData" type="GraphicData" />
       <xs:element minOccurs="0" name="graphicPath" type="xs:string" />
       <xs:element minOccurs="0" name="graphLabelY" type="xs:string" />
       <xs:element minOccurs="0" name="groupAbility" type="xs:boolean" />
@@ -19070,7 +19159,6 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
       <xs:element minOccurs="0" name="ignoreTimeSinceLastInteraction" type="xs:boolean" />
       <xs:element minOccurs="0" name="ignoreWhenCalculatingOptimalTableSize" type="xs:boolean" />
       <xs:element minOccurs="0" name="immuneToToxGasExposure" type="xs:boolean" />
-      <xs:element minOccurs="0" name="impact" type="xs:int" />
       <xs:element minOccurs="0" name="impact">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -19080,6 +19168,7 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
+      <xs:element minOccurs="0" name="impact" type="xs:int" />
       <xs:element minOccurs="0" name="impactSoundType" type="Verse.Sound.ImpactSoundTypeDef.Enumeration" />
       <xs:element minOccurs="0" name="impassable" type="xs:boolean" />
       <xs:element minOccurs="0" name="implemented" type="xs:boolean" />
@@ -19124,6 +19213,13 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
       <xs:element minOccurs="0" name="increaseTerrainDef" type="TerrainDef.Enumeration" />
       <xs:element minOccurs="0" name="ingestible" type="IngestibleProperties" />
       <xs:element minOccurs="0" name="ingredient" type="IngredientProperties" />
+      <xs:element minOccurs="0" name="ingredients">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="PipeSystem.ProcessDef.Ingredient" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="ingredients">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -19376,17 +19472,17 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
       <xs:element minOccurs="0" name="linkWithSite" type="SitePartDef.Enumeration" />
       <xs:element minOccurs="0" name="listedForRoles" type="xs:boolean" />
       <xs:element minOccurs="0" name="listName" type="xs:string" />
+      <xs:element minOccurs="0" name="listOrder" type="xs:int" />
+      <xs:element minOccurs="0" name="listOrder" type="xs:int" />
+      <xs:element minOccurs="0" name="listOrder" type="xs:int" />
+      <xs:element minOccurs="0" name="listOrder" type="xs:int" />
       <xs:element minOccurs="0" name="listOrder" type="xs:float" />
       <xs:element minOccurs="0" name="listOrder" type="xs:int" />
       <xs:element minOccurs="0" name="listOrder" type="xs:int" />
       <xs:element minOccurs="0" name="listOrder" type="xs:int" />
-      <xs:element minOccurs="0" name="listOrder" type="xs:int" />
-      <xs:element minOccurs="0" name="listOrder" type="xs:int" />
-      <xs:element minOccurs="0" name="listOrder" type="xs:int" />
-      <xs:element minOccurs="0" name="listOrder" type="xs:int" />
       <xs:element minOccurs="0" name="listOrderPriority" type="xs:float" />
-      <xs:element minOccurs="0" name="listPriority" type="xs:float" />
       <xs:element minOccurs="0" name="listPriority" type="xs:int" />
+      <xs:element minOccurs="0" name="listPriority" type="xs:float" />
       <xs:element minOccurs="0" name="listVisible" type="xs:boolean" />
       <xs:element minOccurs="0" name="lockedReason" type="xs:string" />
       <xs:element minOccurs="0" name="logEntryDef" type="LogEntryDef.Enumeration" />
@@ -19403,6 +19499,7 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
       <xs:element minOccurs="0" name="lostThought" type="ThoughtDef.Enumeration" />
       <xs:element minOccurs="0" name="lostThoughtFemale" type="ThoughtDef.Enumeration" />
       <xs:element minOccurs="0" name="lovinMTBFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="loweredName" type="xs:string" />
       <xs:element minOccurs="0" name="lowPopConversionBoost" type="xs:float" />
       <xs:element minOccurs="0" name="mainPartAllThreatsLabel" type="xs:string" />
       <xs:element minOccurs="0" name="maintenanceCostFactor" type="xs:float" />
@@ -19421,6 +19518,7 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
       <xs:element minOccurs="0" name="makeTargetPrisoner" type="xs:boolean" />
       <xs:element minOccurs="0" name="maleCommonality" type="xs:float" />
       <xs:element minOccurs="0" name="manhunterChanceOnDamageFactor" type="xs:float" />
+      <xs:element minOccurs="0" name="manualExtractAllowNet" type="xs:boolean" />
       <xs:element minOccurs="0" name="mapGenerator" type="MapGeneratorDef.Enumeration" />
       <xs:element minOccurs="0" name="marketValueFactor" type="xs:float" />
       <xs:element minOccurs="0" name="marketValueFactor" type="xs:float" />
@@ -19451,6 +19549,8 @@ The Def name is also used as an event name. Obsolete</xs:documentation>
       <xs:element minOccurs="0" name="maxPossiblyAllowedSizeToTake" type="xs:int" />
       <xs:element minOccurs="0" name="maxPsylinkLevel" type="xs:int" />
       <xs:element minOccurs="0" name="maxQuality" type="xs:float" />
+      <xs:element minOccurs="0" name="maxRadius" type="xs:float" />
+      <xs:element minOccurs="0" name="maxRange" type="xs:float" />
       <xs:element minOccurs="0" name="maxRemembered" type="xs:int" />
       <xs:element minOccurs="0" name="maxRootGroupSize" type="xs:int" />
       <xs:element minOccurs="0" name="maxRows" type="xs:int" />
@@ -19702,6 +19802,13 @@ This setting may not work for on-camera sounds.</xs:documentation>
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="mods">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
       <xs:element minOccurs="0" name="moodDurationCached" type="xs:float" />
       <xs:element minOccurs="0" name="moodRecoveryThought" type="ThoughtDef.Enumeration" />
       <xs:element minOccurs="0" name="mote" type="MoteProperties" />
@@ -19840,8 +19947,8 @@ This setting may not work for on-camera sounds.</xs:documentation>
           </xs:choice>
         </xs:complexType>
       </xs:element>
-      <xs:element minOccurs="0" name="numberToSpawn" type="IntRange" />
       <xs:element minOccurs="0" name="numberToSpawn" type="xs:int" />
+      <xs:element minOccurs="0" name="numberToSpawn" type="IntRange" />
       <xs:element minOccurs="0" name="nutritionAmount">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -19897,8 +20004,9 @@ This must match what the game expects from the sound Def with this name.</xs:doc
       <xs:element minOccurs="0" name="order" type="xs:int" />
       <xs:element minOccurs="0" name="order" type="xs:int" />
       <xs:element minOccurs="0" name="order" type="xs:int" />
-      <xs:element minOccurs="0" name="order" type="xs:int" />
       <xs:element minOccurs="0" name="order" type="xs:float" />
+      <xs:element minOccurs="0" name="order" type="xs:int" />
+      <xs:element minOccurs="0" name="order" type="xs:int" />
       <xs:element minOccurs="0" name="order" type="xs:int" />
       <xs:element minOccurs="0" name="order" type="xs:int" />
       <xs:element minOccurs="0" name="orderedTakeGroup" type="OrderedTakeGroupDef.Enumeration" />
@@ -20028,9 +20136,9 @@ This must match what the game expects from the sound Def with this name.</xs:doc
       </xs:element>
       <xs:element minOccurs="0" name="pawnHediff" type="HediffDef.Enumeration" />
       <xs:element minOccurs="0" name="pawnKind" type="PawnKindDef.Enumeration" />
+      <xs:element minOccurs="0" name="pawnKindDef" type="PawnKindDef.Enumeration" />
+      <xs:element minOccurs="0" name="pawnKindDef" type="PawnKindDef.Enumeration" />
       <xs:element minOccurs="0" name="pawnKindDef" type="xs:string" />
-      <xs:element minOccurs="0" name="pawnKindDef" type="PawnKindDef.Enumeration" />
-      <xs:element minOccurs="0" name="pawnKindDef" type="PawnKindDef.Enumeration" />
       <xs:element minOccurs="0" name="pawnKindDefNS" type="PawnKindDef.Enumeration" />
       <xs:element minOccurs="0" name="pawnKinds">
         <xs:complexType>
@@ -20077,6 +20185,7 @@ This must match what the game expects from the sound Def with this name.</xs:doc
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="pipeNet" type="PipeSystem.PipeNetDef.Enumeration" />
       <xs:element minOccurs="0" name="pitchRange" type="FloatRange">
         <xs:annotation>
           <xs:documentation>This sound will play at a random pitch inside this range.
@@ -20167,19 +20276,19 @@ Sustainers will choose a different random pitch for each sample.</xs:documentati
       <xs:element minOccurs="0" name="prefersNudity" type="xs:boolean" />
       <xs:element minOccurs="0" name="prefersSlabBed" type="xs:boolean" />
       <xs:element minOccurs="0" name="pregnant" type="xs:boolean" />
-      <xs:element minOccurs="0" name="prerequisite" type="RoyalTitlePermitDef.Enumeration" />
       <xs:element minOccurs="0" name="prerequisite" type="GeneDef.Enumeration" />
+      <xs:element minOccurs="0" name="prerequisite" type="RoyalTitlePermitDef.Enumeration" />
       <xs:element minOccurs="0" name="prerequisites">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="ResearchProjectDef.Enumeration" />
+            <xs:element name="li" type="TrainableDef.Enumeration" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="prerequisites">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="TrainableDef.Enumeration" />
+            <xs:element name="li" type="ResearchProjectDef.Enumeration" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -21340,6 +21449,14 @@ Sustained sounds should usually prioritize nearest, so if a new fire starts burn
       <xs:element minOccurs="0" name="slavesOnly" type="xs:boolean" />
       <xs:element minOccurs="0" name="slavesOnly" type="xs:boolean" />
       <xs:element minOccurs="0" name="sleepCanInterrupt" type="xs:boolean" />
+      <xs:element minOccurs="0" name="slot" type="xs:int" />
+      <xs:element minOccurs="0" name="slot" type="xs:string">
+        <xs:annotation>
+          <xs:documentation>The special sound slot this sound takes. If a sound with this slot is playing, new sounds in this slot will not play.
+
+Only works for on-camera sounds.</xs:documentation>
+        </xs:annotation>
+      </xs:element>
       <xs:element minOccurs="0" name="slot">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -21348,14 +21465,6 @@ Sustained sounds should usually prioritize nearest, so if a new fire starts burn
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
-      <xs:element minOccurs="0" name="slot" type="xs:string">
-        <xs:annotation>
-          <xs:documentation>The special sound slot this sound takes. If a sound with this slot is playing, new sounds in this slot will not play.
-
-Only works for on-camera sounds.</xs:documentation>
-        </xs:annotation>
-      </xs:element>
-      <xs:element minOccurs="0" name="slot" type="xs:int" />
       <xs:element minOccurs="0" name="smallVolume" type="xs:boolean" />
       <xs:element minOccurs="0" name="smeltable" type="xs:boolean" />
       <xs:element minOccurs="0" name="smeltProducts" type="ThingDefCountClass" />
@@ -21503,14 +21612,14 @@ Only works for on-camera sounds.</xs:documentation>
       <xs:element minOccurs="0" name="stages">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="HediffStage" />
+            <xs:element name="li" type="RitualStage" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
       <xs:element minOccurs="0" name="stages">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="RitualStage" />
+            <xs:element name="li" type="HediffStage" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -21557,6 +21666,9 @@ Only works for on-camera sounds.</xs:documentation>
       <xs:element minOccurs="0" name="statBases" type="StatModifier" />
       <xs:element minOccurs="0" name="stateClass" type="xs:string" />
       <xs:element minOccurs="0" name="stateEffecter" type="EffecterDef.Enumeration" />
+      <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
+      <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
+      <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
       <xs:element minOccurs="0" name="statFactors">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -21564,9 +21676,6 @@ Only works for on-camera sounds.</xs:documentation>
           </xs:choice>
         </xs:complexType>
       </xs:element>
-      <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
-      <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
-      <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
       <xs:element minOccurs="0" name="statFactors" type="StatModifier" />
       <xs:element minOccurs="0" name="statFactorsExplanationHeader" type="xs:string" />
       <xs:element minOccurs="0" name="staticSunShadowHeight" type="xs:float" />
@@ -21783,34 +21892,6 @@ Only used if the sustainer is looped.</xs:documentation>
       <xs:element minOccurs="0" name="tags">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="ResearchProjectTagDef.Enumeration" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="tags">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="xs:string" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="tags">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="xs:string" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="tags">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
-            <xs:element name="li" type="xs:string" />
-          </xs:choice>
-        </xs:complexType>
-      </xs:element>
-      <xs:element minOccurs="0" name="tags">
-        <xs:complexType>
-          <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="xs:string" />
           </xs:choice>
         </xs:complexType>
@@ -21847,6 +21928,34 @@ Only used if the sustainer is looped.</xs:documentation>
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
             <xs:element name="li" type="BodyPartTagDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="tags">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="ResearchProjectTagDef.Enumeration" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="tags">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="tags">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
+          </xs:choice>
+        </xs:complexType>
+      </xs:element>
+      <xs:element minOccurs="0" name="tags">
+        <xs:complexType>
+          <xs:choice minOccurs="0" maxOccurs="unbounded">
+            <xs:element name="li" type="xs:string" />
           </xs:choice>
         </xs:complexType>
       </xs:element>
@@ -22139,6 +22248,7 @@ Only used if the sustainer is looped.</xs:documentation>
       </xs:element>
       <xs:element minOccurs="0" name="textWillArrive" type="xs:string" />
       <xs:element minOccurs="0" name="thing" type="xs:string" />
+      <xs:element minOccurs="0" name="thing" type="ThingDef.Enumeration" />
       <xs:element minOccurs="0" name="thingCategories">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -22171,6 +22281,7 @@ Only used if the sustainer is looped.</xs:documentation>
           </xs:choice>
         </xs:complexType>
       </xs:element>
+      <xs:element minOccurs="0" name="thingDefs" type="ThingOption" />
       <xs:element minOccurs="0" name="thingDefStyles">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -22257,6 +22368,7 @@ Only used if the sustainer is looped.</xs:documentation>
         </xs:simpleType>
       </xs:element>
       <xs:element minOccurs="0" name="tickFrameRate" type="xs:int" />
+      <xs:element minOccurs="0" name="ticks" type="xs:int" />
       <xs:element minOccurs="0" name="tileLayouts">
         <xs:complexType>
           <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -22429,18 +22541,18 @@ Only used if the sustainer is looped.</xs:documentation>
       <xs:element minOccurs="0" name="type">
         <xs:simpleType>
           <xs:restriction base="xs:string">
-            <xs:enumeration value="Float" />
-            <xs:enumeration value="Int" />
-            <xs:enumeration value="Time" />
+            <xs:enumeration value="Expirable" />
+            <xs:enumeration value="PermanentHistorical" />
+            <xs:enumeration value="Volatile" />
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
       <xs:element minOccurs="0" name="type">
         <xs:simpleType>
           <xs:restriction base="xs:string">
-            <xs:enumeration value="Expirable" />
-            <xs:enumeration value="PermanentHistorical" />
-            <xs:enumeration value="Volatile" />
+            <xs:enumeration value="Float" />
+            <xs:enumeration value="Int" />
+            <xs:enumeration value="Time" />
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
@@ -22457,8 +22569,8 @@ Only used if the sustainer is looped.</xs:documentation>
       <xs:element minOccurs="0" name="uiIconScale" type="xs:float" />
       <xs:element minOccurs="0" name="uiIconThing" type="ThingDef.Enumeration" />
       <xs:element minOccurs="0" name="uiOrder" type="xs:int" />
-      <xs:element minOccurs="0" name="uiOrder" type="xs:float" />
       <xs:element minOccurs="0" name="uiOrder" type="xs:int" />
+      <xs:element minOccurs="0" name="uiOrder" type="xs:float" />
       <xs:element minOccurs="0" name="uiOrder" type="xs:float" />
       <xs:element minOccurs="0" name="unaffectedBySelfTamePawns">
         <xs:complexType>
@@ -22522,8 +22634,8 @@ Only used if the sustainer is looped.</xs:documentation>
       <xs:element minOccurs="0" name="valueIfMissing" type="xs:float" />
       <xs:element minOccurs="0" name="veneratedAnimalsCountOffset" type="xs:int" />
       <xs:element minOccurs="0" name="veneratedAnimalsCountOverride" type="xs:int" />
-      <xs:element minOccurs="0" name="verb" type="VerbProperties" />
       <xs:element minOccurs="0" name="verb" type="xs:string" />
+      <xs:element minOccurs="0" name="verb" type="VerbProperties" />
       <xs:element minOccurs="0" name="verb" type="xs:string" />
       <xs:element minOccurs="0" name="verbProperties" type="VerbProperties" />
       <xs:element minOccurs="0" name="verbProperties" type="VerbProperties" />
@@ -22973,6 +23085,7 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:enumeration value="MentalFitDef" />
       <xs:enumeration value="MentalStateDef" />
       <xs:enumeration value="MessageTypeDef" />
+      <xs:enumeration value="ModSettingsFramework.ModOptionCategoryDef" />
       <xs:enumeration value="MVCF.ModDef" />
       <xs:enumeration value="NeedDef" />
       <xs:enumeration value="OptionCategoryDef" />
@@ -22985,6 +23098,7 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:enumeration value="PawnsArrivalModeDef" />
       <xs:enumeration value="PawnTableDef" />
       <xs:enumeration value="PipeSystem.PipeNetDef" />
+      <xs:enumeration value="PipeSystem.ProcessDef" />
       <xs:enumeration value="PlaceDef" />
       <xs:enumeration value="PreceptDef" />
       <xs:enumeration value="PrisonerInteractionModeDef" />
@@ -26243,9 +26357,9 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="shadowInfo" type="ShadowData" />
       <xs:element minOccurs="0" name="subGraphic" type="Graphic" />
       <xs:element minOccurs="0" name="subGraphic" type="Graphic" />
+      <xs:element minOccurs="0" name="subGraphics" type="Graphic[]" />
+      <xs:element minOccurs="0" name="subGraphics" type="Graphic[]" />
       <xs:element minOccurs="0" name="subGraphics" type="Graphic_Fleck[]" />
-      <xs:element minOccurs="0" name="subGraphics" type="Graphic[]" />
-      <xs:element minOccurs="0" name="subGraphics" type="Graphic[]" />
       <xs:element minOccurs="0" name="subGraphics" type="Graphic_Fleck[]" />
       <xs:element minOccurs="0" name="westFlipped" type="xs:boolean" />
     </xs:all>
@@ -26966,6 +27080,8 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="alwaysHit" type="xs:boolean" />
       <xs:element minOccurs="0" name="alwaysMiss" type="xs:boolean" />
       <xs:element minOccurs="0" name="AmmoFilter" type="ThingFilter" />
+      <xs:element minOccurs="0" name="amount" type="xs:int" />
+      <xs:element minOccurs="0" name="amount" type="xs:int" />
       <xs:element minOccurs="0" name="amountPerDay" type="xs:float" />
       <xs:element minOccurs="0" name="animalMentalState" type="MentalStateDef.Enumeration" />
       <xs:element minOccurs="0" name="animalMentalStateAlias" type="MentalStateDef.Enumeration" />
@@ -27028,9 +27144,9 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="customMote" type="ThingDef.Enumeration" />
       <xs:element minOccurs="0" name="customString" type="xs:string" />
       <xs:element minOccurs="0" name="customWoundsFromFleshtype" type="FleshTypeDef.Enumeration" />
-      <xs:element minOccurs="0" name="damageAmount" type="xs:int" />
-      <xs:element minOccurs="0" name="damageAmount" type="xs:float" />
       <xs:element minOccurs="0" name="damageAmount" type="IntRange" />
+      <xs:element minOccurs="0" name="damageAmount" type="xs:float" />
+      <xs:element minOccurs="0" name="damageAmount" type="xs:int" />
       <xs:element minOccurs="0" name="damageAmount" type="xs:float" />
       <xs:element minOccurs="0" name="damageAmount" type="xs:int" />
       <xs:element minOccurs="0" name="damageDef" type="DamageDef.Enumeration" />
@@ -27093,8 +27209,8 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="feedCauser" type="xs:boolean" />
       <xs:element minOccurs="0" name="femaleDominant" type="xs:boolean" />
       <xs:element minOccurs="0" name="filth" type="ThingDef.Enumeration" />
-      <xs:element minOccurs="0" name="filthCount" type="IntRange" />
       <xs:element minOccurs="0" name="filthCount" type="xs:int" />
+      <xs:element minOccurs="0" name="filthCount" type="IntRange" />
       <xs:element minOccurs="0" name="filthDef" type="ThingDef.Enumeration" />
       <xs:element minOccurs="0" name="filthType" type="xs:string" />
       <xs:element minOccurs="0" name="finalCoolDownMultiplier" type="xs:float" />
@@ -27104,6 +27220,16 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="fleckSpawnInterval" type="IntRange" />
       <xs:element minOccurs="0" name="fullChargeAmount" type="xs:float" />
       <xs:element minOccurs="0" name="fullOnAdd" type="xs:boolean" />
+      <xs:element minOccurs="0" name="gasType">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="BlindSmoke" />
+            <xs:enumeration value="RotStink" />
+            <xs:enumeration value="ToxGas" />
+            <xs:enumeration value="Unused" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
       <xs:element minOccurs="0" name="gasType">
         <xs:simpleType>
           <xs:restriction base="xs:string">
@@ -27267,8 +27393,8 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="radius" type="xs:int" />
       <xs:element minOccurs="0" name="radius" type="xs:int" />
       <xs:element minOccurs="0" name="radius" type="xs:int" />
-      <xs:element minOccurs="0" name="radius" type="xs:float" />
       <xs:element minOccurs="0" name="radius" type="xs:int" />
+      <xs:element minOccurs="0" name="radius" type="xs:float" />
       <xs:element minOccurs="0" name="radiusToSpread" type="xs:float" />
       <xs:element minOccurs="0" name="randomWeathers">
         <xs:complexType>
@@ -27428,6 +27554,8 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="ticksToCreateFilth" type="xs:int" />
       <xs:element minOccurs="0" name="ticksToFullCharge" type="xs:int" />
       <xs:element minOccurs="0" name="ticksToRandomize" type="IntRange" />
+      <xs:element minOccurs="0" name="timer" type="xs:int" />
+      <xs:element minOccurs="0" name="timer" type="xs:int" />
       <xs:element minOccurs="0" name="timeToDieInTicks" type="xs:int" />
       <xs:element minOccurs="0" name="tools">
         <xs:complexType>
@@ -28172,12 +28300,14 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:enumeration value="AnimalBehaviours.HediffCompProperties_Exploder" />
       <xs:enumeration value="AnimalBehaviours.HediffCompProperties_FilthProducer" />
       <xs:enumeration value="AnimalBehaviours.HediffCompProperties_Floating" />
+      <xs:enumeration value="AnimalBehaviours.HediffCompProperties_GasProducer" />
       <xs:enumeration value="AnimalBehaviours.HediffCompProperties_HeatPusher" />
       <xs:enumeration value="AnimalBehaviours.HediffCompProperties_HighlyFlammable" />
       <xs:enumeration value="AnimalBehaviours.HediffCompProperties_LastStand" />
       <xs:enumeration value="AnimalBehaviours.HediffCompProperties_LightSustenance" />
       <xs:enumeration value="AnimalBehaviours.HediffCompProperties_NearbyEffecter" />
       <xs:enumeration value="AnimalBehaviours.HediffCompProperties_PassiveRegenerator" />
+      <xs:enumeration value="AnimalBehaviours.HediffCompProperties_Polluter" />
       <xs:enumeration value="AnimalBehaviours.HediffCompProperties_Regeneration" />
       <xs:enumeration value="AnimalBehaviours.HediffCompProperties_RemoveFromMechs" />
       <xs:enumeration value="AnimalBehaviours.HediffCompProperties_Resurrect" />
@@ -28641,11 +28771,13 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:enumeration value="VPE_PsychicGuidance" />
       <xs:enumeration value="VPE_PsychicGuide" />
       <xs:enumeration value="VPE_PsychicPain" />
+      <xs:enumeration value="VPE_PsychicShock" />
       <xs:enumeration value="VPE_PsychicSoothe" />
       <xs:enumeration value="VPE_Recharge" />
       <xs:enumeration value="VPE_Regenerating" />
       <xs:enumeration value="VPE_RegrowLimbs" />
       <xs:enumeration value="VPE_Rot" />
+      <xs:enumeration value="VPE_Sacrificed" />
       <xs:enumeration value="VPE_Shadowfocus" />
       <xs:enumeration value="VPE_Smartbuzz" />
       <xs:enumeration value="VPE_SpeedBoost" />
@@ -31044,8 +31176,10 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:enumeration value="PrisonerEnslave" />
       <xs:enumeration value="PrisonerExecution" />
       <xs:enumeration value="PruneGauranlenTree" />
+      <xs:enumeration value="PS_BringToProcessor" />
       <xs:enumeration value="PS_DrainFromMarkedStorage" />
       <xs:enumeration value="PS_FillStorage" />
+      <xs:enumeration value="PS_PickUpProcessor" />
       <xs:enumeration value="ReadDatacore" />
       <xs:enumeration value="RearmTurret" />
       <xs:enumeration value="RearmTurretAtomic" />
@@ -35870,6 +36004,25 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="injury" type="HediffDef.Enumeration" />
     </xs:all>
   </xs:complexType>
+  <xs:complexType name="ModSettingsFramework.ModOptionCategoryDef">
+    <xs:complexContent>
+      <xs:extension base="Def">
+        <xs:all>
+          <xs:element minOccurs="0" name="mods">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="li" type="xs:string" />
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="order" type="xs:int" />
+        </xs:all>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="ModSettingsFramework.ModOptionCategoryDef.Enumeration">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
   <xs:complexType name="MoteForRotationData">
     <xs:all>
       <xs:element minOccurs="0" name="east" type="ThingDef.Enumeration" />
@@ -38004,6 +38157,27 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="severityPerDay" type="xs:float" />
     </xs:all>
   </xs:complexType>
+  <xs:complexType name="PipeSystem.CompProperties_AdvancedResourceProcessor">
+    <xs:complexContent>
+      <xs:extension base="CompProperties">
+        <xs:all>
+          <xs:element minOccurs="0" name="notWorkingKey" type="xs:string" />
+          <xs:element minOccurs="0" name="processes">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="li" type="PipeSystem.ProcessDef.Enumeration" />
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="showBufferInfo" type="xs:boolean" />
+          <xs:element minOccurs="0" name="showProgressBar" type="xs:boolean" />
+          <xs:element minOccurs="0" name="showResultItem" type="xs:boolean" />
+          <xs:element minOccurs="0" name="soundAmbient" type="SoundDef.Enumeration" />
+          <xs:element minOccurs="0" name="ticksToFill" type="xs:int" />
+        </xs:all>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType name="PipeSystem.CompProperties_ConvertResourceToThing">
     <xs:complexContent>
       <xs:extension base="PipeSystem.CompProperties_Resource">
@@ -38104,7 +38278,7 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
           <xs:element minOccurs="0" name="results">
             <xs:complexType>
               <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="li" type="PipeSystem.Result" />
+                <xs:element name="li" type="PipeSystem.CompProperties_ResourceProcessor.Result" />
               </xs:choice>
             </xs:complexType>
           </xs:element>
@@ -38153,7 +38327,7 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
           <xs:element minOccurs="0" name="results">
             <xs:complexType>
               <xs:choice minOccurs="0" maxOccurs="unbounded">
-                <xs:element name="li" type="PipeSystem.Result" />
+                <xs:element name="li" type="PipeSystem.CompProperties_ResourceProcessor.Result" />
               </xs:choice>
             </xs:complexType>
           </xs:element>
@@ -38161,6 +38335,16 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
         </xs:all>
       </xs:extension>
     </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="PipeSystem.CompProperties_ResourceProcessor.Result">
+    <xs:all>
+      <xs:element minOccurs="0" name="countNeeded" type="xs:int" />
+      <xs:element minOccurs="0" name="eachTicks" type="xs:int" />
+      <xs:element minOccurs="0" name="net" type="PipeSystem.PipeNetDef.Enumeration" />
+      <xs:element minOccurs="0" name="netCount" type="xs:int" />
+      <xs:element minOccurs="0" name="thing" type="ThingDef.Enumeration" />
+      <xs:element minOccurs="0" name="thingCount" type="xs:int" />
+    </xs:all>
   </xs:complexType>
   <xs:complexType name="PipeSystem.CompProperties_ResourceStorage">
     <xs:complexContent>
@@ -38318,6 +38502,7 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
               </xs:choice>
             </xs:complexType>
           </xs:element>
+          <xs:element minOccurs="0" name="loweredName" type="xs:string" />
           <xs:element minOccurs="0" name="noStorageAlert" type="xs:boolean" />
           <xs:element minOccurs="0" name="overlayOptions" type="PipeSystem.OverlayOption" />
           <xs:element minOccurs="0" name="pipeDefs">
@@ -38336,6 +38521,40 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
   <xs:simpleType name="PipeSystem.PipeNetDef.Enumeration">
     <xs:restriction base="xs:string" />
   </xs:simpleType>
+  <xs:complexType name="PipeSystem.ProcessDef">
+    <xs:complexContent>
+      <xs:extension base="Def">
+        <xs:all>
+          <xs:element minOccurs="0" name="autoExtract" type="xs:boolean" />
+          <xs:element minOccurs="0" name="count" type="xs:int" />
+          <xs:element minOccurs="0" name="destroyIngredientsDirectly" type="xs:boolean" />
+          <xs:element minOccurs="0" name="destroyIngredientsOnStart" type="xs:boolean" />
+          <xs:element minOccurs="0" name="extractTicks" type="xs:int" />
+          <xs:element minOccurs="0" name="ingredients">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="li" type="PipeSystem.ProcessDef.Ingredient" />
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+          <xs:element minOccurs="0" name="manualExtractAllowNet" type="xs:boolean" />
+          <xs:element minOccurs="0" name="pipeNet" type="PipeSystem.PipeNetDef.Enumeration" />
+          <xs:element minOccurs="0" name="thing" type="ThingDef.Enumeration" />
+          <xs:element minOccurs="0" name="ticks" type="xs:int" />
+        </xs:all>
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:simpleType name="PipeSystem.ProcessDef.Enumeration">
+    <xs:restriction base="xs:string" />
+  </xs:simpleType>
+  <xs:complexType name="PipeSystem.ProcessDef.Ingredient">
+    <xs:all>
+      <xs:element minOccurs="0" name="countNeeded" type="xs:int" />
+      <xs:element minOccurs="0" name="pipeNet" type="PipeSystem.PipeNetDef.Enumeration" />
+      <xs:element minOccurs="0" name="thing" type="ThingDef.Enumeration" />
+    </xs:all>
+  </xs:complexType>
   <xs:complexType name="PipeSystem.RefillOptions">
     <xs:all>
       <xs:element minOccurs="0" name="alwaysRefill" type="xs:boolean" />
@@ -38349,17 +38568,8 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="name" type="xs:string" />
       <xs:element minOccurs="0" name="offTexPath" type="xs:string" />
       <xs:element minOccurs="0" name="onlyShowStored" type="xs:boolean" />
+      <xs:element minOccurs="0" name="uiIconPath" type="xs:string" />
       <xs:element minOccurs="0" name="unit" type="xs:string" />
-    </xs:all>
-  </xs:complexType>
-  <xs:complexType name="PipeSystem.Result">
-    <xs:all>
-      <xs:element minOccurs="0" name="countNeeded" type="xs:int" />
-      <xs:element minOccurs="0" name="eachTicks" type="xs:int" />
-      <xs:element minOccurs="0" name="net" type="PipeSystem.PipeNetDef.Enumeration" />
-      <xs:element minOccurs="0" name="netCount" type="xs:int" />
-      <xs:element minOccurs="0" name="thing" type="ThingDef.Enumeration" />
-      <xs:element minOccurs="0" name="thingCount" type="xs:int" />
     </xs:all>
   </xs:complexType>
   <xs:complexType name="PlaceDef">
@@ -43794,10 +44004,10 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="outSignalsFormattedCount" type="xs:string" />
       <xs:element minOccurs="0" name="outSignalSuccess" type="xs:string" />
       <xs:element minOccurs="0" name="overrideMass" type="xs:string" />
-      <xs:element minOccurs="0" name="parms" type="xs:string" />
-      <xs:element minOccurs="0" name="parms" type="xs:string" />
       <xs:element minOccurs="0" name="parms" type="RimWorld.QuestGen.PrefixCapturedVar" />
       <xs:element minOccurs="0" name="parms" type="RimWorld.QuestGen.PrefixCapturedVar" />
+      <xs:element minOccurs="0" name="parms" type="xs:string" />
+      <xs:element minOccurs="0" name="parms" type="xs:string" />
       <xs:element minOccurs="0" name="pawnKind" type="xs:string" />
       <xs:element minOccurs="0" name="peaceTalksCantExist" type="xs:string" />
       <xs:element minOccurs="0" name="peaceTalksCantExist" type="xs:string" />
@@ -44008,8 +44218,8 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:element minOccurs="0" name="tile" type="xs:string" />
       <xs:element minOccurs="0" name="tile" type="xs:string" />
       <xs:element minOccurs="0" name="tile" type="xs:string" />
-      <xs:element minOccurs="0" name="timeLimitDays" type="FloatRange" />
       <xs:element minOccurs="0" name="TimeLimitDays" type="FloatRange" />
+      <xs:element minOccurs="0" name="timeLimitDays" type="FloatRange" />
       <xs:element minOccurs="0" name="totalMarketValueRange" type="xs:string" />
       <xs:element minOccurs="0" name="transportShip" type="xs:string" />
       <xs:element minOccurs="0" name="transportShip" type="xs:string" />
@@ -60459,6 +60669,1322 @@ This value must match what the game expects from the SubSoundDef with this name.
       </xs:element>
     </xs:all>
   </xs:complexType>
+  <xs:complexType name="ThingOption">
+    <xs:all>
+      <xs:element minOccurs="0" name="ActivatorCountdown" type="xs:float" />
+      <xs:element minOccurs="0" name="ActivatorProximity" type="xs:float" />
+      <xs:element minOccurs="0" name="ActiveDropPod" type="xs:float" />
+      <xs:element minOccurs="0" name="ActiveDropPodMechanoid" type="xs:float" />
+      <xs:element minOccurs="0" name="AestheticNose" type="xs:float" />
+      <xs:element minOccurs="0" name="AestheticShaper" type="xs:float" />
+      <xs:element minOccurs="0" name="Agarilux" type="xs:float" />
+      <xs:element minOccurs="0" name="AIPersonaCore" type="xs:float" />
+      <xs:element minOccurs="0" name="Alpaca" type="xs:float" />
+      <xs:element minOccurs="0" name="Alphabeaver" type="xs:float" />
+      <xs:element minOccurs="0" name="Altar_Grand" type="xs:float" />
+      <xs:element minOccurs="0" name="Altar_Large" type="xs:float" />
+      <xs:element minOccurs="0" name="Altar_Medium" type="xs:float" />
+      <xs:element minOccurs="0" name="Altar_Small" type="xs:float" />
+      <xs:element minOccurs="0" name="Ambrosia" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientAirConditioner" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientAPC" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientATM" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientBandNode" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientBarrel" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientBasicRecharger" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientBed" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientCommsConsole" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientConcreteBarrier" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientContainer" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientCrate" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientCryptosleepCasket" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientCryptosleepPod" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientDisplayBank" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientDropshipEngine" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientEnemyTerminal" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientEquipmentBlocks" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientExostriderCannon" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientExostriderHead" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientExostriderLeg" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientExostriderRemains" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientFence" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientFuelNode" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientGenerator" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientGiantWheel" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientHermeticCrate" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientHydrant" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientJetEngine" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientKitchenSink" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientLamp" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientLamppost" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientLargeCrate" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientLargeMechGestator" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientLargeRustedEngineBlock" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientLockerBank" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientLongCrate" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientMachine" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientMechDetritus" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientMechDropBeacon" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientMechGestator" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientMegaCannonBarrel" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientMegaCannonTripod" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientMicrowave" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientMilitaryCrate" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientMiniWarwalkerRemains" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientOperatingTable" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientOven" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientPipelineSection" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientPipes" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientPodCar" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientPostbox" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientRazorWire" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientRefrigerator" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientRustedCar" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientRustedCarFrame" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientRustedDropship" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientRustedEngineBlock" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientRustedJeep" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientRustedTruck" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientSecurityCrate" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientSecurityTurret" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientShipBeacon" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientShoppingCart" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientSmallCrate" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientSpacerCrate" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientStandardRecharger" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientStorageCylinder" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientStove" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientSystemRack" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientTank" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientTankTrap" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientTerminal" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientTerminal_Worshipful" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientToilet" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientToxifierGenerator" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientVendingMachine" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientWarspiderRemains" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientWarwalkerClaw" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientWarwalkerFoot" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientWarwalkerLeg" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientWarwalkerShell" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientWarwalkerTorso" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientWashingMachine" type="xs:float" />
+      <xs:element minOccurs="0" name="AncientWheel" type="xs:float" />
+      <xs:element minOccurs="0" name="AnimalBed" type="xs:float" />
+      <xs:element minOccurs="0" name="AnimalFlap" type="xs:float" />
+      <xs:element minOccurs="0" name="AnimalistSlab_Broad" type="xs:float" />
+      <xs:element minOccurs="0" name="AnimalistSlab_Medium" type="xs:float" />
+      <xs:element minOccurs="0" name="AnimalSleepingBox" type="xs:float" />
+      <xs:element minOccurs="0" name="AnimalSleepingSpot" type="xs:float" />
+      <xs:element minOccurs="0" name="AnimusStone" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_AdvancedHelmet" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_AirwireHeadset" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArmorCataphract" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArmorCataphractPhoenix" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArmorCataphractPrestige" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArmorHelmetCataphract" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArmorHelmetCataphractPrestige" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArmorHelmetMechCommander" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArmorHelmetMechlordHelmet" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArmorHelmetRecon" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArmorHelmetReconPrestige" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArmorLocust" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArmorMarineGrenadier" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArmorMarineHelmetPrestige" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArmorMarinePrestige" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArmorRecon" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArmorReconPrestige" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ArrayHeadset" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_AuthorityCap" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Bandolier" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_BasicShirt" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Beret" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Blindfold" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_BodyStrap" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_BowlerHat" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Broadwrap" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Burka" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Cape" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ClothMask" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Collar" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_CollarShirt" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Coronet" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Corset" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_CowboyHat" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Crown" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_CrownStellic" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Duster" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_EltexSkullcap" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_FirefoampopPack" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_FlakJacket" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_FlakPants" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_FlakVest" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Flophat" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_GasMask" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Gunlink" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_HatHood" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_HatLadies" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_HatTop" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Headwrap" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_HeavyShield" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_IntegratorHeadset" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Jacket" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_KidHelmet" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_KidPants" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_KidParka" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_KidRomper" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_KidShirt" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_KidTribal" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_MechlordSuit" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_PackBandwidth" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_PackBroadshield" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_PackControl" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_PackJump" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_PackTox" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Pants" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Parka" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_PlateArmor" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_PowerArmor" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_PowerArmorHelmet" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_PsychicFoilHelmet" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_PsychicInsanityLance" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_PsychicShockLance" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_PsyfocusHelmet" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_PsyfocusRobe" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_PsyfocusShirt" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_PsyfocusVest" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Robe" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_RobeRoyal" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Sash" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Shadecone" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ShieldBelt" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_ShirtRuffle" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_SimpleHelmet" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Slicecap" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_SmokepopBelt" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Tailcap" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_TortureCrown" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_TribalA" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_TribalHeaddress" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_Tuque" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_VestRoyal" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_VisageMask" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_WarMask" type="xs:float" />
+      <xs:element minOccurs="0" name="Apparel_WarVeil" type="xs:float" />
+      <xs:element minOccurs="0" name="ArchiteCapsule" type="xs:float" />
+      <xs:element minOccurs="0" name="ArchonexusCore" type="xs:float" />
+      <xs:element minOccurs="0" name="ArchotechArm" type="xs:float" />
+      <xs:element minOccurs="0" name="ArchotechEye" type="xs:float" />
+      <xs:element minOccurs="0" name="ArchotechLeg" type="xs:float" />
+      <xs:element minOccurs="0" name="ArchotechTower" type="xs:float" />
+      <xs:element minOccurs="0" name="Armchair" type="xs:float" />
+      <xs:element minOccurs="0" name="ArmorskinGland" type="xs:float" />
+      <xs:element minOccurs="0" name="Arrow_Great" type="xs:float" />
+      <xs:element minOccurs="0" name="Arrow_Recurve" type="xs:float" />
+      <xs:element minOccurs="0" name="Arrow_Short" type="xs:float" />
+      <xs:element minOccurs="0" name="Artillery_AutoMortar" type="xs:float" />
+      <xs:element minOccurs="0" name="Artillery_Mortar" type="xs:float" />
+      <xs:element minOccurs="0" name="Autobong" type="xs:float" />
+      <xs:element minOccurs="0" name="Autodoor" type="xs:float" />
+      <xs:element minOccurs="0" name="BabyDecoration" type="xs:float" />
+      <xs:element minOccurs="0" name="BabyFood" type="xs:float" />
+      <xs:element minOccurs="0" name="BabySleepingSpot" type="xs:float" />
+      <xs:element minOccurs="0" name="BandNode" type="xs:float" />
+      <xs:element minOccurs="0" name="Barricade" type="xs:float" />
+      <xs:element minOccurs="0" name="BasicRecharger" type="xs:float" />
+      <xs:element minOccurs="0" name="Battery" type="xs:float" />
+      <xs:element minOccurs="0" name="Bear_Grizzly" type="xs:float" />
+      <xs:element minOccurs="0" name="Bear_Polar" type="xs:float" />
+      <xs:element minOccurs="0" name="Bed" type="xs:float" />
+      <xs:element minOccurs="0" name="Bedroll" type="xs:float" />
+      <xs:element minOccurs="0" name="BedrollDouble" type="xs:float" />
+      <xs:element minOccurs="0" name="Beer" type="xs:float" />
+      <xs:element minOccurs="0" name="BilliardsTable" type="xs:float" />
+      <xs:element minOccurs="0" name="BiofuelRefinery" type="xs:float" />
+      <xs:element minOccurs="0" name="BionicArm" type="xs:float" />
+      <xs:element minOccurs="0" name="BionicEar" type="xs:float" />
+      <xs:element minOccurs="0" name="BionicEye" type="xs:float" />
+      <xs:element minOccurs="0" name="BionicHeart" type="xs:float" />
+      <xs:element minOccurs="0" name="BionicLeg" type="xs:float" />
+      <xs:element minOccurs="0" name="BionicSpine" type="xs:float" />
+      <xs:element minOccurs="0" name="BionicStomach" type="xs:float" />
+      <xs:element minOccurs="0" name="BionicTongue" type="xs:float" />
+      <xs:element minOccurs="0" name="BiosculpterPod" type="xs:float" />
+      <xs:element minOccurs="0" name="Bison" type="xs:float" />
+      <xs:element minOccurs="0" name="Blackboard" type="xs:float" />
+      <xs:element minOccurs="0" name="Blight" type="xs:float" />
+      <xs:element minOccurs="0" name="BlocksGranite" type="xs:float" />
+      <xs:element minOccurs="0" name="BlocksLimestone" type="xs:float" />
+      <xs:element minOccurs="0" name="BlocksMarble" type="xs:float" />
+      <xs:element minOccurs="0" name="BlocksSandstone" type="xs:float" />
+      <xs:element minOccurs="0" name="BlocksSlate" type="xs:float" />
+      <xs:element minOccurs="0" name="Bombardment" type="xs:float" />
+      <xs:element minOccurs="0" name="Boomalope" type="xs:float" />
+      <xs:element minOccurs="0" name="Boomrat" type="xs:float" />
+      <xs:element minOccurs="0" name="Bow_Great" type="xs:float" />
+      <xs:element minOccurs="0" name="Bow_Recurve" type="xs:float" />
+      <xs:element minOccurs="0" name="Bow_Short" type="xs:float" />
+      <xs:element minOccurs="0" name="Brazier" type="xs:float" />
+      <xs:element minOccurs="0" name="Brewery" type="xs:float" />
+      <xs:element minOccurs="0" name="BroadshieldCore" type="xs:float" />
+      <xs:element minOccurs="0" name="BroadshieldProjector" type="xs:float" />
+      <xs:element minOccurs="0" name="Bryolux" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_AssaultRifle" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_AutocannonTurret" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_Autopistol" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_BoltActionRifle" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_ChargeBlasterHeavy" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_ChargeLance" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_ChargeRifle" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_DoomsdayRocket" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_EMPLauncher" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_HeavySMG" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_HellsphereCannonGun" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_IncendiaryLauncher" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_InfernoCannon" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_LMG" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_MachinePistol" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_Minigun" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_MiniShotgun" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_MiniSlug" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_MiniTurret" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_NeedleGun" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_Revolver" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_Rocket" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_Shell_AntigrainWarhead" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_Shell_EMP" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_Shell_Firefoam" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_Shell_HighExplosive" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_Shell_Incendiary" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_Shell_Smoke" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_Shell_Tox" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_Shotgun" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_Slugthrower" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_SmokeLauncher" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_SniperRifle" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_Spiner" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_ThumpCannon" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_ToxbombLauncher" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_ToxicNeedleGun" type="xs:float" />
+      <xs:element minOccurs="0" name="Bullet_TurretSniper" type="xs:float" />
+      <xs:element minOccurs="0" name="BulletShieldPsychic" type="xs:float" />
+      <xs:element minOccurs="0" name="Burnbong" type="xs:float" />
+      <xs:element minOccurs="0" name="BurnedTree" type="xs:float" />
+      <xs:element minOccurs="0" name="BurningPowerCell" type="xs:float" />
+      <xs:element minOccurs="0" name="BurnoutMechlinkBooster" type="xs:float" />
+      <xs:element minOccurs="0" name="ButcherSpot" type="xs:float" />
+      <xs:element minOccurs="0" name="Campfire" type="xs:float" />
+      <xs:element minOccurs="0" name="CannibalPlatter" type="xs:float" />
+      <xs:element minOccurs="0" name="Capybara" type="xs:float" />
+      <xs:element minOccurs="0" name="CaravanPackingSpot" type="xs:float" />
+      <xs:element minOccurs="0" name="Caribou" type="xs:float" />
+      <xs:element minOccurs="0" name="Cassowary" type="xs:float" />
+      <xs:element minOccurs="0" name="Cat" type="xs:float" />
+      <xs:element minOccurs="0" name="Chemfuel" type="xs:float" />
+      <xs:element minOccurs="0" name="ChemfuelPoweredGenerator" type="xs:float" />
+      <xs:element minOccurs="0" name="ChessTable" type="xs:float" />
+      <xs:element minOccurs="0" name="Chicken" type="xs:float" />
+      <xs:element minOccurs="0" name="Chinchilla" type="xs:float" />
+      <xs:element minOccurs="0" name="Chocolate" type="xs:float" />
+      <xs:element minOccurs="0" name="ChoppedStump" type="xs:float" />
+      <xs:element minOccurs="0" name="ChoppedStump_Anima" type="xs:float" />
+      <xs:element minOccurs="0" name="ChoppedStump_Gauranlen" type="xs:float" />
+      <xs:element minOccurs="0" name="ChoppedStump_Polluted" type="xs:float" />
+      <xs:element minOccurs="0" name="ChoppedStump_Polux" type="xs:float" />
+      <xs:element minOccurs="0" name="ChristmasTree" type="xs:float" />
+      <xs:element minOccurs="0" name="ChunkGranite" type="xs:float" />
+      <xs:element minOccurs="0" name="ChunkLimestone" type="xs:float" />
+      <xs:element minOccurs="0" name="ChunkMarble" type="xs:float" />
+      <xs:element minOccurs="0" name="ChunkSandstone" type="xs:float" />
+      <xs:element minOccurs="0" name="ChunkSlagSteel" type="xs:float" />
+      <xs:element minOccurs="0" name="ChunkSlate" type="xs:float" />
+      <xs:element minOccurs="0" name="CircadianAssistant" type="xs:float" />
+      <xs:element minOccurs="0" name="CircadianHalfCycler" type="xs:float" />
+      <xs:element minOccurs="0" name="ClimateAdjuster" type="xs:float" />
+      <xs:element minOccurs="0" name="Cloth" type="xs:float" />
+      <xs:element minOccurs="0" name="Coagulator" type="xs:float" />
+      <xs:element minOccurs="0" name="Cobra" type="xs:float" />
+      <xs:element minOccurs="0" name="CochlearImplant" type="xs:float" />
+      <xs:element minOccurs="0" name="CocoonMegascarab" type="xs:float" />
+      <xs:element minOccurs="0" name="CocoonMegaspider" type="xs:float" />
+      <xs:element minOccurs="0" name="CocoonSpawner" type="xs:float" />
+      <xs:element minOccurs="0" name="CocoonSpelopede" type="xs:float" />
+      <xs:element minOccurs="0" name="CollapsedRocks" type="xs:float" />
+      <xs:element minOccurs="0" name="Column" type="xs:float" />
+      <xs:element minOccurs="0" name="CommsConsole" type="xs:float" />
+      <xs:element minOccurs="0" name="ComponentIndustrial" type="xs:float" />
+      <xs:element minOccurs="0" name="ComponentSpacer" type="xs:float" />
+      <xs:element minOccurs="0" name="ControlSublink" type="xs:float" />
+      <xs:element minOccurs="0" name="ControlSublinkHigh" type="xs:float" />
+      <xs:element minOccurs="0" name="Cooler" type="xs:float" />
+      <xs:element minOccurs="0" name="Cougar" type="xs:float" />
+      <xs:element minOccurs="0" name="Cow" type="xs:float" />
+      <xs:element minOccurs="0" name="CracksShieldBreak" type="xs:float" />
+      <xs:element minOccurs="0" name="CraftingSpot" type="xs:float" />
+      <xs:element minOccurs="0" name="CrashedShipPartIncoming" type="xs:float" />
+      <xs:element minOccurs="0" name="Crib" type="xs:float" />
+      <xs:element minOccurs="0" name="CryptosleepCasket" type="xs:float" />
+      <xs:element minOccurs="0" name="DarklightBrazier" type="xs:float" />
+      <xs:element minOccurs="0" name="Darktorch" type="xs:float" />
+      <xs:element minOccurs="0" name="DarktorchFungus" type="xs:float" />
+      <xs:element minOccurs="0" name="DeathAcidifier" type="xs:float" />
+      <xs:element minOccurs="0" name="DeathrestAccelerator" type="xs:float" />
+      <xs:element minOccurs="0" name="DeathrestCapacitySerum" type="xs:float" />
+      <xs:element minOccurs="0" name="DeathrestCasket" type="xs:float" />
+      <xs:element minOccurs="0" name="DeepDrill" type="xs:float" />
+      <xs:element minOccurs="0" name="Deer" type="xs:float" />
+      <xs:element minOccurs="0" name="Defoliator" type="xs:float" />
+      <xs:element minOccurs="0" name="DefoliatorShipPart" type="xs:float" />
+      <xs:element minOccurs="0" name="DetoxifierKidney" type="xs:float" />
+      <xs:element minOccurs="0" name="DetoxifierLung" type="xs:float" />
+      <xs:element minOccurs="0" name="DetoxifierStomach" type="xs:float" />
+      <xs:element minOccurs="0" name="DevilstrandCloth" type="xs:float" />
+      <xs:element minOccurs="0" name="DiningChair" type="xs:float" />
+      <xs:element minOccurs="0" name="Donkey" type="xs:float" />
+      <xs:element minOccurs="0" name="Door" type="xs:float" />
+      <xs:element minOccurs="0" name="DoubleBed" type="xs:float" />
+      <xs:element minOccurs="0" name="DoubleSleepingSpot" type="xs:float" />
+      <xs:element minOccurs="0" name="Drape" type="xs:float" />
+      <xs:element minOccurs="0" name="Dresser" type="xs:float" />
+      <xs:element minOccurs="0" name="DrillArm" type="xs:float" />
+      <xs:element minOccurs="0" name="Dromedary" type="xs:float" />
+      <xs:element minOccurs="0" name="DropPodIncoming" type="xs:float" />
+      <xs:element minOccurs="0" name="DropPodIncomingMechanoid" type="xs:float" />
+      <xs:element minOccurs="0" name="DropPodLeaving" type="xs:float" />
+      <xs:element minOccurs="0" name="DrugLab" type="xs:float" />
+      <xs:element minOccurs="0" name="Drum" type="xs:float" />
+      <xs:element minOccurs="0" name="Dryad_Barkskin" type="xs:float" />
+      <xs:element minOccurs="0" name="Dryad_Basic" type="xs:float" />
+      <xs:element minOccurs="0" name="Dryad_Berrymaker" type="xs:float" />
+      <xs:element minOccurs="0" name="Dryad_Carrier" type="xs:float" />
+      <xs:element minOccurs="0" name="Dryad_Clawer" type="xs:float" />
+      <xs:element minOccurs="0" name="Dryad_Gaumaker" type="xs:float" />
+      <xs:element minOccurs="0" name="Dryad_Medicinemaker" type="xs:float" />
+      <xs:element minOccurs="0" name="Dryad_Woodmaker" type="xs:float" />
+      <xs:element minOccurs="0" name="DryadCocoon" type="xs:float" />
+      <xs:element minOccurs="0" name="DryadHealingPod" type="xs:float" />
+      <xs:element minOccurs="0" name="Duck" type="xs:float" />
+      <xs:element minOccurs="0" name="Dye" type="xs:float" />
+      <xs:element minOccurs="0" name="Effigy" type="xs:float" />
+      <xs:element minOccurs="0" name="EggBox" type="xs:float" />
+      <xs:element minOccurs="0" name="EggCassowaryFertilized" type="xs:float" />
+      <xs:element minOccurs="0" name="EggChickenFertilized" type="xs:float" />
+      <xs:element minOccurs="0" name="EggChickenUnfertilized" type="xs:float" />
+      <xs:element minOccurs="0" name="EggCobraFertilized" type="xs:float" />
+      <xs:element minOccurs="0" name="EggDuckFertilized" type="xs:float" />
+      <xs:element minOccurs="0" name="EggDuckUnfertilized" type="xs:float" />
+      <xs:element minOccurs="0" name="EggEmuFertilized" type="xs:float" />
+      <xs:element minOccurs="0" name="EggGooseFertilized" type="xs:float" />
+      <xs:element minOccurs="0" name="EggGooseUnfertilized" type="xs:float" />
+      <xs:element minOccurs="0" name="EggIguanaFertilized" type="xs:float" />
+      <xs:element minOccurs="0" name="EggOstrichFertilized" type="xs:float" />
+      <xs:element minOccurs="0" name="EggTortoiseFertilized" type="xs:float" />
+      <xs:element minOccurs="0" name="EggTurkeyFertilized" type="xs:float" />
+      <xs:element minOccurs="0" name="ElbowBlade" type="xs:float" />
+      <xs:element minOccurs="0" name="ElectricCrematorium" type="xs:float" />
+      <xs:element minOccurs="0" name="ElectricSmelter" type="xs:float" />
+      <xs:element minOccurs="0" name="ElectricSmithy" type="xs:float" />
+      <xs:element minOccurs="0" name="ElectricStove" type="xs:float" />
+      <xs:element minOccurs="0" name="ElectricTailoringBench" type="xs:float" />
+      <xs:element minOccurs="0" name="Elephant" type="xs:float" />
+      <xs:element minOccurs="0" name="ElephantTusk" type="xs:float" />
+      <xs:element minOccurs="0" name="Elk" type="xs:float" />
+      <xs:element minOccurs="0" name="EMIDynamo" type="xs:float" />
+      <xs:element minOccurs="0" name="Emu" type="xs:float" />
+      <xs:element minOccurs="0" name="EndTable" type="xs:float" />
+      <xs:element minOccurs="0" name="Explosion" type="xs:float" />
+      <xs:element minOccurs="0" name="FabricationBench" type="xs:float" />
+      <xs:element minOccurs="0" name="Fence" type="xs:float" />
+      <xs:element minOccurs="0" name="FenceGate" type="xs:float" />
+      <xs:element minOccurs="0" name="FermentingBarrel" type="xs:float" />
+      <xs:element minOccurs="0" name="FieldHand" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_AmnioticFluid" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_AnimalFilth" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_Ash" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_Blood" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_BloodInsect" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_CorpseBile" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_Dirt" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_DriedBlood" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_FireFoam" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_FlammableBile" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_Floordrawing" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_Fuel" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_Hair" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_MachineBits" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_MoldyUniform" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_OilSmear" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_PodSlime" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_RubbleBuilding" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_RubbleRock" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_Sand" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_ScatteredDocuments" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_Slime" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_SpentAcid" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_Trash" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_Vomit" type="xs:float" />
+      <xs:element minOccurs="0" name="Filth_Water" type="xs:float" />
+      <xs:element minOccurs="0" name="Fire" type="xs:float" />
+      <xs:element minOccurs="0" name="FirefoamPopper" type="xs:float" />
+      <xs:element minOccurs="0" name="Flake" type="xs:float" />
+      <xs:element minOccurs="0" name="Flamebow" type="xs:float" />
+      <xs:element minOccurs="0" name="FlashShieldBreak" type="xs:float" />
+      <xs:element minOccurs="0" name="Flashstorm" type="xs:float" />
+      <xs:element minOccurs="0" name="FlatscreenTelevision" type="xs:float" />
+      <xs:element minOccurs="0" name="Fox_Arctic" type="xs:float" />
+      <xs:element minOccurs="0" name="Fox_Fennec" type="xs:float" />
+      <xs:element minOccurs="0" name="Fox_Red" type="xs:float" />
+      <xs:element minOccurs="0" name="FueledSmithy" type="xs:float" />
+      <xs:element minOccurs="0" name="FueledStove" type="xs:float" />
+      <xs:element minOccurs="0" name="GameOfUrBoard" type="xs:float" />
+      <xs:element minOccurs="0" name="GastroAnalyzer" type="xs:float" />
+      <xs:element minOccurs="0" name="GaumakerCocoon" type="xs:float" />
+      <xs:element minOccurs="0" name="GauranlenSeed" type="xs:float" />
+      <xs:element minOccurs="0" name="Gazelle" type="xs:float" />
+      <xs:element minOccurs="0" name="GeneAssembler" type="xs:float" />
+      <xs:element minOccurs="0" name="GeneBank" type="xs:float" />
+      <xs:element minOccurs="0" name="GeneExtractor" type="xs:float" />
+      <xs:element minOccurs="0" name="Genepack" type="xs:float" />
+      <xs:element minOccurs="0" name="GeneProcessor" type="xs:float" />
+      <xs:element minOccurs="0" name="GeothermalGenerator" type="xs:float" />
+      <xs:element minOccurs="0" name="GibbetCage" type="xs:float" />
+      <xs:element minOccurs="0" name="Gloomlight" type="xs:float" />
+      <xs:element minOccurs="0" name="GlowPod" type="xs:float" />
+      <xs:element minOccurs="0" name="Glowstool" type="xs:float" />
+      <xs:element minOccurs="0" name="GlucosoidPump" type="xs:float" />
+      <xs:element minOccurs="0" name="Goat" type="xs:float" />
+      <xs:element minOccurs="0" name="GoJuice" type="xs:float" />
+      <xs:element minOccurs="0" name="Gold" type="xs:float" />
+      <xs:element minOccurs="0" name="Goose" type="xs:float" />
+      <xs:element minOccurs="0" name="GrandArchotechStructure" type="xs:float" />
+      <xs:element minOccurs="0" name="GrandThrone" type="xs:float" />
+      <xs:element minOccurs="0" name="Granite" type="xs:float" />
+      <xs:element minOccurs="0" name="Grave" type="xs:float" />
+      <xs:element minOccurs="0" name="Grimworld_FlintlockSmoke" type="xs:float" />
+      <xs:element minOccurs="0" name="GroundPenetratingScanner" type="xs:float" />
+      <xs:element minOccurs="0" name="GrowthVat" type="xs:float" />
+      <xs:element minOccurs="0" name="GuineaPig" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_AssaultRifle" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_AutocannonTurret" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_Autopistol" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_BeamGraser" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_BoltActionRifle" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_ChainShotgun" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_ChargeBlasterHeavy" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_ChargeBlasterHeavyTurret" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_ChargeBlasterTurret" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_ChargeLance" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_ChargeRifle" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_DoomsdayRocket" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_EmpLauncher" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_HeavySMG" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_HellsphereCannon" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_IncendiaryLauncher" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_InfernoCannon" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_InfernoCannonTurret" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_LMG" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_MachinePistol" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_MiniFlameblaster" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_Minigun" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_MiniShotgun" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_MiniTurret" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_MiniTurretMech" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_Needle" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_NeedleLauncher" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_PumpShotgun" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_Revolver" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_RocketswarmLauncher" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_Slugthrower" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_SmokeLauncher" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_SniperRifle" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_Spiner" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_ThumpCannon" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_ToxbombLauncher" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_ToxicNeedle" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_TripleRocket" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_TurretFoam" type="xs:float" />
+      <xs:element minOccurs="0" name="Gun_TurretSniper" type="xs:float" />
+      <xs:element minOccurs="0" name="HandTailoringBench" type="xs:float" />
+      <xs:element minOccurs="0" name="HandTalon" type="xs:float" />
+      <xs:element minOccurs="0" name="Hare" type="xs:float" />
+      <xs:element minOccurs="0" name="Harp" type="xs:float" />
+      <xs:element minOccurs="0" name="Harpsichord" type="xs:float" />
+      <xs:element minOccurs="0" name="Hay" type="xs:float" />
+      <xs:element minOccurs="0" name="HealingEnhancer" type="xs:float" />
+      <xs:element minOccurs="0" name="Heart" type="xs:float" />
+      <xs:element minOccurs="0" name="Heater" type="xs:float" />
+      <xs:element minOccurs="0" name="HemogenAmplifier" type="xs:float" />
+      <xs:element minOccurs="0" name="HemogenPack" type="xs:float" />
+      <xs:element minOccurs="0" name="Hemopump" type="xs:float" />
+      <xs:element minOccurs="0" name="HiTechResearchBench" type="xs:float" />
+      <xs:element minOccurs="0" name="Hive" type="xs:float" />
+      <xs:element minOccurs="0" name="HoopstoneRing" type="xs:float" />
+      <xs:element minOccurs="0" name="Hopper" type="xs:float" />
+      <xs:element minOccurs="0" name="Horse" type="xs:float" />
+      <xs:element minOccurs="0" name="HorseshoesPin" type="xs:float" />
+      <xs:element minOccurs="0" name="HospitalBed" type="xs:float" />
+      <xs:element minOccurs="0" name="Human" type="xs:float" />
+      <xs:element minOccurs="0" name="HumanEmbryo" type="xs:float" />
+      <xs:element minOccurs="0" name="HumanOvum" type="xs:float" />
+      <xs:element minOccurs="0" name="Husky" type="xs:float" />
+      <xs:element minOccurs="0" name="HydroponicsBasin" type="xs:float" />
+      <xs:element minOccurs="0" name="Hyperweave" type="xs:float" />
+      <xs:element minOccurs="0" name="Ibex" type="xs:float" />
+      <xs:element minOccurs="0" name="Ideogram" type="xs:float" />
+      <xs:element minOccurs="0" name="Iguana" type="xs:float" />
+      <xs:element minOccurs="0" name="Immunoenhancer" type="xs:float" />
+      <xs:element minOccurs="0" name="IncenseShrine" type="xs:float" />
+      <xs:element minOccurs="0" name="InfiniteChemreactor" type="xs:float" />
+      <xs:element minOccurs="0" name="InsectJelly" type="xs:float" />
+      <xs:element minOccurs="0" name="Jade" type="xs:float" />
+      <xs:element minOccurs="0" name="Joywire" type="xs:float" />
+      <xs:element minOccurs="0" name="KCSG_LongMote_DustPuff" type="xs:float" />
+      <xs:element minOccurs="0" name="KCSG_PowerConduit" type="xs:float" />
+      <xs:element minOccurs="0" name="Kibble" type="xs:float" />
+      <xs:element minOccurs="0" name="Kidney" type="xs:float" />
+      <xs:element minOccurs="0" name="KneelPillow" type="xs:float" />
+      <xs:element minOccurs="0" name="KneelSheet" type="xs:float" />
+      <xs:element minOccurs="0" name="KneeSpike" type="xs:float" />
+      <xs:element minOccurs="0" name="LabradorRetriever" type="xs:float" />
+      <xs:element minOccurs="0" name="LargeMechGestator" type="xs:float" />
+      <xs:element minOccurs="0" name="LearningAssistant" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Bear" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Bird" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Bluefur" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Camel" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Chinchilla" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Dog" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Elephant" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Fox" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_GuineaPig" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Heavy" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Human" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Light" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Lizard" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Panthera" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Patch" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Pig" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Plain" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Rhinoceros" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Thrumbo" type="xs:float" />
+      <xs:element minOccurs="0" name="Leather_Wolf" type="xs:float" />
+      <xs:element minOccurs="0" name="Lectern" type="xs:float" />
+      <xs:element minOccurs="0" name="LightBall" type="xs:float" />
+      <xs:element minOccurs="0" name="Limestone" type="xs:float" />
+      <xs:element minOccurs="0" name="Liver" type="xs:float" />
+      <xs:element minOccurs="0" name="LongRangeMineralScanner" type="xs:float" />
+      <xs:element minOccurs="0" name="Loudspeaker" type="xs:float" />
+      <xs:element minOccurs="0" name="LoveEnhancer" type="xs:float" />
+      <xs:element minOccurs="0" name="Luciferium" type="xs:float" />
+      <xs:element minOccurs="0" name="Lung" type="xs:float" />
+      <xs:element minOccurs="0" name="Lynx" type="xs:float" />
+      <xs:element minOccurs="0" name="MajorArchotechStructure" type="xs:float" />
+      <xs:element minOccurs="0" name="MajorArchotechStructureStudiable" type="xs:float" />
+      <xs:element minOccurs="0" name="Marble" type="xs:float" />
+      <xs:element minOccurs="0" name="MarriageSpot" type="xs:float" />
+      <xs:element minOccurs="0" name="MealFine" type="xs:float" />
+      <xs:element minOccurs="0" name="MealFine_Meat" type="xs:float" />
+      <xs:element minOccurs="0" name="MealFine_Veg" type="xs:float" />
+      <xs:element minOccurs="0" name="MealLavish" type="xs:float" />
+      <xs:element minOccurs="0" name="MealLavish_Meat" type="xs:float" />
+      <xs:element minOccurs="0" name="MealLavish_Veg" type="xs:float" />
+      <xs:element minOccurs="0" name="MealNutrientPaste" type="xs:float" />
+      <xs:element minOccurs="0" name="MealSimple" type="xs:float" />
+      <xs:element minOccurs="0" name="MealSurvivalPack" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Agrihand" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Apocriton" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_CentipedeBlaster" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_CentipedeBurner" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_CentipedeGunner" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Centurion" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Cleansweeper" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Constructoid" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Diabolus" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Fabricor" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Lancer" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Legionary" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Lifter" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Militor" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Paramedic" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Pikeman" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Scorcher" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Scyther" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Termite" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Tesseron" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Tunneler" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_Warqueen" type="xs:float" />
+      <xs:element minOccurs="0" name="Mech_WarUrchin" type="xs:float" />
+      <xs:element minOccurs="0" name="MechanoidTransponder" type="xs:float" />
+      <xs:element minOccurs="0" name="MechAssembler" type="xs:float" />
+      <xs:element minOccurs="0" name="MechbandDish" type="xs:float" />
+      <xs:element minOccurs="0" name="MechBooster" type="xs:float" />
+      <xs:element minOccurs="0" name="MechCapsule" type="xs:float" />
+      <xs:element minOccurs="0" name="MechDropBeacon" type="xs:float" />
+      <xs:element minOccurs="0" name="MechFormfeeder" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestator" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorCycleComplete_East" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorCycleComplete_North" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorCycleComplete_South" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorCycleCompleteLarge_East" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorCycleCompleteLarge_North" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorCycleCompleteLarge_South" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorCycleCompleteLarge_West" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorFormed_East" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorFormed_North" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorFormed_South" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorFormedLarge_East" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorFormedLarge_North" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorFormedLarge_South" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorFormedLarge_West" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorForming_East" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorForming_North" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorForming_South" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorFormingLarge_East" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorFormingLarge_North" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorFormingLarge_South" type="xs:float" />
+      <xs:element minOccurs="0" name="MechGestatorFormingLarge_West" type="xs:float" />
+      <xs:element minOccurs="0" name="Mechlink" type="xs:float" />
+      <xs:element minOccurs="0" name="MechSerumHealer" type="xs:float" />
+      <xs:element minOccurs="0" name="MechSerumResurrector" type="xs:float" />
+      <xs:element minOccurs="0" name="MechShield" type="xs:float" />
+      <xs:element minOccurs="0" name="MedicineHerbal" type="xs:float" />
+      <xs:element minOccurs="0" name="MedicineIndustrial" type="xs:float" />
+      <xs:element minOccurs="0" name="MedicineUltratech" type="xs:float" />
+      <xs:element minOccurs="0" name="MeditationSpot" type="xs:float" />
+      <xs:element minOccurs="0" name="Megascarab" type="xs:float" />
+      <xs:element minOccurs="0" name="MegascreenTelevision" type="xs:float" />
+      <xs:element minOccurs="0" name="Megasloth" type="xs:float" />
+      <xs:element minOccurs="0" name="Megaspider" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_Axe" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_BreachAxe" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_Club" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_Gladius" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_Ikwa" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_Knife" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_LongSword" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_Mace" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_MonoSword" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_MonoSwordBladelink" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_PlasmaSword" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_PlasmaSwordBladelink" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_PsyfocusStaff" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_Spear" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_Warhammer" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_Zeushammer" type="xs:float" />
+      <xs:element minOccurs="0" name="MeleeWeapon_ZeusHammerBladelink" type="xs:float" />
+      <xs:element minOccurs="0" name="MeteoriteIncoming" type="xs:float" />
+      <xs:element minOccurs="0" name="Milk" type="xs:float" />
+      <xs:element minOccurs="0" name="Mindscrew" type="xs:float" />
+      <xs:element minOccurs="0" name="MineableComponentsIndustrial" type="xs:float" />
+      <xs:element minOccurs="0" name="MineableGold" type="xs:float" />
+      <xs:element minOccurs="0" name="MineableJade" type="xs:float" />
+      <xs:element minOccurs="0" name="MineablePlasteel" type="xs:float" />
+      <xs:element minOccurs="0" name="MineableSilver" type="xs:float" />
+      <xs:element minOccurs="0" name="MineableSteel" type="xs:float" />
+      <xs:element minOccurs="0" name="MineableUranium" type="xs:float" />
+      <xs:element minOccurs="0" name="MinifiedThing" type="xs:float" />
+      <xs:element minOccurs="0" name="MinifiedTree" type="xs:float" />
+      <xs:element minOccurs="0" name="MoisturePump" type="xs:float" />
+      <xs:element minOccurs="0" name="Monkey" type="xs:float" />
+      <xs:element minOccurs="0" name="MonumentMarker" type="xs:float" />
+      <xs:element minOccurs="0" name="MorbidSlab_Broad" type="xs:float" />
+      <xs:element minOccurs="0" name="MorbidSlab_Medium" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ActivatorCountdownGlow" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ActivatorProximityGlow" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_AnimalWarcallDistortion" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_AnimalWarcallFlash" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_AnimalWarcallMentalState" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_AnimalWarcallTarget" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_AnimalWarcallTargetFlash" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_AnimalWarcallWarmup" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ApocritonPulse" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ApocritonWarmupArea" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_BabyCryingDots" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_BerserkBit" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Bestow" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Bombardment" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Bombardment_PreImpact" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Cards" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_CastPsycast" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ChargingCablesPulse" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Clean" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ClearSnow" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_CoagulateA" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_CoagulateB" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_CoagulateStencil" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_CocoonBreaking" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_CocoonDestroyedFlyingPiece" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_CocoonDestroyedFlyingSlime" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_CocoonDestroyedMist" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ColonistAttacking" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ColonistFleeing" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_CombatCommand" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_CombatCommandLinkLine" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_CookBit" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Danger" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Deathresting" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_DrunkBubble" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_DuelCircle" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ExtinguisherPuff" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Firetrail" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_FoodBitMeat" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_FoodBitVegetarian" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ForceJob" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ForceJobMaintained" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_FTSmoketrail" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_GauranlenCasteChanged" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_GiantExplosion" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_GiantExplosionInner" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_GraserBeamBase" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_GreenSmoketrail" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Hacking" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Harvest" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_HellsphereCannon_Aim" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_HellsphereCannon_Charge" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_HellsphereCannon_Target" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Leaf" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_LightBall" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_LightBallLights" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_LongSparkThrown" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_LoudspeakerLights" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_MechbandAntennaWaves" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_MechbandDishWaves" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_MechbandElectricity" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_MechbandPreparing" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_MechCharging" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_MechControlTakingSparkArch" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_MechResurrectFlash" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_MechResurrectGlow" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_MechResurrectWarmupOnTarget" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_MechSparkSimple" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_MechTunnelerSlowedDown" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_MechUncontrolled" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_NewbornBecomeChildGlow" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Paint" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_PollutionPump" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_PowerBeam" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_PowerCellBurning" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ProgressBar" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ProgressBarAlwaysVisible" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ProximityScannerActivated" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ProximityScannerRadius" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_PsychicConditionCauserEffect" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_PsychicEmanatorEffect" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_PsychicLinkLine" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_PsychicLinkPulse" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_PsyfocusPulse" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_RedFlash" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_RedFlashStrong" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ResurrectAbility" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ResurrectFlash" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_RipscannerHeadGlow" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_RitualGlowRays" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_RitualGlowSingleRay" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_RitualSmoke" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_RitualSmokeDust" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_RitualSmokeDustVague" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_RitualSmokeThick" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_RitualSmokeThickSlim" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_RitualTechLineA" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_RitualTechLineB" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_RitualTechLineC" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_RolePawnHighlight" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_RolePositionHighlight" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_SanguophageMeetingSmoke" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_SkyLanternGlow" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_SkyLanternOuterGlow" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_SkyLanternSmoke" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_SmokeFlake" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_SmokeJoint" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Smoketrail" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Sow" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_SparkThrown" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_SparkThrownFast" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_SparkThrownFastBlue" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_SparkThrownFastBright" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Speech" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_SpikePipe" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Splash" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_StoneBit" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Stun" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_SubcoreEncoderEast" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_SubcoreEncoderNorth" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_SubcoreEncoderSouth" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_TempRoof" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Text" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Thought" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ThoughtBad" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ThoughtGood" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_TotemOutline" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_ToxicDamage" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_Toy" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_VatGlowHorizontal" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_VatGlowVertical" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_VomitBit" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_WarhUrchinSpawnElectricity" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_WarmupNeuroquake" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_WarmupWordOf" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_WarQueenSpineGlow" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_WarUrchinSpawnFlash" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_WorkCommand" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_WorkCommandLinkLine" type="xs:float" />
+      <xs:element minOccurs="0" name="Mote_XenogermImplantation" type="xs:float" />
+      <xs:element minOccurs="0" name="Muffalo" type="xs:float" />
+      <xs:element minOccurs="0" name="MultiAnalyzer" type="xs:float" />
+      <xs:element minOccurs="0" name="NanostructuringChip" type="xs:float" />
+      <xs:element minOccurs="0" name="NatureShrine_Large" type="xs:float" />
+      <xs:element minOccurs="0" name="NatureShrine_Small" type="xs:float" />
+      <xs:element minOccurs="0" name="NeuralSupercharger" type="xs:float" />
+      <xs:element minOccurs="0" name="Neurocalculator" type="xs:float" />
+      <xs:element minOccurs="0" name="Neutroamine" type="xs:float" />
+      <xs:element minOccurs="0" name="NuclearStomach" type="xs:float" />
+      <xs:element minOccurs="0" name="NutrientPasteDispenser" type="xs:float" />
+      <xs:element minOccurs="0" name="OrbitalTargeterBombardment" type="xs:float" />
+      <xs:element minOccurs="0" name="OrbitalTargeterMechCluster" type="xs:float" />
+      <xs:element minOccurs="0" name="OrbitalTargeterPowerBeam" type="xs:float" />
+      <xs:element minOccurs="0" name="OrbitalTradeBeacon" type="xs:float" />
+      <xs:element minOccurs="0" name="Ostrich" type="xs:float" />
+      <xs:element minOccurs="0" name="Painstopper" type="xs:float" />
+      <xs:element minOccurs="0" name="Panther" type="xs:float" />
+      <xs:element minOccurs="0" name="PartySpot" type="xs:float" />
+      <xs:element minOccurs="0" name="PassiveCooler" type="xs:float" />
+      <xs:element minOccurs="0" name="PawnJumper" type="xs:float" />
+      <xs:element minOccurs="0" name="Pemmican" type="xs:float" />
+      <xs:element minOccurs="0" name="PenMarker" type="xs:float" />
+      <xs:element minOccurs="0" name="Penoxycyline" type="xs:float" />
+      <xs:element minOccurs="0" name="Pew" type="xs:float" />
+      <xs:element minOccurs="0" name="Piano" type="xs:float" />
+      <xs:element minOccurs="0" name="PiercingSpine" type="xs:float" />
+      <xs:element minOccurs="0" name="Pig" type="xs:float" />
+      <xs:element minOccurs="0" name="Pila" type="xs:float" />
+      <xs:element minOccurs="0" name="Pilum_Thrown" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Agave" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Alocasia" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Ambrosia" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Astragalus" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Berry" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Brambles" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Bush" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Chokevine" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Clivia" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Corn" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Cotton" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Dandelion" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Daylily" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Devilstrand" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Fibercorn" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Grass" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_GrassAnima" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_GrayGrass" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Haygrass" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Healroot" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_HealrootWild" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Hops" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Moss" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_MossGauranlen" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Nutrifungus" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_PebbleCactus" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_PincushionCactus" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_PodGauranlen" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Potato" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Psychoid" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Rafflesia" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_RatPalm" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Rice" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Ripthorn" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Rose" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_SaguaroCactus" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_ShrubLow" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Smokeleaf" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Strawberry" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TallGrass" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Timbershroom" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Tinctoria" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Toxipotato" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreeAnima" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreeBamboo" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreeBirch" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreeBonsai" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreeCecropia" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreeCocoa" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreeCypress" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreeDrago" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreeGauranlen" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreeGrayPine" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreeMaple" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreeOak" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreePalm" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreePine" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreePolux" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreePoplar" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreeTeak" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_TreeWillow" type="xs:float" />
+      <xs:element minOccurs="0" name="Plant_Witchwood" type="xs:float" />
+      <xs:element minOccurs="0" name="PlantPot" type="xs:float" />
+      <xs:element minOccurs="0" name="PlantPot_Bonsai" type="xs:float" />
+      <xs:element minOccurs="0" name="Plasteel" type="xs:float" />
+      <xs:element minOccurs="0" name="PodLauncher" type="xs:float" />
+      <xs:element minOccurs="0" name="PokerTable" type="xs:float" />
+      <xs:element minOccurs="0" name="PollutionPump" type="xs:float" />
+      <xs:element minOccurs="0" name="PoluxSeed" type="xs:float" />
+      <xs:element minOccurs="0" name="PowerBeam" type="xs:float" />
+      <xs:element minOccurs="0" name="PowerClaw" type="xs:float" />
+      <xs:element minOccurs="0" name="PowerConduit" type="xs:float" />
+      <xs:element minOccurs="0" name="PowerfocusChip" type="xs:float" />
+      <xs:element minOccurs="0" name="PowerSwitch" type="xs:float" />
+      <xs:element minOccurs="0" name="Proj_Acid" type="xs:float" />
+      <xs:element minOccurs="0" name="Proj_FireArrow" type="xs:float" />
+      <xs:element minOccurs="0" name="Proj_Foam" type="xs:float" />
+      <xs:element minOccurs="0" name="Proj_Foam_Ability" type="xs:float" />
+      <xs:element minOccurs="0" name="Proj_GrenadeEMP" type="xs:float" />
+      <xs:element minOccurs="0" name="Proj_GrenadeFrag" type="xs:float" />
+      <xs:element minOccurs="0" name="Proj_GrenadeMolotov" type="xs:float" />
+      <xs:element minOccurs="0" name="Proj_GrenadePhoenixFire" type="xs:float" />
+      <xs:element minOccurs="0" name="Proj_GrenadeTox" type="xs:float" />
+      <xs:element minOccurs="0" name="Proj_GrenadierGrenade" type="xs:float" />
+      <xs:element minOccurs="0" name="Proj_Rocket" type="xs:float" />
+      <xs:element minOccurs="0" name="PsychicAmplifier" type="xs:float" />
+      <xs:element minOccurs="0" name="PsychicAnimalPulser" type="xs:float" />
+      <xs:element minOccurs="0" name="PsychicDroner" type="xs:float" />
+      <xs:element minOccurs="0" name="PsychicDronerShipPart" type="xs:float" />
+      <xs:element minOccurs="0" name="PsychicEmanator" type="xs:float" />
+      <xs:element minOccurs="0" name="PsychicHarmonizer" type="xs:float" />
+      <xs:element minOccurs="0" name="PsychicReader" type="xs:float" />
+      <xs:element minOccurs="0" name="PsychicSensitizer" type="xs:float" />
+      <xs:element minOccurs="0" name="PsychicSoothePulser" type="xs:float" />
+      <xs:element minOccurs="0" name="PsychicSuppressor" type="xs:float" />
+      <xs:element minOccurs="0" name="PsychiteTea" type="xs:float" />
+      <xs:element minOccurs="0" name="PsychofluidPump" type="xs:float" />
+      <xs:element minOccurs="0" name="PsychoidLeaves" type="xs:float" />
+      <xs:element minOccurs="0" name="Pyre" type="xs:float" />
+      <xs:element minOccurs="0" name="Raccoon" type="xs:float" />
+      <xs:element minOccurs="0" name="RadialTrigger" type="xs:float" />
+      <xs:element minOccurs="0" name="RaisedRocks" type="xs:float" />
+      <xs:element minOccurs="0" name="Rat" type="xs:float" />
+      <xs:element minOccurs="0" name="RawAgave" type="xs:float" />
+      <xs:element minOccurs="0" name="RawBerries" type="xs:float" />
+      <xs:element minOccurs="0" name="RawCorn" type="xs:float" />
+      <xs:element minOccurs="0" name="RawFungus" type="xs:float" />
+      <xs:element minOccurs="0" name="RawHops" type="xs:float" />
+      <xs:element minOccurs="0" name="RawPotatoes" type="xs:float" />
+      <xs:element minOccurs="0" name="RawRice" type="xs:float" />
+      <xs:element minOccurs="0" name="RawToxipotato" type="xs:float" />
+      <xs:element minOccurs="0" name="RectTrigger" type="xs:float" />
+      <xs:element minOccurs="0" name="ReinforcedBarrel" type="xs:float" />
+      <xs:element minOccurs="0" name="RelicInertArk" type="xs:float" />
+      <xs:element minOccurs="0" name="RelicInertBox" type="xs:float" />
+      <xs:element minOccurs="0" name="RelicInertCube" type="xs:float" />
+      <xs:element minOccurs="0" name="RelicInertCup" type="xs:float" />
+      <xs:element minOccurs="0" name="RelicInertFragment" type="xs:float" />
+      <xs:element minOccurs="0" name="RelicInertPendant" type="xs:float" />
+      <xs:element minOccurs="0" name="RelicInertSwordHandle" type="xs:float" />
+      <xs:element minOccurs="0" name="RelicInertTablet" type="xs:float" />
+      <xs:element minOccurs="0" name="Reliquary" type="xs:float" />
+      <xs:element minOccurs="0" name="RemoteRepairer" type="xs:float" />
+      <xs:element minOccurs="0" name="RemoteShielder" type="xs:float" />
+      <xs:element minOccurs="0" name="RepairProbe" type="xs:float" />
+      <xs:element minOccurs="0" name="ReprocessorStomach" type="xs:float" />
+      <xs:element minOccurs="0" name="Rhinoceros" type="xs:float" />
+      <xs:element minOccurs="0" name="RipScannerGlow_East" type="xs:float" />
+      <xs:element minOccurs="0" name="RipScannerGlow_North" type="xs:float" />
+      <xs:element minOccurs="0" name="RipScannerGlow_South" type="xs:float" />
+      <xs:element minOccurs="0" name="RipScannerGlow_West" type="xs:float" />
+      <xs:element minOccurs="0" name="RitualSpot" type="xs:float" />
+      <xs:element minOccurs="0" name="RoyalBed" type="xs:float" />
+      <xs:element minOccurs="0" name="RusticRug_Broad" type="xs:float" />
+      <xs:element minOccurs="0" name="RusticRug_Medium" type="xs:float" />
+      <xs:element minOccurs="0" name="SacrificialFlag" type="xs:float" />
+      <xs:element minOccurs="0" name="SandbagRubble" type="xs:float" />
+      <xs:element minOccurs="0" name="Sandbags" type="xs:float" />
+      <xs:element minOccurs="0" name="Sandstone" type="xs:float" />
+      <xs:element minOccurs="0" name="SanguphageMeetingTorch" type="xs:float" />
+      <xs:element minOccurs="0" name="Sarcophagus" type="xs:float" />
+      <xs:element minOccurs="0" name="SchoolDesk" type="xs:float" />
+      <xs:element minOccurs="0" name="SculptureGrand" type="xs:float" />
+      <xs:element minOccurs="0" name="SculptureLarge" type="xs:float" />
+      <xs:element minOccurs="0" name="SculptureSmall" type="xs:float" />
+      <xs:element minOccurs="0" name="SculptureTerror" type="xs:float" />
+      <xs:element minOccurs="0" name="Sheep" type="xs:float" />
+      <xs:element minOccurs="0" name="Shelf" type="xs:float" />
+      <xs:element minOccurs="0" name="ShelfSmall" type="xs:float" />
+      <xs:element minOccurs="0" name="Shell_AntigrainWarhead" type="xs:float" />
+      <xs:element minOccurs="0" name="Shell_EMP" type="xs:float" />
+      <xs:element minOccurs="0" name="Shell_Firefoam" type="xs:float" />
+      <xs:element minOccurs="0" name="Shell_HighExplosive" type="xs:float" />
+      <xs:element minOccurs="0" name="Shell_Incendiary" type="xs:float" />
+      <xs:element minOccurs="0" name="Shell_Smoke" type="xs:float" />
+      <xs:element minOccurs="0" name="Shell_Toxic" type="xs:float" />
+      <xs:element minOccurs="0" name="Shell_Toxic_Releasing" type="xs:float" />
+      <xs:element minOccurs="0" name="Shell_Toxic_Releasing_Water" type="xs:float" />
+      <xs:element minOccurs="0" name="ShieldGeneratorBullets" type="xs:float" />
+      <xs:element minOccurs="0" name="ShieldGeneratorMortar" type="xs:float" />
+      <xs:element minOccurs="0" name="Ship_Beam" type="xs:float" />
+      <xs:element minOccurs="0" name="Ship_ComputerCore" type="xs:float" />
+      <xs:element minOccurs="0" name="Ship_CryptosleepCasket" type="xs:float" />
+      <xs:element minOccurs="0" name="Ship_Engine" type="xs:float" />
+      <xs:element minOccurs="0" name="Ship_Reactor" type="xs:float" />
+      <xs:element minOccurs="0" name="Ship_SensorCluster" type="xs:float" />
+      <xs:element minOccurs="0" name="ShipChunk" type="xs:float" />
+      <xs:element minOccurs="0" name="ShipChunkIncoming" type="xs:float" />
+      <xs:element minOccurs="0" name="ShipLandingBeacon" type="xs:float" />
+      <xs:element minOccurs="0" name="Shuttle" type="xs:float" />
+      <xs:element minOccurs="0" name="ShuttleCrashed" type="xs:float" />
+      <xs:element minOccurs="0" name="ShuttleCrashed_Exitable" type="xs:float" />
+      <xs:element minOccurs="0" name="ShuttleCrashed_Exitable_Mechanitor" type="xs:float" />
+      <xs:element minOccurs="0" name="ShuttleCrashing" type="xs:float" />
+      <xs:element minOccurs="0" name="ShuttleCrashing_Mechanitor" type="xs:float" />
+      <xs:element minOccurs="0" name="ShuttleIncoming" type="xs:float" />
+      <xs:element minOccurs="0" name="ShuttleLeaving" type="xs:float" />
+      <xs:element minOccurs="0" name="SignalAction_Ambush" type="xs:float" />
+      <xs:element minOccurs="0" name="SignalAction_Delay" type="xs:float" />
+      <xs:element minOccurs="0" name="SignalAction_DormancyWakeUp" type="xs:float" />
+      <xs:element minOccurs="0" name="SignalAction_Incident" type="xs:float" />
+      <xs:element minOccurs="0" name="SignalAction_Infestation" type="xs:float" />
+      <xs:element minOccurs="0" name="SignalAction_Letter" type="xs:float" />
+      <xs:element minOccurs="0" name="SignalAction_Message" type="xs:float" />
+      <xs:element minOccurs="0" name="SignalAction_OpenCasket" type="xs:float" />
+      <xs:element minOccurs="0" name="SignalAction_OpenDoor" type="xs:float" />
+      <xs:element minOccurs="0" name="SignalAction_SoundOneShot" type="xs:float" />
+      <xs:element minOccurs="0" name="SignalAction_StartWick" type="xs:float" />
+      <xs:element minOccurs="0" name="SignalChip" type="xs:float" />
+      <xs:element minOccurs="0" name="Silver" type="xs:float" />
+      <xs:element minOccurs="0" name="SimpleProstheticArm" type="xs:float" />
+      <xs:element minOccurs="0" name="SimpleProstheticHeart" type="xs:float" />
+      <xs:element minOccurs="0" name="SimpleProstheticLeg" type="xs:float" />
+      <xs:element minOccurs="0" name="SimpleResearchBench" type="xs:float" />
+      <xs:element minOccurs="0" name="Skull" type="xs:float" />
+      <xs:element minOccurs="0" name="Skullspike" type="xs:float" />
+      <xs:element minOccurs="0" name="SkyLantern" type="xs:float" />
+      <xs:element minOccurs="0" name="SlabBed" type="xs:float" />
+      <xs:element minOccurs="0" name="SlabDoubleBed" type="xs:float" />
+      <xs:element minOccurs="0" name="SlagRubble" type="xs:float" />
+      <xs:element minOccurs="0" name="Slate" type="xs:float" />
+      <xs:element minOccurs="0" name="SleepAccelerator" type="xs:float" />
+      <xs:element minOccurs="0" name="SleepingSpot" type="xs:float" />
+      <xs:element minOccurs="0" name="SmashedStump" type="xs:float" />
+      <xs:element minOccurs="0" name="SmashedStump_Anima" type="xs:float" />
+      <xs:element minOccurs="0" name="SmashedStump_Gauranlen" type="xs:float" />
+      <xs:element minOccurs="0" name="SmashedStump_Polluted" type="xs:float" />
+      <xs:element minOccurs="0" name="SmashedStump_Polux" type="xs:float" />
+      <xs:element minOccurs="0" name="SmokeleafJoint" type="xs:float" />
+      <xs:element minOccurs="0" name="SmokeleafLeaves" type="xs:float" />
+      <xs:element minOccurs="0" name="SmokeSpewer" type="xs:float" />
+      <xs:element minOccurs="0" name="SmoothedGranite" type="xs:float" />
+      <xs:element minOccurs="0" name="SmoothedLimestone" type="xs:float" />
+      <xs:element minOccurs="0" name="SmoothedMarble" type="xs:float" />
+      <xs:element minOccurs="0" name="SmoothedSandstone" type="xs:float" />
+      <xs:element minOccurs="0" name="SmoothedSlate" type="xs:float" />
+      <xs:element minOccurs="0" name="Snowhare" type="xs:float" />
+      <xs:element minOccurs="0" name="Snowman" type="xs:float" />
+      <xs:element minOccurs="0" name="SoftScannerGlow_East" type="xs:float" />
+      <xs:element minOccurs="0" name="SoftScannerGlow_North" type="xs:float" />
+      <xs:element minOccurs="0" name="SoftScannerGlow_South" type="xs:float" />
+      <xs:element minOccurs="0" name="SoftScannerGlow_West" type="xs:float" />
+      <xs:element minOccurs="0" name="SolarGenerator" type="xs:float" />
+      <xs:element minOccurs="0" name="SolarPinhole" type="xs:float" />
+      <xs:element minOccurs="0" name="Spacedrone" type="xs:float" />
+      <xs:element minOccurs="0" name="SpacedroneIncoming" type="xs:float" />
+      <xs:element minOccurs="0" name="Spark" type="xs:float" />
+      <xs:element minOccurs="0" name="Spelopede" type="xs:float" />
+      <xs:element minOccurs="0" name="SpikecoreFloorStar_Broad" type="xs:float" />
+      <xs:element minOccurs="0" name="SpikecoreFloorStar_Medium" type="xs:float" />
+      <xs:element minOccurs="0" name="Squirrel" type="xs:float" />
+      <xs:element minOccurs="0" name="StandardRecharger" type="xs:float" />
+      <xs:element minOccurs="0" name="StandingLamp" type="xs:float" />
+      <xs:element minOccurs="0" name="SteamGeyser" type="xs:float" />
+      <xs:element minOccurs="0" name="Steel" type="xs:float" />
+      <xs:element minOccurs="0" name="SteleGrand" type="xs:float" />
+      <xs:element minOccurs="0" name="SteleLarge" type="xs:float" />
+      <xs:element minOccurs="0" name="StoneskinGland" type="xs:float" />
+      <xs:element minOccurs="0" name="Stool" type="xs:float" />
+      <xs:element minOccurs="0" name="StylingStation" type="xs:float" />
+      <xs:element minOccurs="0" name="SubcoreBasic" type="xs:float" />
+      <xs:element minOccurs="0" name="SubcoreEncoder" type="xs:float" />
+      <xs:element minOccurs="0" name="SubcoreHigh" type="xs:float" />
+      <xs:element minOccurs="0" name="SubcoreRegular" type="xs:float" />
+      <xs:element minOccurs="0" name="SubcoreRipscanner" type="xs:float" />
+      <xs:element minOccurs="0" name="SubcoreSoftscanner" type="xs:float" />
+      <xs:element minOccurs="0" name="SunBlocker" type="xs:float" />
+      <xs:element minOccurs="0" name="SunLamp" type="xs:float" />
+      <xs:element minOccurs="0" name="Synthread" type="xs:float" />
+      <xs:element minOccurs="0" name="Table1x2c" type="xs:float" />
+      <xs:element minOccurs="0" name="Table2x2c" type="xs:float" />
+      <xs:element minOccurs="0" name="Table2x4c" type="xs:float" />
+      <xs:element minOccurs="0" name="Table3x3c" type="xs:float" />
+      <xs:element minOccurs="0" name="TableButcher" type="xs:float" />
+      <xs:element minOccurs="0" name="TableMachining" type="xs:float" />
+      <xs:element minOccurs="0" name="TableSculpting" type="xs:float" />
+      <xs:element minOccurs="0" name="TableStonecutter" type="xs:float" />
+      <xs:element minOccurs="0" name="TechprofSubpersonaCore" type="xs:float" />
+      <xs:element minOccurs="0" name="Telescope" type="xs:float" />
+      <xs:element minOccurs="0" name="Throne" type="xs:float" />
+      <xs:element minOccurs="0" name="Thrumbo" type="xs:float" />
+      <xs:element minOccurs="0" name="ThrumboHorn" type="xs:float" />
+      <xs:element minOccurs="0" name="ToolCabinet" type="xs:float" />
+      <xs:element minOccurs="0" name="TorchLamp" type="xs:float" />
+      <xs:element minOccurs="0" name="Tornado" type="xs:float" />
+      <xs:element minOccurs="0" name="TornadoGenerator" type="xs:float" />
+      <xs:element minOccurs="0" name="Tortoise" type="xs:float" />
+      <xs:element minOccurs="0" name="TotemicSlab_Broad" type="xs:float" />
+      <xs:element minOccurs="0" name="TotemicSlab_Medium" type="xs:float" />
+      <xs:element minOccurs="0" name="ToughskinGland" type="xs:float" />
+      <xs:element minOccurs="0" name="Toxalope" type="xs:float" />
+      <xs:element minOccurs="0" name="ToxicSpewer" type="xs:float" />
+      <xs:element minOccurs="0" name="ToxifierGenerator" type="xs:float" />
+      <xs:element minOccurs="0" name="ToyBox" type="xs:float" />
+      <xs:element minOccurs="0" name="TransportPod" type="xs:float" />
+      <xs:element minOccurs="0" name="TrapIED_AntigrainWarhead" type="xs:float" />
+      <xs:element minOccurs="0" name="TrapIED_EMP" type="xs:float" />
+      <xs:element minOccurs="0" name="TrapIED_Firefoam" type="xs:float" />
+      <xs:element minOccurs="0" name="TrapIED_HighExplosive" type="xs:float" />
+      <xs:element minOccurs="0" name="TrapIED_Incendiary" type="xs:float" />
+      <xs:element minOccurs="0" name="TrapIED_Smoke" type="xs:float" />
+      <xs:element minOccurs="0" name="TrapIED_ToxGas" type="xs:float" />
+      <xs:element minOccurs="0" name="TrapSpike" type="xs:float" />
+      <xs:element minOccurs="0" name="TriggerContainerEmptied" type="xs:float" />
+      <xs:element minOccurs="0" name="TriggerUnfogged" type="xs:float" />
+      <xs:element minOccurs="0" name="TubeTelevision" type="xs:float" />
+      <xs:element minOccurs="0" name="TunnelHiveSpawner" type="xs:float" />
+      <xs:element minOccurs="0" name="TunnelJellySpawner" type="xs:float" />
+      <xs:element minOccurs="0" name="Turkey" type="xs:float" />
+      <xs:element minOccurs="0" name="Turret_Autocannon" type="xs:float" />
+      <xs:element minOccurs="0" name="Turret_AutoChargeBlaster" type="xs:float" />
+      <xs:element minOccurs="0" name="Turret_AutoInferno" type="xs:float" />
+      <xs:element minOccurs="0" name="Turret_AutoMiniTurret" type="xs:float" />
+      <xs:element minOccurs="0" name="Turret_AutoMortar" type="xs:float" />
+      <xs:element minOccurs="0" name="Turret_FoamTurret" type="xs:float" />
+      <xs:element minOccurs="0" name="Turret_MiniTurret" type="xs:float" />
+      <xs:element minOccurs="0" name="Turret_Mortar" type="xs:float" />
+      <xs:element minOccurs="0" name="Turret_RocketswarmLauncher" type="xs:float" />
+      <xs:element minOccurs="0" name="Turret_Sniper" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedApparel" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedArmor" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedBelt" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedComponent" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedGun" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedHealthItemBionic" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedHealthItemProsthetic" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedMask" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedMetallicTechArmor" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedMusicalInstrument" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedPack" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedPiano" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedSculpture" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedSubcore" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedTechArmor" type="xs:float" />
+      <xs:element minOccurs="0" name="UnfinishedWeapon" type="xs:float" />
+      <xs:element minOccurs="0" name="UnstablePowerCell" type="xs:float" />
+      <xs:element minOccurs="0" name="Uranium" type="xs:float" />
+      <xs:element minOccurs="0" name="Urn" type="xs:float" />
+      <xs:element minOccurs="0" name="VanometricPowerCell" type="xs:float" />
+      <xs:element minOccurs="0" name="VEF_OutpostDeliverySpot" type="xs:float" />
+      <xs:element minOccurs="0" name="VenomFangs" type="xs:float" />
+      <xs:element minOccurs="0" name="VenomTalon" type="xs:float" />
+      <xs:element minOccurs="0" name="Vent" type="xs:float" />
+      <xs:element minOccurs="0" name="VFEA_AbilityFlyer" type="xs:float" />
+      <xs:element minOccurs="0" name="VFEA_AbilityFlyer_Charge" type="xs:float" />
+      <xs:element minOccurs="0" name="VitalsMonitor" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Apparel_EltexCape" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Apparel_EltexMask" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Apparel_PlateArmorPrestige" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_BallLightning" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Bolt" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_BrambleSpawner" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_ChainBolt" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Darkness" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Decoy" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Eltex" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_EltexOre" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_EyeBlast" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Filth_Metal" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Filth_Rock" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_FireBeam" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_FireBreath" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_FireTornado" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Flameball" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_FrostRay" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Hallucination" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_HeatPearls" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_HeatPearls_Proj" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_HurricaneMaker" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_IceBreathe" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_IceCrystal" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_IceSpike" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_IceWall" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_JumpingPawn" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Liferot" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_MatterPhasing" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_MeleeWeapon_EltexDagger" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_MeleeWeapon_EltexMace" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_MeleeWeapon_EltexSword" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Mote_Butterfly" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Mote_Cast" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Mote_CastPsycast" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Mote_CastPsycast_Red" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Mote_CastPsycast_Yellow" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Mote_FireBeam" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Mote_GhostA" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Mote_GhostB" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Mote_GhostC" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Mote_GhostD" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Mote_GhostE" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Mote_GhostF" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Mote_GhostG" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Mote_GreenMist" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Mote_ParalysisPulse" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_PsycastAreaEffectMaintained" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_PsycastPsychicEffectTransfer" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Psyring" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_RedSparkFlash" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_RockConstruct" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Shrineshield_Large" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Shrineshield_Small" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Skipdoor" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_SkyChanger" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_SmallMeteorite_Incoming" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_SoulFromSky" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_SoulOrb" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_SoulOrbTransfer" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_SteelConstruct" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_SummonedSkeleton" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_TimeSphere" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_TreeSpawner" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_Vortex" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_WarlordTargettingReticle" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_WhiteSparkFlash" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_WildPlantSpawner" type="xs:float" />
+      <xs:element minOccurs="0" name="VPE_YellowSparkFlash" type="xs:float" />
+      <xs:element minOccurs="0" name="WakeUp" type="xs:float" />
+      <xs:element minOccurs="0" name="Wall" type="xs:float" />
+      <xs:element minOccurs="0" name="Warg" type="xs:float" />
+      <xs:element minOccurs="0" name="Wastepack" type="xs:float" />
+      <xs:element minOccurs="0" name="WastepackAtomizer" type="xs:float" />
+      <xs:element minOccurs="0" name="WasteRat" type="xs:float" />
+      <xs:element minOccurs="0" name="WatermillGenerator" type="xs:float" />
+      <xs:element minOccurs="0" name="WaterproofConduit" type="xs:float" />
+      <xs:element minOccurs="0" name="Weapon_GrenadeEMP" type="xs:float" />
+      <xs:element minOccurs="0" name="Weapon_GrenadeFrag" type="xs:float" />
+      <xs:element minOccurs="0" name="Weapon_GrenadeMolotov" type="xs:float" />
+      <xs:element minOccurs="0" name="Weapon_GrenadeTox" type="xs:float" />
+      <xs:element minOccurs="0" name="WeatherController" type="xs:float" />
+      <xs:element minOccurs="0" name="WildBoar" type="xs:float" />
+      <xs:element minOccurs="0" name="WindTurbine" type="xs:float" />
+      <xs:element minOccurs="0" name="Wolf_Arctic" type="xs:float" />
+      <xs:element minOccurs="0" name="Wolf_Timber" type="xs:float" />
+      <xs:element minOccurs="0" name="WoodFiredGenerator" type="xs:float" />
+      <xs:element minOccurs="0" name="WoodLog" type="xs:float" />
+      <xs:element minOccurs="0" name="WoolAlpaca" type="xs:float" />
+      <xs:element minOccurs="0" name="WoolBison" type="xs:float" />
+      <xs:element minOccurs="0" name="WoolMegasloth" type="xs:float" />
+      <xs:element minOccurs="0" name="WoolMuffalo" type="xs:float" />
+      <xs:element minOccurs="0" name="WoolSheep" type="xs:float" />
+      <xs:element minOccurs="0" name="Wort" type="xs:float" />
+      <xs:element minOccurs="0" name="Xenogerm" type="xs:float" />
+      <xs:element minOccurs="0" name="Yak" type="xs:float" />
+      <xs:element minOccurs="0" name="Yayo" type="xs:float" />
+      <xs:element minOccurs="0" name="YorkshireTerrier" type="xs:float" />
+    </xs:all>
+  </xs:complexType>
   <xs:complexType name="ThingSetMaker">
     <xs:all>
       <xs:element minOccurs="0" name="allowAlly" type="xs:boolean" />
@@ -64950,6 +66476,13 @@ This value must match what the game expects from the SubSoundDef with this name.
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  <xs:complexType name="VanillaGenesExpanded.ConditionalStatAffecter_Darkness">
+    <xs:complexContent>
+      <xs:extension base="ConditionalStatAffecter">
+        <xs:all />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType name="VanillaGenesExpanded.ConditionalStatAffecter_DryLand">
     <xs:complexContent>
       <xs:extension base="ConditionalStatAffecter">
@@ -64957,7 +66490,42 @@ This value must match what the game expects from the SubSoundDef with this name.
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
+  <xs:complexType name="VanillaGenesExpanded.ConditionalStatAffecter_Indoors">
+    <xs:complexContent>
+      <xs:extension base="ConditionalStatAffecter">
+        <xs:all />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="VanillaGenesExpanded.ConditionalStatAffecter_InLight">
+    <xs:complexContent>
+      <xs:extension base="ConditionalStatAffecter">
+        <xs:all />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="VanillaGenesExpanded.ConditionalStatAffecter_InPain">
+    <xs:complexContent>
+      <xs:extension base="ConditionalStatAffecter">
+        <xs:all />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="VanillaGenesExpanded.ConditionalStatAffecter_InPollution">
+    <xs:complexContent>
+      <xs:extension base="ConditionalStatAffecter">
+        <xs:all />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
   <xs:complexType name="VanillaGenesExpanded.ConditionalStatAffecter_NoSunlight">
+    <xs:complexContent>
+      <xs:extension base="ConditionalStatAffecter">
+        <xs:all />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="VanillaGenesExpanded.ConditionalStatAffecter_Outdoors">
     <xs:complexContent>
       <xs:extension base="ConditionalStatAffecter">
         <xs:all />
@@ -64982,6 +66550,13 @@ This value must match what the game expects from the SubSoundDef with this name.
     <xs:complexContent>
       <xs:extension base="DefModExtension">
         <xs:all>
+          <xs:element minOccurs="0" name="applySkinColorWithGenes">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="li" type="GeneDef.Enumeration" />
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
           <xs:element minOccurs="0" name="backgroundPathEndogenes" type="xs:string" />
           <xs:element minOccurs="0" name="backgroundPathXenogenes" type="xs:string" />
           <xs:element minOccurs="0" name="bodyDessicatedGraphicPath" type="xs:string" />
@@ -65008,6 +66583,7 @@ This value must match what the game expects from the SubSoundDef with this name.
             </xs:simpleType>
           </xs:element>
           <xs:element minOccurs="0" name="furHidesBody" type="xs:boolean" />
+          <xs:element minOccurs="0" name="globalSkillLossMultiplier" type="xs:float" />
           <xs:element minOccurs="0" name="headDessicatedGraphicPath" type="xs:string" />
           <xs:element minOccurs="0" name="hediffsToBodyParts">
             <xs:complexType>
@@ -65020,6 +66596,8 @@ This value must match what the game expects from the SubSoundDef with this name.
           <xs:element minOccurs="0" name="hideGene" type="xs:boolean" />
           <xs:element minOccurs="0" name="noSkillLoss" type="SkillDef.Enumeration" />
           <xs:element minOccurs="0" name="offsets" type="VanillaGenesExpanded.GeneExtension.GeneOffsets" />
+          <xs:element minOccurs="0" name="pregnancySpeedFactor" type="xs:float" />
+          <xs:element minOccurs="0" name="skillDegradation" type="xs:boolean" />
           <xs:element minOccurs="0" name="skillRecreation" type="SkillDef.Enumeration" />
           <xs:element minOccurs="0" name="skullGraphicPath" type="xs:string" />
           <xs:element minOccurs="0" name="thingSetMaker" type="ThingSetMakerDef.Enumeration" />
@@ -65783,6 +67361,21 @@ This value must match what the game expects from the SubSoundDef with this name.
     <xs:complexContent>
       <xs:extension base="StatPart">
         <xs:all />
+      </xs:extension>
+    </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="VanillaPsycastsExpanded.Technomancer.PsyringExclusionExtension">
+    <xs:complexContent>
+      <xs:extension base="DefModExtension">
+        <xs:all>
+          <xs:element minOccurs="0" name="excludedAbilities">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="li" type="VFECore.Abilities.AbilityDef.Enumeration" />
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
+        </xs:all>
       </xs:extension>
     </xs:complexContent>
   </xs:complexType>
@@ -66759,30 +68352,30 @@ This value must match what the game expects from the SubSoundDef with this name.
       <xs:element minOccurs="0" name="minCategory">
         <xs:simpleType>
           <xs:restriction base="xs:string">
-            <xs:enumeration value="Fed" />
-            <xs:enumeration value="Hungry" />
-            <xs:enumeration value="Starving" />
-            <xs:enumeration value="UrgentlyHungry" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-      <xs:element minOccurs="0" name="minCategory">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
-            <xs:enumeration value="Fed" />
-            <xs:enumeration value="Hungry" />
-            <xs:enumeration value="Starving" />
-            <xs:enumeration value="UrgentlyHungry" />
-          </xs:restriction>
-        </xs:simpleType>
-      </xs:element>
-      <xs:element minOccurs="0" name="minCategory">
-        <xs:simpleType>
-          <xs:restriction base="xs:string">
             <xs:enumeration value="Exhausted" />
             <xs:enumeration value="Rested" />
             <xs:enumeration value="Tired" />
             <xs:enumeration value="VeryTired" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="minCategory">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Fed" />
+            <xs:enumeration value="Hungry" />
+            <xs:enumeration value="Starving" />
+            <xs:enumeration value="UrgentlyHungry" />
+          </xs:restriction>
+        </xs:simpleType>
+      </xs:element>
+      <xs:element minOccurs="0" name="minCategory">
+        <xs:simpleType>
+          <xs:restriction base="xs:string">
+            <xs:enumeration value="Fed" />
+            <xs:enumeration value="Hungry" />
+            <xs:enumeration value="Starving" />
+            <xs:enumeration value="UrgentlyHungry" />
           </xs:restriction>
         </xs:simpleType>
       </xs:element>
@@ -67574,20 +69167,20 @@ This value must match what the game expects from the SubSoundDef with this name.
           <xs:element minOccurs="0" name="minCategory">
             <xs:simpleType>
               <xs:restriction base="xs:string">
-                <xs:enumeration value="Exhausted" />
-                <xs:enumeration value="Rested" />
-                <xs:enumeration value="Tired" />
-                <xs:enumeration value="VeryTired" />
+                <xs:enumeration value="Fed" />
+                <xs:enumeration value="Hungry" />
+                <xs:enumeration value="Starving" />
+                <xs:enumeration value="UrgentlyHungry" />
               </xs:restriction>
             </xs:simpleType>
           </xs:element>
           <xs:element minOccurs="0" name="minCategory">
             <xs:simpleType>
               <xs:restriction base="xs:string">
-                <xs:enumeration value="Fed" />
-                <xs:enumeration value="Hungry" />
-                <xs:enumeration value="Starving" />
-                <xs:enumeration value="UrgentlyHungry" />
+                <xs:enumeration value="Exhausted" />
+                <xs:enumeration value="Rested" />
+                <xs:enumeration value="Tired" />
+                <xs:enumeration value="VeryTired" />
               </xs:restriction>
             </xs:simpleType>
           </xs:element>
@@ -67627,8 +69220,8 @@ This value must match what the game expects from the SubSoundDef with this name.
           <xs:element minOccurs="0" name="ticksRange" type="IntRange" />
           <xs:element minOccurs="0" name="ticksRange" type="IntRange" />
           <xs:element minOccurs="0" name="useBed" type="xs:boolean" />
-          <xs:element minOccurs="0" name="WaitTicks" type="IntRange" />
           <xs:element minOccurs="0" name="waitTicks" type="IntRange" />
+          <xs:element minOccurs="0" name="WaitTicks" type="IntRange" />
           <xs:element minOccurs="0" name="wanderRadius" type="xs:float" />
         </xs:all>
         <xs:attribute name="Class" type="Verse.AI.ThinkNode_JobGiver.SubTypes" />
@@ -69992,6 +71585,8 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
           <xs:element minOccurs="0" name="isPositive" type="xs:boolean" />
           <xs:element minOccurs="0" name="jobDef" type="JobDef.Enumeration" />
           <xs:element minOccurs="0" name="jobReportString" type="xs:string" />
+          <xs:element minOccurs="0" name="maxRadius" type="xs:float" />
+          <xs:element minOccurs="0" name="maxRange" type="xs:float" />
           <xs:element minOccurs="0" name="minRadius" type="xs:float" />
           <xs:element minOccurs="0" name="minRange" type="xs:float" />
           <xs:element minOccurs="0" name="moteOffsetAmountTowardsTarget" type="xs:float" />
@@ -70582,6 +72177,7 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
         <xs:all>
           <xs:element minOccurs="0" name="accuracyStatFactors" type="StatModifier" />
           <xs:element minOccurs="0" name="accuracyStatOffsets" type="StatModifier" />
+          <xs:element minOccurs="0" name="forcedMissRadius" type="xs:float" />
           <xs:element minOccurs="0" name="hitFlags">
             <xs:complexType>
               <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -71088,12 +72684,14 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
           <xs:element minOccurs="0" name="activationDescKey" type="xs:string" />
           <xs:element minOccurs="0" name="activationIconTexPath" type="xs:string" />
           <xs:element minOccurs="0" name="activationLabelKey" type="xs:string" />
+          <xs:element minOccurs="0" name="activeAlways" type="xs:boolean" />
           <xs:element minOccurs="0" name="activeSound" type="SoundDef.Enumeration" />
           <xs:element minOccurs="0" name="cooldownTicks" type="xs:int" />
           <xs:element minOccurs="0" name="disarmedByEmpForTicks" type="xs:int" />
           <xs:element minOccurs="0" name="inactivePowerConsumption" type="xs:float" />
           <xs:element minOccurs="0" name="initialEnergyPercentage" type="xs:float" />
           <xs:element minOccurs="0" name="manualActivation" type="xs:boolean" />
+          <xs:element minOccurs="0" name="reactivateEffect" type="EffecterDef.Enumeration" />
           <xs:element minOccurs="0" name="rechargeRateStat" type="StatDef.Enumeration" />
           <xs:element minOccurs="0" name="rechargeTicksWhenDepleted" type="xs:int" />
           <xs:element minOccurs="0" name="shieldEnergyMaxStat" type="StatDef.Enumeration" />
@@ -71138,6 +72736,14 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
         </xs:all>
       </xs:extension>
     </xs:complexContent>
+  </xs:complexType>
+  <xs:complexType name="VFECore.ConstructionSkillRequirement">
+    <xs:all>
+      <xs:element minOccurs="0" name="level" type="xs:int" />
+      <xs:element minOccurs="0" name="reportStringOverride" type="xs:string" />
+      <xs:element minOccurs="0" name="skill" type="SkillDef.Enumeration" />
+      <xs:element minOccurs="0" name="workType" type="WorkTypeDef.Enumeration" />
+    </xs:all>
   </xs:complexType>
   <xs:complexType name="VFECore.DamageExtension">
     <xs:complexContent>
@@ -71544,6 +73150,13 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
               </xs:choice>
             </xs:complexType>
           </xs:element>
+          <xs:element minOccurs="0" name="allowedRoads">
+            <xs:complexType>
+              <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:element name="li" type="RoadDef.Enumeration" />
+              </xs:choice>
+            </xs:complexType>
+          </xs:element>
           <xs:element minOccurs="0" name="allowedTerrains">
             <xs:complexType>
               <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -71553,6 +73166,7 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
           </xs:element>
           <xs:element minOccurs="0" name="allowOnChunks" type="xs:boolean" />
           <xs:element minOccurs="0" name="allowOnWater" type="xs:boolean" />
+          <xs:element minOccurs="0" name="category" type="ThingCategoryDef.Enumeration" />
           <xs:element minOccurs="0" name="disallowedTerrainTags">
             <xs:complexType>
               <xs:choice minOccurs="0" maxOccurs="unbounded">
@@ -71567,6 +73181,7 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
           <xs:element minOccurs="0" name="randomRotation" type="xs:boolean" />
           <xs:element minOccurs="0" name="spawnOnlyInPlayerMaps" type="xs:boolean" />
           <xs:element minOccurs="0" name="thingDef" type="ThingDef.Enumeration" />
+          <xs:element minOccurs="0" name="thingDefs" type="ThingOption" />
         </xs:all>
       </xs:extension>
     </xs:complexContent>
@@ -72111,6 +73726,7 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:extension base="DefModExtension">
         <xs:all>
           <xs:element minOccurs="0" name="allowDeepDrill" type="xs:boolean" />
+          <xs:element minOccurs="0" name="constructionSkillRequirement" type="VFECore.ConstructionSkillRequirement" />
           <xs:element minOccurs="0" name="deepResourcesOnGUI" type="xs:boolean" />
           <xs:element minOccurs="0" name="deepResourcesOnGUIRequireScanner" type="xs:boolean" />
           <xs:element minOccurs="0" name="destroyCorpse" type="xs:boolean" />
@@ -72820,8 +74436,10 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:enumeration value="PlantSeed" />
       <xs:enumeration value="PlayWithBaby" />
       <xs:enumeration value="PruneGauranlenTree" />
+      <xs:enumeration value="PS_BringToProcessor" />
       <xs:enumeration value="PS_DrainOutOfStorage" />
       <xs:enumeration value="PS_FillStorage" />
+      <xs:enumeration value="PS_PickUpProcessor" />
       <xs:enumeration value="RearmTurrets" />
       <xs:enumeration value="RebalanceAnimalsInPens" />
       <xs:enumeration value="Refuel" />
@@ -72849,6 +74467,9 @@ Sustainers will choose a different random volume for each sample.</xs:documentat
       <xs:enumeration value="Uninstall" />
       <xs:enumeration value="UnloadCarriers" />
       <xs:enumeration value="VEF_AnimalResource" />
+      <xs:enumeration value="VEF_Art_ConstructDeliverResourcesToBlueprints" />
+      <xs:enumeration value="VEF_Art_ConstructDeliverResourcesToFrames" />
+      <xs:enumeration value="VEF_Art_ConstructFinishFrames" />
       <xs:enumeration value="VEF_DestroyItems" />
       <xs:enumeration value="VisitSickPawn" />
     </xs:restriction>

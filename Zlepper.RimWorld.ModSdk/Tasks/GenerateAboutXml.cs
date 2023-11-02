@@ -34,7 +34,8 @@ public class GenerateAboutXml : Task
     
     [Required] public ITaskItem[] ProjectReferences { get; set; } = null!;
 
-    [Output] public string AboutXmlFileName { get; set; } = "About/About.xml";
+    private const string AboutXmlFilePath = "About/About.xml";
+    [Output] public ITaskItem AboutXmlFileName { get; set; } = new TaskItem(AboutXmlFilePath);
 
     public override bool Execute()
     {
@@ -52,7 +53,7 @@ public class GenerateAboutXml : Task
 
         AddDependencies(about);
 
-        XmlUtilities.SerializeToXml(AboutXmlFileName, about);
+        XmlUtilities.SerializeToXml(AboutXmlFilePath, about);
 
         return !Log.HasLoggedErrors;
     }

@@ -107,14 +107,14 @@
             <Output TaskParameter="MatchedReferences" ItemName="Reference"/>
             <Output TaskParameter="ModDefFiles" ItemName="RimWorldDefFiles"/>
         </CreateModAssemblyReferences>
-        
-        <Message Importance="high" Text="@(Reference)" />
+        <Message Text="Resolved Rimworld references:" />       
+        <Message Text="@(Reference, '%0a')" />
     </Target>
 
 
     <!--  Figure out which files should be copied by MSBuild  -->
     <ItemGroup>
-        <RimWorldResourceAbout Include="About\**"/>
+        <RimWorldResourceAbout Include="About\**" Exclude="About\About.xml;About/About.xml"/>
         <RimWorldResourceLanguages Include="Languages\**\*.xml"/>
         <RimWorldResourceDefs Include="Defs\**\*.xml"/>
         <RimWorldResourcePatches Include="Patches\**\*.xml"/>
@@ -131,7 +131,7 @@
     </Target>
 
     <!-- Generate the About.xml files when we build -->
-    <Target Name="GenerateAboutXml" BeforeTargets="Build" Inputs="@(RimWorldSteamModDependency)" Outputs="$(AboutXmlFileNameOutput)/about.xml">
+    <Target Name="GenerateAboutXml" BeforeTargets="Build">
         <GenerateAboutXml 
                 ModName="$(RimWorldModName)" 
                 ModPackageId="$(RimWorldPackageId)" 
@@ -147,8 +147,9 @@
                 IncompatibleWithMods="@(RimWorldIncompatibleWith)"
                 ModUrl="$(RimWorldModUrl)"
         >
-            <Output TaskParameter="AboutXmlFileName" PropertyName="AboutXmlFileNameOutput"/>
+            <Output TaskParameter="AboutXmlFileName" ItemName="RimWorldResourceAbout"/>
         </GenerateAboutXml>
+        <Message Text="Generated About.xml: @(RimWorldResourceAbout)" />
     </Target>
 
     <!--  Ensure MSBuild actually copies the required files  -->
