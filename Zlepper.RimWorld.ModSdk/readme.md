@@ -72,6 +72,10 @@ with a `ThingDefs` folder inside and add a `MyThingDef.xml` file to it. It will 
   * This also works for all the other "standard" folders RimWorld has: `About`, `Defs`, `Languages`, 
   `Textures`, `Sounds` and `Patches`. The "Assemblies" folder is generated automatically your assemblies
   when you build your project.
+* You can start Rimworld with a specific settings, mod list and saves by using the `StartArguments` property. For example, you can have a separate settings and mod lists for each solution by adding this to the `PropertyGroup`
+  ```xml
+  <StartArguments>"-savedatafolder=$(SolutionDir)/savedatafolder"</StartArguments>
+  ```
 
 
 ## Configuration
