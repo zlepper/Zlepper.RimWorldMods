@@ -149,6 +149,12 @@
         >
             <Output TaskParameter="AboutXmlFileName" PropertyName="AboutXmlFileNameOutput"/>
         </GenerateAboutXml>
+        <ItemGroup>
+            <!-- About.xml must be included explicitly if it did not existed before the build -->
+            <RimWorldResourceAbout Remove="$(AboutXmlFileNameOutput)" />
+            <RimWorldResourceAbout Include="$(AboutXmlFileNameOutput)" />
+        </ItemGroup>
+        <Message Importance="high" Text="Generated About.Xml" />
     </Target>
 
     <!--  Ensure MSBuild actually copies the required files  -->
