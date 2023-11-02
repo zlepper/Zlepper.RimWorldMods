@@ -20,9 +20,9 @@ This is a dotnet sdk that allows you to create mods for RimWorld with less messi
 
 ## Installation
 
-A word of warning: I develop on Windows and have only tested this on Windows. It should be possible to tweak enough
-settings to get it working on other platforms, but I have not done so. If you are using Linux or Mac, 
-please let me know if you want to help get it working for those platforms. 
+A word of warning: I develop on Windows and have only tested this on Windows. Thanks to @amevarashi
+this should also be working on Linux now. If you are using Mac and want to help getting this working
+on Mac, please let me know and make either an issue or a PR.  
 
 1. Make sure you have at least a DotNet 7 SDK installed: https://dotnet.microsoft.com/en-us/download
 2. Open your IDE and create a new project, the specific project type does not matter, but I recommend a class library.
