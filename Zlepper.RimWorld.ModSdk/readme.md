@@ -28,7 +28,7 @@ please let me know if you want to help get it working for those platforms.
 2. Open your IDE and create a new project, the specific project type does not matter, but I recommend a class library.
 3. Open the .csproj file and replace the content with the following:
 ```xml
-<Project Sdk="Zlepper.RimWorld.ModSdk/0.0.7">
+<Project Sdk="Zlepper.RimWorld.ModSdk/0.0.8">
 
     <PropertyGroup>
         <RimWorldModName>Your mod name</RimWorldModName>

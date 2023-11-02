@@ -13,7 +13,7 @@ get it working with some tweaking.
 Like for the normal ModSdk you have to create a new project, but instead you use this configuration in the .csproj file:
 
 ```xml
-<Project Sdk="Zlepper.RimWorld.ModSdk.Testing/0.0.7">
+<Project Sdk="Zlepper.RimWorld.ModSdk.Testing/0.0.8">
     <ItemGroup>
         <ProjectReference Include="..\MyMod\MyMod.csproj"/>
     </ItemGroup>
