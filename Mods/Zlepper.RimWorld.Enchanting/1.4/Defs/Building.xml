@@ -1,0 +1,89 @@
+﻿<Defs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="rimworld DefsSchema.xsd" xmlns="rimworld">
+
+    <ThingDef ParentName="BenchBase">
+        <defName>EnchantingTable</defName>
+        <label>Enchanting Table</label>
+        <description>Allows enchanting of gear</description>
+        <thingClass>Building_WorkTable</thingClass>
+        <graphicData>
+            <texPath>enchantingtable/enchantingtable</texPath>
+            <graphicClass>Graphic_Multi</graphicClass>
+            <drawSize>(1.2,1.2)</drawSize>
+            <damageData>
+                <cornerTL>Damage/Corner</cornerTL>
+                <cornerTR>Damage/Corner</cornerTR>
+                <cornerBL>Damage/Corner</cornerBL>
+                <cornerBR>Damage/Corner</cornerBR>
+            </damageData>
+        </graphicData>
+        <castEdgeShadows>true</castEdgeShadows>
+        <staticSunShadowHeight>0.20</staticSunShadowHeight>
+        <constructEffect>ConstructWood</constructEffect>
+        <costList>
+            <WoodLog>80</WoodLog>
+            <Gold>20</Gold>
+            <Jade>20</Jade>
+        </costList>
+        <altitudeLayer>Building</altitudeLayer>
+        <fillPercent>0.5</fillPercent>
+        <useHitPoints>true</useHitPoints>
+        <statBases>
+            <WorkToBuild>20000</WorkToBuild>
+            <MaxHitPoints>180</MaxHitPoints>
+            <Flammability>0.5</Flammability>
+        </statBases>
+        <size>(1,1)</size>
+        <designationCategory>Production</designationCategory>
+        <passability>PassThroughOnly</passability>
+        <pathCost>50</pathCost>
+        <hasInteractionCell>true</hasInteractionCell>
+        <interactionCellOffset>(0,0,-1)</interactionCellOffset>
+        <surfaceType>Item</surfaceType>
+        <constructionSkillPrerequisite>5</constructionSkillPrerequisite>
+        <recipes>
+        </recipes>
+        <inspectorTabs>
+            <li>Zlepper.RimWorld.Enchanting.Tab_EnchantingTableBills</li>
+        </inspectorTabs>
+        <comps>
+            <li Class="CompProperties_Power">
+                <compClass>CompPowerTrader</compClass>
+                <shortCircuitInRain>false</shortCircuitInRain>
+                <basePowerConsumption>100</basePowerConsumption>
+            </li>
+            <li Class="CompProperties_Flickable" />
+            <!--
+            <li Class="CompProperties_AffectedByFacilities">
+                <linkableFacilities>
+                    <li>ToolCabinet</li>
+                </linkableFacilities>
+            </li>-->
+        </comps>
+        <building>
+            <heatPerTickWhileWorking>0.10</heatPerTickWhileWorking>
+        </building>
+        <placeWorkers>
+<!--            <li>PlaceWorker_ShowFacilitiesConnections</li>-->
+            <li>PlaceWorker_PreventInteractionSpotOverlap</li>
+        </placeWorkers>
+    </ThingDef>
+
+<!--
+    <WorkGiverDef>
+        <defName>DoTraitCombine</defName>
+        <label>combine traits</label>
+        <giverClass>WorkGiver_DoBill</giverClass>
+        <workType>Research</workType>
+        <priorityInType>100</priorityInType>
+        <fixedBillGiverDefs>
+            <li>TraitCombiner</li>
+        </fixedBillGiverDefs>
+        <verb>combine</verb>
+        <gerund>combining at</gerund>
+        <requiredCapacities>
+            <li>Manipulation</li>
+        </requiredCapacities>
+        <prioritizeSustains>true</prioritizeSustains>
+    </WorkGiverDef>
+-->
+</Defs>
