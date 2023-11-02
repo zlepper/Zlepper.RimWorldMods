@@ -131,7 +131,7 @@
     </Target>
 
     <!-- Generate the About.xml files when we build -->
-    <Target Name="GenerateAboutXml" BeforeTargets="Build" Inputs="@(RimWorldSteamModDependency)" Outputs="$(AboutXmlFileNameOutput)/about.xml">
+    <Target Name="GenerateAboutXml" BeforeTargets="Build">
         <GenerateAboutXml 
                 ModName="$(RimWorldModName)" 
                 ModPackageId="$(RimWorldPackageId)" 
