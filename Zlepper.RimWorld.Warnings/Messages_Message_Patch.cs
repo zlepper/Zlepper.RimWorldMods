@@ -12,7 +12,7 @@ public static class LordJob_StageThenAttack_CreateGraph_Patch
         var attackTransition = __result.transitions.FirstOrDefault(IsAttackTransition);
         if (attackTransition == null)
         {
-            ZleppersWarningsMod.Logger.Warning("Could not find attack transition.");
+            Log.Warning("Could not find attack transition.");
             return;
         }
         

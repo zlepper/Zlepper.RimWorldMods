@@ -2,7 +2,7 @@ using HarmonyLib;
 
 namespace Zlepper.RimWorld.PersonalitySurgery;
 
-[HarmonyPatch(typeof(DefGenerator), nameof(DefGenerator.GenerateImpliedDefs_PreResolve))]
+[HarmonyPatch(typeof(DefGenerator), nameof(DefGenerator.GenerateImpliedDefs_PreResolve), typeof(bool))]
 public class DefGenerator_Patch
 {
     [HarmonyPrefix]
@@ -10,6 +10,7 @@ public class DefGenerator_Patch
     {
         try
         {
+            Log.Message("DefGenerator_Patch.Prefix");
             var recipes = new List<RecipeDef>();
             foreach (var (extractRecipe, installRecipe, traitItem) in TraitRecipeGenerator.GenerateDefs())
             {

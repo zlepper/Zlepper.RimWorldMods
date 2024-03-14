@@ -1,11 +1,14 @@
-﻿using HugsLib;
-using HugsLib.Utils;
+﻿
+using System.Reflection;
+using HarmonyLib;
 
 namespace Zlepper.RimWorld.Warnings;
 
-public class ZleppersWarningsMod : ModBase
+public class ZleppersWarningsMod : Mod
 {
-    public override string ModIdentifier => "Zlepper.RimWorld.Warnings";
-
-    public new static readonly ModLogger Logger = new ModLogger("Zlepper.RimWorld.Warnings");
+    public ZleppersWarningsMod(ModContentPack content) : base(content)
+    {
+        var harmony = new Harmony("dk.zlepper.rimworld.warnings");
+        harmony.PatchAll(Assembly.GetExecutingAssembly());
+    }
 }

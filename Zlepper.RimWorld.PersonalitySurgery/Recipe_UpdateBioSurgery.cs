@@ -8,15 +8,12 @@ public class Recipe_UpdateBioSurgery : Recipe_Surgery
     {
         if (recipe is not BaseBioRecipeDef bioRecipe)
         {
-            PersonalitySurgeryMod.ModLogger.Error(
-                $"RecipeDef {recipe.defName} is not a {typeof(BaseBioRecipeDef)}, got {recipe.GetType()}");
             return false;
         }
 
 
         if (thing is not Pawn pawn)
         {
-            PersonalitySurgeryMod.ModLogger.Trace($"Thing {thing.Label} is not a Pawn, got {thing.GetType()}");
             return false;
         }
 
@@ -52,8 +49,6 @@ public class Recipe_UpdateBioSurgery : Recipe_Surgery
     {
         if (recipe is not BaseBioRecipeDef bioRecipe)
         {
-            PersonalitySurgeryMod.ModLogger.Warning(
-                $"RecipeDef {recipe.defName} is not a {typeof(BaseBioRecipeDef)}, got {recipe.GetType()}");
             return;
         }
 
@@ -78,8 +73,6 @@ public class Recipe_UpdateBioSurgery : Recipe_Surgery
     {
         if (recipe is not BaseBioRecipeDef bioRecipe)
         {
-            PersonalitySurgeryMod.ModLogger.Warning(
-                $"RecipeDef {recipe.defName} is not a {typeof(BaseBioRecipeDef)}, got {recipe.GetType()}");
             return null;
         }
         

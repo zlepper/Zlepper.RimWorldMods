@@ -1,14 +1,18 @@
-﻿using HugsLib;
-using HugsLib.Utils;
+﻿
+using System.Reflection;
+using HarmonyLib;
 
 namespace Zlepper.RimWorld.PersonalitySurgery;
 
-[EarlyInit]
-public class PersonalitySurgeryMod : ModBase
+public class PersonalitySurgeryMod : Mod
 {
     public const string ModIdentifierValue = "Zlepper.RimWorld.PersonalitySurgery";
 
-    public override string ModIdentifier => ModIdentifierValue;
-
-    public static ModLogger ModLogger => new(ModIdentifierValue);
+    public PersonalitySurgeryMod(ModContentPack content) : base(content)
+    {
+        var harmony = new Harmony("dk.zlepper.rimworld.PersonalitySurgery");
+        harmony.PatchAll(Assembly.GetExecutingAssembly());
+    }
+    
+    
 }

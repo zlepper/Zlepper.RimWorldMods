@@ -10,6 +10,8 @@ public static class BillRepeatModeUtility_MakeConfigFloatMenu_Patches
     public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions,
         ILGenerator ilGenerator)
     {
+        
+        Log.Warning($"Running {nameof(BillRepeatModeUtility_MakeConfigFloatMenu_Patches)} transpiler");
         var windowStackProperty = typeof(Find).GetProperty(nameof(Find.WindowStack));
         if (windowStackProperty == null)
         {

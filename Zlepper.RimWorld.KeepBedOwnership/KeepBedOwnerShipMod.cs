@@ -1,8 +1,8 @@
-﻿using HugsLib;
+﻿namespace Zlepper.RimWorld.KeepBedOwnership;
 
-namespace Zlepper.RimWorld.KeepBedOwnership;
-
-public class KeepBedOwnerShipMod : ModBase
+public class KeepBedOwnerShipMod : Mod
 {
-    
+    public KeepBedOwnerShipMod(ModContentPack content) : base(content)
+    {
+    }
 }

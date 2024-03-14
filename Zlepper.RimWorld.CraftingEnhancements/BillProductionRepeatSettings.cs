@@ -7,10 +7,13 @@ public class BillProductionRepeatSettings
     public int unpauseWhenYouHave;
     public bool includeEquipped;
     public bool includeTainted;
-    public Zone_Stockpile? includeFromZone;
     public FloatRange hpRange;
     public QualityRange qualityRange;
     public bool limitToAllowedStuff;
+    public BillStoreModeDef storeMode;
+    public ISlotGroup slotGroup;
+    public ISlotGroup includeGroup;
+
 
     public BillProductionRepeatSettings(Bill_Production bill)
     {
@@ -19,10 +22,12 @@ public class BillProductionRepeatSettings
         unpauseWhenYouHave = bill.unpauseWhenYouHave;
         includeEquipped = bill.includeEquipped;
         includeTainted = bill.includeTainted;
-        includeFromZone = bill.includeFromZone;
         hpRange = bill.hpRange;
         qualityRange = bill.qualityRange;
         limitToAllowedStuff = bill.limitToAllowedStuff;
+        storeMode = bill.GetStoreMode();
+        slotGroup = bill.GetSlotGroup();
+        includeGroup = bill.GetIncludeSlotGroup();
     }
 
     public void ApplyToBill(Bill_Production bill)
@@ -35,23 +40,7 @@ public class BillProductionRepeatSettings
         bill.hpRange = hpRange;
         bill.qualityRange = qualityRange;
         bill.limitToAllowedStuff = limitToAllowedStuff;
-
-        if (includeFromZone != null)
-        {
-            var matchedZone = Find.CurrentMap?.zoneManager?.AllZones?.FirstOrDefault(s => s.ID == includeFromZone.ID);
-            if(matchedZone is Zone_Stockpile stockpile)
-            {
-                bill.includeFromZone = stockpile;
-            }
-            else
-            {
-                bill.includeFromZone = null;
-                includeFromZone = null;
-            }
-        }
-        else
-        {
-            bill.includeFromZone = null;
-        }
+        bill.SetStoreMode(storeMode, slotGroup);
+        bill.SetIncludeGroup(includeGroup);
     }
 }

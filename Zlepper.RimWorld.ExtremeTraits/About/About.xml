@@ -8,30 +8,18 @@
   <description>Adds extreme versions of all traits with multiple degrees, like Neurotic or Pretty, in both directions.</description>
   <supportedVersions>
     <li>1.4</li>
+    <li>1.5</li>
   </supportedVersions>
   <modDependencies>
-    <li>
-      <packageId>BiomesTeam.BiomesCaverns</packageId>
-      <displayName>Biomes! Caverns</displayName>
-      <steamWorkshopUrl>steam://url/CommunityFilePage/2969748433</steamWorkshopUrl>
-    </li>
     <li>
       <packageId>brrainz.harmony</packageId>
       <displayName>Harmony</displayName>
       <steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
       <downloadUrl>https://github.com/pardeike/HarmonyRimWorld</downloadUrl>
     </li>
-    <li>
-      <packageId>UnlimitedHugs.HugsLib</packageId>
-      <displayName>HugsLib</displayName>
-      <steamWorkshopUrl>steam://url/CommunityFilePage/818773962</steamWorkshopUrl>
-      <downloadUrl>https://ludeon.com/forums/index.php?topic=28066.0</downloadUrl>
-    </li>
   </modDependencies>
   <loadAfter>
-    <li>BiomesTeam.BiomesCaverns</li>
     <li>brrainz.harmony</li>
-    <li>UnlimitedHugs.HugsLib</li>
   </loadAfter>
   <loadBefore>
     <li>Zlepper.RimWorld.PersonalitySurgery</li>

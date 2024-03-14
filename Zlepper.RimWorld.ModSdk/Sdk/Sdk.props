@@ -60,7 +60,7 @@
     <PropertyGroup>
         <TargetFramework>net480</TargetFramework>
         <Nullable>enable</Nullable>
-        <LangVersion>11</LangVersion>
+        <LangVersion>12</LangVersion>
         <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
         <RimWorldImplicitUsings>enable</RimWorldImplicitUsings>
     </PropertyGroup>

@@ -1,7 +1,6 @@
 <Project Sdk="$(MSBuildProjectDirectory)\..\Zlepper.RimWorld.ModSdk">
 
     <PropertyGroup>
-        <IncludeHugsLib>true</IncludeHugsLib>
         <IncludeHarmony>true</IncludeHarmony>
         <RimWorldModName>Trait Crafting</RimWorldModName>
         <RimWorldPackageId>Zlepper.RimWorld.TraitCrafting</RimWorldPackageId>

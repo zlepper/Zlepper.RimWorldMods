@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LanguageData>
+    <Letter_LastOreMined_Label>Last ore mined</Letter_LastOreMined_Label>
+    <Letter_LastOreMined_Text>All ores on the map have been mined</Letter_LastOreMined_Text>
+    
+    <Alert_ActiveHostiles_Label>Active hostiles</Alert_ActiveHostiles_Label>
+    <Alert_ActiveHostiles_Description>There is currently at least one active hostile on the map</Alert_ActiveHostiles_Description>
+</LanguageData>

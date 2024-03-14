@@ -1,8 +1,13 @@
-﻿using HugsLib;
+﻿using System.Reflection;
+using HarmonyLib;
 
 namespace Zlepper.RimWorld.BioTechImprovements;
 
-public class BioTechImprovementsMod : ModBase
+public class BioTechImprovementsMod : Mod
 {
-    public override string ModIdentifier => "Zlepper.RimWorld.BioTechImprovements";
+    public BioTechImprovementsMod(ModContentPack content) : base(content)
+    {
+        var harmony = new Harmony("dk.zlepper.rimworld.biotech-improvements");
+        harmony.PatchAll(Assembly.GetExecutingAssembly());
+    }
 }

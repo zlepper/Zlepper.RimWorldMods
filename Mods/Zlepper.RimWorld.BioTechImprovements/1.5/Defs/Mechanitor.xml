@@ -1,0 +1,25 @@
+﻿
+<Defs xmlns="rimworld" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="rimworld DefsSchema.xsd">
+
+    <WorkTypeDef>
+        <defName>Mechanitor</defName>
+        <labelShort>mechanitor</labelShort>
+        <pawnLabel>Mechanitor</pawnLabel>
+        <gerundLabel>mechanitoring</gerundLabel>
+        <description>Craft/Gestate for mechs</description>
+        <verb>Craft at</verb>
+        <alwaysStartActive>true</alwaysStartActive>
+        <requireCapableColonist>true</requireCapableColonist>
+        <naturalPriority>335</naturalPriority>
+        <relevantSkills>
+            <li>Crafting</li>
+        </relevantSkills>
+        <workTags>
+            <li>Crafting</li>
+            <li>ManualSkilled</li>
+            <li>Commoner</li>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+
+</Defs>

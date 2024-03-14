@@ -3,7 +3,7 @@
         <TargetFramework>netstandard2.0</TargetFramework>
         <Description>Provides an SDK for easily running unit tests for RimWorld mods.</Description>
         <PackageTags>MSBuildSdk RimWorld Testing</PackageTags>
-        <ArtifactsPath>$(BaseArtifactsPath)$(MSBuildProjectName)\</ArtifactsPath>
+<!--        <ArtifactsPath>$(BaseArtifactsPath)$(MSBuildProjectName)\</ArtifactsPath>-->
         <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
         <PackageType>MSBuildSdk</PackageType>
         <Nullable>enable</Nullable>

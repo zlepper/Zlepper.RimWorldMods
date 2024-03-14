@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
+using Microsoft.Build.Framework;
+using Microsoft.Build.Utilities;
 
 namespace Zlepper.RimWorld.ModSdk.Utilities;
 
@@ -23,22 +26,29 @@ public class DefContext
     
     public bool IsDef(Type type)
     {
-        if (!type.IsClass || type.IsAbstract) return false;
+        try
+        {
+            if (!type.IsClass || type.IsAbstract) return false;
 
-        if (IsRootDefClass(type))
-        {
-            return true;
-        }
-        
-        foreach (var t in GetBaseTypes(type))
-        {
-            if (IsRootDefClass(t))
+            if (IsRootDefClass(type))
             {
                 return true;
             }
-        }
 
-        return false;
+            foreach (var t in GetBaseTypes(type))
+            {
+                if (IsRootDefClass(t))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+        catch(FileNotFoundException)
+        {
+            return false;
+        }
     }
 
     public bool IsRootDefClass(Type type)
@@ -49,6 +59,19 @@ public class DefContext
     private static readonly string _objectFullname = typeof(object).FullName;
 
     public IEnumerable<Type> GetBaseTypes(Type type)
+    {
+        try
+        {
+            var baseTypes = GetBaseTypesCore(type).ToList();
+            return baseTypes;
+        }
+        catch (FileNotFoundException)
+        {
+            return Array.Empty<Type>();
+        }
+    }
+    
+    private static IEnumerable<Type> GetBaseTypesCore(Type type)
     {
         var next = type;
         while (next.BaseType != null && next.BaseType.FullName != _objectFullname)

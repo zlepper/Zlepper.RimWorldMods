@@ -1,22 +1,18 @@
 using HarmonyLib;
-using HugsLib;
-using HugsLib.Utils;
 
 namespace Zlepper.RimWorld.ExtremeTraits;
 
-public class ExtremeTraitsMod : ModBase
+public class ExtremeTraitsMod : Mod
 {
-    public override string ModIdentifier => "Zlepper.RimWorld.ExtremeTraits";
-
-    public override void DefsLoaded()
+    public ExtremeTraitsMod(ModContentPack content) : base(content)
     {
-        if (!ModIsActive)
+        InjectedDefHasher.PrepareReflection();
+        LongEventHandler.QueueLongEvent(RegisterTraits, "RegisterExtremeTrait", true, err =>
         {
-            return;
-        }
+            Log.Error("Failed to register extreme traits: " + err);
+        });
         RegisterTraits();
     }
-
 
     private void RegisterTraits()
     {
@@ -119,9 +115,9 @@ public class ExtremeTraitsMod : ModBase
             
             foreach (var skillGain in extremeDegree.skillGains ?? new())
             {
-                var calculator = valueProvider[skillGain.Key];
-                
-                newDegree.skillGains[skillGain.Key] = (int)calculator.GetValue(actualDegreeNumber);
+                var calculator = valueProvider[skillGain.skill];
+
+                skillGain.amount = (int)calculator.GetValue(actualDegreeNumber);
             }
 
             if (extremeDegree.randomDiseaseMtbDays != 0f)
@@ -201,11 +197,11 @@ public class ExtremeTraitsMod : ModBase
         foreach (var skillGain in extremeDegree.skillGains ?? new())
         {
             var values = degrees
-                .Select(d => d.skillGains.TryGetValue(skillGain.Key, out var v) ? v : 0)
+                .Select(d => d.skillGains.FirstOrDefault(sg => sg.skill.defName == skillGain.skill.defName)?.amount ?? 0)
                 .Select(i => (float) i)
                 .ToList();
 
-            valueProvider[skillGain.Key] = StatCalculator.InferStatValues(values);
+            valueProvider[skillGain.skill.defName] = StatCalculator.InferStatValues(values);
         }
         
         if(Math.Abs(extremeDegree.socialFightChanceFactor - 1f) > float.Epsilon)
@@ -294,7 +290,11 @@ public class ExtremeTraitsMod : ModBase
             disallowedMeditationFocusTypes = sample.disallowedMeditationFocusTypes,
             mentalBreakInspirationGainChance = sample.mentalBreakInspirationGainChance,
             theOnlyAllowedMentalBreaks = sample.theOnlyAllowedMentalBreaks,
-            skillGains = sample.skillGains?.ToDictionary(s => s.Key, s => s.Value),
+            skillGains = sample.skillGains.Select(sg => new SkillGain()
+            {
+                amount = sg.amount,
+                skill = sg.skill,
+            }).ToList(),
             socialFightChanceFactor = sample.socialFightChanceFactor,
             marketValueFactorOffset = sample.marketValueFactorOffset,
             randomDiseaseMtbDays = sample.randomDiseaseMtbDays,

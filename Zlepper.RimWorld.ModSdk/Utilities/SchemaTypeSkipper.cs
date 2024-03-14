@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Reflection;
 
@@ -38,40 +39,49 @@ public class SchemaTypeSkipper
     
     private bool InternalShouldSkip(Type type)
     {
-        if (type.IsGenericParameter)
+        try
+        {
+            if (type.IsGenericParameter)
+            {
+                return true;
+            }
+
+            if (type.IsConstructedGenericType)
+            {
+                var genericTypeDefinitionFullName = type.GetGenericTypeDefinition().FullName;
+
+                var isAllowedGenericType = AllowedGenericTypes.Contains(genericTypeDefinitionFullName);
+
+                return !isAllowedGenericType || type.GetGenericArguments().Any(inner =>
+                    ShouldSkip(inner) || inner.IsConstructedGenericType &&
+                    inner.GetGenericTypeDefinition().FullName != typeof(Nullable<>).FullName);
+            }
+
+            var isEntity = _defContext.GetBaseTypes(type).Any(t => t.FullName == "Verse.Entity");
+            var isMap = type.FullName == "Verse.Map";
+            var isIdeo = type.FullName == "RimWorld.Ideo";
+            var isFaction = type.FullName == "RimWorld.Faction";
+            var isSteamRelated = type.Namespace?.StartsWith("Verse.Steam") ?? false;
+            var isDisposable = type.GetInterfaces().Any(i => i.FullName == typeof(IDisposable).FullName);
+            var isClosedFunction = IsFunctionName(type.FullName!);
+            var isComplexSketch = type.FullName == "RimWorld.ComplexSketch";
+            var isWorldObject = _defContext.GetBaseTypes(type).Any(t => t.FullName == "RimWorld.Planet.WorldObject");
+            var isWorldComponent =
+                _defContext.GetBaseTypes(type).Any(t => t.FullName == "RimWorld.Planet.WorldComponent");
+            var isMapComponent = _defContext.GetBaseTypes(type).Any(t => t.FullName == "Verse.MapComponent");
+            var isObject = type.FullName == typeof(object).FullName;
+            var isUnityType = type.FullName!.StartsWith("UnityEngine.");
+            var isGenStepParams = type.FullName == "Verse.GenStepParams";
+
+
+            return isEntity || isMap || isIdeo || isSteamRelated || isFaction || isDisposable || isClosedFunction ||
+                   isComplexSketch || isWorldObject || isObject || isUnityType || isGenStepParams || isWorldComponent ||
+                   isMapComponent;
+        }
+        catch (FileNotFoundException)
         {
             return true;
         }
-
-        if (type.IsConstructedGenericType)
-        {
-            var genericTypeDefinitionFullName = type.GetGenericTypeDefinition().FullName;
-
-            var isAllowedGenericType = AllowedGenericTypes.Contains(genericTypeDefinitionFullName);
-
-            return !isAllowedGenericType || type.GetGenericArguments().Any(inner =>
-                ShouldSkip(inner) || inner.IsConstructedGenericType &&
-                inner.GetGenericTypeDefinition().FullName != typeof(Nullable<>).FullName);
-        }
-
-        var isEntity = _defContext.GetBaseTypes(type).Any(t => t.FullName == "Verse.Entity");
-        var isMap = type.FullName == "Verse.Map";
-        var isIdeo = type.FullName == "RimWorld.Ideo";
-        var isFaction = type.FullName == "RimWorld.Faction";
-        var isSteamRelated = type.Namespace?.StartsWith("Verse.Steam") ?? false;
-        var isDisposable = type.GetInterfaces().Any(i => i.FullName == typeof(IDisposable).FullName);
-        var isClosedFunction = IsFunctionName(type.FullName!);
-        var isComplexSketch = type.FullName == "RimWorld.ComplexSketch";
-        var isWorldObject = _defContext.GetBaseTypes(type).Any(t => t.FullName == "RimWorld.Planet.WorldObject");
-        var isWorldComponent = _defContext.GetBaseTypes(type).Any(t => t.FullName == "RimWorld.Planet.WorldComponent");
-        var isMapComponent = _defContext.GetBaseTypes(type).Any(t => t.FullName == "Verse.MapComponent");
-        var isObject = type.FullName == typeof(object).FullName;
-        var isUnityType = type.FullName!.StartsWith("UnityEngine.");
-        var isGenStepParams = type.FullName == "Verse.GenStepParams";
-
-
-        return isEntity || isMap || isIdeo || isSteamRelated || isFaction || isDisposable || isClosedFunction ||
-               isComplexSketch || isWorldObject || isObject || isUnityType || isGenStepParams || isWorldComponent || isMapComponent;
     }
 
     private static bool IsFunctionName(string genericTypeDefinitionFullName)
