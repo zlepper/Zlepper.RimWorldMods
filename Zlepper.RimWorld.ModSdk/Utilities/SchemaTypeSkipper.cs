@@ -72,11 +72,11 @@ public class SchemaTypeSkipper
             var isObject = type.FullName == typeof(object).FullName;
             var isUnityType = type.FullName!.StartsWith("UnityEngine.");
             var isGenStepParams = type.FullName == "Verse.GenStepParams";
-
+            var isDelegate = typeof(Delegate).IsAssignableFrom(type); 
 
             return isEntity || isMap || isIdeo || isSteamRelated || isFaction || isDisposable || isClosedFunction ||
                    isComplexSketch || isWorldObject || isObject || isUnityType || isGenStepParams || isWorldComponent ||
-                   isMapComponent;
+                   isMapComponent || isDelegate;
         }
         catch (FileNotFoundException)
         {

@@ -1,0 +1,34 @@
+﻿<Defs xmlns="rimworld" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="rimworld DefsSchema.xsd">
+
+    <ThingDef ParentName="BodyPartArchotechBase">
+        <defName>SurgeryExtractBioTraitItem</defName>
+        <label>Bio Extract Item Base</label>
+        <description>If you got this item, then you either cheated or there is a bug somewhere</description>
+        <drawGUIOverlay>true</drawGUIOverlay>
+        <drawGUIOverlayQuality>false</drawGUIOverlayQuality>
+        <statBases>
+            <MarketValue>100</MarketValue>
+            <SellPriceFactor>0.8</SellPriceFactor>
+        </statBases>
+        <thingCategories>
+            <li>PersonalitySurgeryTraitCategory</li>
+        </thingCategories>
+        <devNote>This thing will be used as the template for all other trait specific items</devNote>
+        <tradeability>All</tradeability>
+    </ThingDef>
+
+
+    <ThingCategoryDef>
+        <defName>PersonalitySurgeryTraitCategory</defName>
+        <label>trait</label>
+        <parent>BodyParts</parent>
+    </ThingCategoryDef>
+
+    <ThingCategoryDef>
+        <defName>PersonalitySurgeryPassionCategory</defName>
+        <label>Passions</label>
+        <parent>BodyParts</parent>
+    </ThingCategoryDef>
+
+
+</Defs>

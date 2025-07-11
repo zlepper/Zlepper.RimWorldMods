@@ -1,0 +1,20 @@
+﻿<Patch>
+
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/StatDef/parts</xpath>
+        <value>
+            <li Class="Zlepper.RimWorld.Enchanting.StatPart_Enchanted">
+            </li>
+        </value>
+    </Operation>
+
+    <Operation Class="PatchOperationAdd">
+        <xpath>/Defs/ThingDef[@Name='BaseWeapon']/comps</xpath>
+        <value>
+            <li Class="Zlepper.RimWorld.Enchanting.CompProperties_Enchantable">
+            </li>
+        </value>
+    </Operation>
+
+
+</Patch>

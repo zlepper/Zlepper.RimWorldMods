@@ -1,0 +1,49 @@
+﻿<Defs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="rimworld DefsSchema.xsd" xmlns="rimworld">
+    <WorkTypeDef>
+        <defName>Meditate</defName>
+        <labelShort>meditate</labelShort>
+        <pawnLabel>Meditate</pawnLabel>
+        <gerundLabel>Meditating</gerundLabel>
+        <description>Meditate for psyfocus</description>
+        <verb>Meditate at</verb>
+        <requireCapableColonist>true</requireCapableColonist>
+        <naturalPriority>50</naturalPriority>
+        <workTags>
+            <li>AllWork</li>
+        </workTags>
+    </WorkTypeDef>
+    
+    <WorkGiverDef>
+        <defName>Meditate</defName>
+        <label>Meditate for psyfocus</label>
+        <workType>Meditate</workType>
+        <priorityInType>500</priorityInType>
+        <canBeDoneByMechs>false</canBeDoneByMechs>
+        <canBeDoneWhileDrafted>false</canBeDoneWhileDrafted>
+        <prioritizeSustains>false</prioritizeSustains>
+        <giverClass>Zlepper.RimWorld.RoyaltyImprovements.WorkGiver_Meditate</giverClass>
+        <gerund>Meditating</gerund>
+        <verb>Meditate at</verb>
+    </WorkGiverDef>
+
+
+    <JobDef>
+        <defName>MeditateMore</defName>
+        <driverClass>JobDriver_Meditate</driverClass>
+        <reportString>meditating.</reportString>
+        <joyDuration>1000</joyDuration>
+        <joyKind>Meditative</joyKind>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+    </JobDef>
+
+    <JobDef>
+        <defName>ReignMore</defName>
+        <driverClass>JobDriver_Reign</driverClass>
+        <reportString>meditating royally at</reportString>
+        <allowOpportunisticPrefix>true</allowOpportunisticPrefix>
+        <joyDuration>1000</joyDuration>
+        <joyKind>Meditative</joyKind>
+    </JobDef>
+
+
+</Defs>

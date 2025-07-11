@@ -111,7 +111,7 @@ public class ChainedFlecks
                 _source.Map.flecks.CreateFleck(creationData);
             }
 
-            _fleckTicksRemaining = subFleck.FleckDef.Lifespan.SecondsToTicks();
+            _fleckTicksRemaining = subFleck.FleckDef.Lifetime.SecondsToTicks();
         }
         else
         {

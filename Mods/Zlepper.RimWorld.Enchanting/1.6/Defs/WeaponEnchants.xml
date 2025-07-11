@@ -1,0 +1,18 @@
+﻿<Defs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="rimworld DefsSchema.xsd" xmlns="rimworld">
+    <Zlepper.RimWorld.Enchanting.EnchantDef>
+        <defName>featherWeight</defName>
+        <label>Feather Weight</label>
+        <description>Reduces the total mass of the item.</description>
+        <properties>
+            <li Class="Zlepper.RimWorld.Enchanting.WeaponEnchants.FeatherWeightEnchant_Properties">
+                <AwfulReductionPercent>-10</AwfulReductionPercent>
+                <PoorReductionPercent>-2</PoorReductionPercent>
+                <NormalReductionPercent>5</NormalReductionPercent>
+                <GoodReductionPercent>15</GoodReductionPercent>
+                <ExcellentReductionPercent>30</ExcellentReductionPercent>
+                <MasterworkReductionPercent>50</MasterworkReductionPercent>
+                <LegendaryReductionPercent>80</LegendaryReductionPercent>
+            </li>
+        </properties>
+    </Zlepper.RimWorld.Enchanting.EnchantDef>
+</Defs>

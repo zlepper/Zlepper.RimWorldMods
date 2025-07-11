@@ -20,19 +20,23 @@
         <RimWorldImplicitUsings>enable</RimWorldImplicitUsings>
     </PropertyGroup>
 
+    <!-- Find RimWorld and some special steam locations for RimWorld mods. These aren't perfect, and only really works for Windows right now -->
     <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Windows'))">
         <RimWorldPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldPath>
         <RimWorldManagedPath>$(RimWorldPath)\RimWorldWin64_Data\Managed</RimWorldManagedPath>
+        <SteamModContentFolder>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100</SteamModContentFolder>
     </PropertyGroup>
 
     <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('Linux'))">
-        <RimWorldPath>C:\Program Files (x86)\Steam\steamapps\common\RimWorld</RimWorldPath>
-        <RimWorldManagedPath>$(RimWorldPath)\RimWorldWin64_Data\Managed</RimWorldManagedPath>
+        <RimWorldPath>$(HOME)/.local/share/Steam/steamapps/common/RimWorld</RimWorldPath>
+        <RimWorldManagedPath>$(RimWorldPath)/RimWorldLinux_Data/Managed</RimWorldManagedPath>
+        <SteamModContentFolder>$(HOME)/.local/share/Steam/steamapps/workshop/content/294100</SteamModContentFolder>
     </PropertyGroup>
 
     <PropertyGroup Condition="$([MSBuild]::IsOSPlatform('OSX'))">
         <RimWorldPath>$(HOME)/Library/Application Support/Steam/steamapps/common/RimWorld/RimWorldMac.app/Contents/Resources</RimWorldPath>
         <RimWorldManagedPath>$(RimWorldPath)/Data/Managed</RimWorldManagedPath>
+        <SteamModContentFolder>C:\Program Files (x86)\Steam\steamapps\workshop\content\294100</SteamModContentFolder>
     </PropertyGroup>
 
     <ItemGroup>

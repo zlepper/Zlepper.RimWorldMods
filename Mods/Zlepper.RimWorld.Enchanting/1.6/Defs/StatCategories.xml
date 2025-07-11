@@ -1,0 +1,9 @@
+﻿<Defs xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="rimworld DefsSchema.xsd" xmlns="rimworld">
+    
+    <StatCategoryDef>
+        <defName>Enchanting</defName>
+        <label>Enchanting</label>
+        <description>Information about various enchanting things related to this item</description>
+        <displayOrder>10000</displayOrder>
+    </StatCategoryDef>
+</Defs>

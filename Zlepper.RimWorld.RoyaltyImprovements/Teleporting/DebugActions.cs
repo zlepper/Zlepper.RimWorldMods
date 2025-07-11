@@ -1,4 +1,6 @@
-﻿namespace Zlepper.RimWorld.RoyaltyImprovements.Teleporting;
+﻿using LudeonTK;
+
+namespace Zlepper.RimWorld.RoyaltyImprovements.Teleporting;
 
 public static class DebugActions
 {

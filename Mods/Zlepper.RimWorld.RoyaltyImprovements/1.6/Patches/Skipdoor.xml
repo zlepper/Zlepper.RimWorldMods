@@ -1,0 +1,23 @@
+﻿<Patch>
+    <Operation Class="PatchOperationConditional">
+        <xpath>Defs/ThingDef[defName="VPE_Skipdoor"]/comps</xpath>
+        <nomatch Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="VPE_Skipdoor"]</xpath>
+            <value>
+                <comps>
+                    <li>
+                        <compClass>Zlepper.RimWorld.RoyaltyImprovements.Teleporting.RegisterSkipdoorWhenSpawnedComp</compClass>
+                    </li>
+                </comps>
+            </value>
+        </nomatch>
+        <match Class="PatchOperationAdd">
+            <xpath>Defs/ThingDef[defName="VPE_Skipdoor"]/comps</xpath>
+            <value>
+                <li>
+                    <compClass>Zlepper.RimWorld.RoyaltyImprovements.Teleporting.RegisterSkipdoorWhenSpawnedComp</compClass>
+                </li>
+            </value>
+        </match>
+    </Operation>
+</Patch>

@@ -1,7 +1,10 @@
-﻿using HugsLib;
-
+﻿
 namespace Zlepper.RimWorld.RoyaltyImprovements;
 
-public class RoyaltyImprovementsMod : ModBase
+public class RoyaltyImprovementsMod : Mod
 {
+    public RoyaltyImprovementsMod(ModContentPack content) : base(content)
+    {
+    }
+    
 }

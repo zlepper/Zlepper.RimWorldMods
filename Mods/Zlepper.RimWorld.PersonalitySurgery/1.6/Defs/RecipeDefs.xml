@@ -1,0 +1,93 @@
+﻿
+<Defs xmlns="rimworld" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="rimworld DefsSchema.xsd">
+    
+    <RecipeDef ParentName="SurgeryFlesh">
+        <defName>SurgeryExtractBioProperty</defName>
+        <label>SurgeryExtractBioProperty_NOLABEL_THIS_SHOULD_NOT_BE_HERE</label>
+        <workerClass>Zlepper.Rimworld.PersonalitySurgery.Recipe_UpdateBioSurgery</workerClass>
+        <workAmount>2500</workAmount>
+        <isViolation>true</isViolation>
+        <hideBodyPartNames>true</hideBodyPartNames>
+        <skillRequirements>
+            <Medicine>4</Medicine>
+        </skillRequirements>
+        <recipeUsers>
+            <li>Human</li>
+        </recipeUsers>
+        <ingredients>
+            <li>
+                <filter>
+                    <categories>
+                        <li>Medicine</li>
+                    </categories>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <categories>
+                <li>Medicine</li>
+            </categories>
+        </fixedIngredientFilter>
+        <appliedOnFixedBodyParts>
+            <li>Brain</li>
+        </appliedOnFixedBodyParts>
+        <researchPrerequisites>
+            <li>PersonalitySurgery</li>
+        </researchPrerequisites>
+        <surgerySuccessChanceFactor>0.9</surgerySuccessChanceFactor>
+    </RecipeDef>
+    
+    <RecipeDef ParentName="SurgeryFlesh">
+        <defName>SurgeryInstallBioProperty</defName>
+        <label>SurgeryInstallBioProperty_NOLABEL_THIS_SHOULD_NOT_BE_HERE</label>
+        <workerClass>Zlepper.Rimworld.PersonalitySurgery.Recipe_UpdateBioSurgery</workerClass>
+        <workAmount>2500</workAmount>
+        <isViolation>true</isViolation>
+        <hideBodyPartNames>true</hideBodyPartNames>
+        <skillRequirements>
+            <Medicine>4</Medicine>
+        </skillRequirements>
+        <recipeUsers>
+            <li>Human</li>
+        </recipeUsers>
+        <ingredients>
+            <li>
+                <filter>
+                    <categories>
+                        <li>Medicine</li>
+                    </categories>
+                </filter>
+                <count>1</count>
+            </li>
+        </ingredients>
+        <fixedIngredientFilter>
+            <categories>
+                <li>Medicine</li>
+            </categories>
+        </fixedIngredientFilter>
+        <appliedOnFixedBodyParts>
+            <li>Brain</li>
+        </appliedOnFixedBodyParts>
+        <researchPrerequisites>
+            <li>PersonalitySurgery</li>
+        </researchPrerequisites>
+        <surgerySuccessChanceFactor>0.9</surgerySuccessChanceFactor>
+    </RecipeDef>
+
+
+    <ResearchProjectDef>
+        <defName>PersonalitySurgery</defName>
+        <label>personality surgery</label>
+        <description>Extract and install personality from pawns</description>
+        <baseCost>1800</baseCost>
+        <techLevel>Spacer</techLevel>
+        <prerequisites>
+            <li>MedicineProduction</li>
+        </prerequisites>
+        <requiredResearchBuilding>HiTechResearchBench</requiredResearchBuilding>
+        <researchViewX>12.00</researchViewX>
+        <researchViewY>1.0</researchViewY>
+    </ResearchProjectDef>
+
+</Defs>

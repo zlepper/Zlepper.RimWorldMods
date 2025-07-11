@@ -301,8 +301,13 @@ public class ExtremeTraitsMod : Mod
             hungerRateFactor = sample.hungerRateFactor,
             mentalStateGiverClass = sample.mentalStateGiverClass,
             abilities = sample.abilities,
-            needs = sample.needs,
+            enablesNeeds = sample.enablesNeeds,
+            disablesNeeds = sample.disablesNeeds,
             ingestibleModifiers = sample.ingestibleModifiers,
+            aptitudes = sample.aptitudes,
+            painFactor = sample.painFactor,
+            painOffset = sample.painOffset,
+            possessions = sample.possessions,
         };
     }
 

@@ -1,0 +1,11 @@
+﻿
+<Defs xmlns="rimworld" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="rimworld DefsSchema.xsd">
+
+    
+    <TransferableSorterDef>
+        <defName>Mechanitor</defName>
+        <label>Mechanitor</label>
+        <comparerClass>Zlepper.RimWorld.BioTechImprovements.TransferableComparer_Mechanitor</comparerClass>
+    </TransferableSorterDef>
+
+</Defs>

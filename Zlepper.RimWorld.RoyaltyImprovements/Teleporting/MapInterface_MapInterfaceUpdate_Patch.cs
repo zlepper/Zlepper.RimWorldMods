@@ -27,7 +27,7 @@ public class MapInterface_MapInterfaceUpdate_Patch
     [HarmonyPostfix]
     public static void Postfix_MapInterfaceOnGUI_BeforeMainTabs()
     {
-        if (!WorldRendererUtility.WorldRenderedNow)
+        if (WorldRendererUtility.DrawingMap)
         {
             if (TeleporterDebugSettings.DrawTeleporterDistances)
             {

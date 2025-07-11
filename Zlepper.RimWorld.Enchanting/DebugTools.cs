@@ -1,4 +1,6 @@
-﻿namespace Zlepper.RimWorld.Enchanting;
+﻿using LudeonTK;
+
+namespace Zlepper.RimWorld.Enchanting;
 
 public static class DebugTools
 {

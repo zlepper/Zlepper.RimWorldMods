@@ -126,6 +126,7 @@ public class GenerateXdsFilesForDefs : Task
             .OfType<string>()
             .Where(s => s.EndsWith(".dll", StringComparison.InvariantCultureIgnoreCase))
             .Prepend(coreAssembly.Location)
+            .Distinct(new AssemblyNameComparer())
             .ToList();
 
         var resolver = new PathAssemblyResolver(assemblyPaths);
@@ -147,5 +148,18 @@ public class GenerateXdsFilesForDefs : Task
 
 
         return context;
+    }
+
+    private class AssemblyNameComparer : IEqualityComparer<string>
+    {
+        public bool Equals(string x, string y)
+        {
+            return Path.GetFileName(x) == Path.GetFileName(y);
+        }
+
+        public int GetHashCode(string obj)
+        {
+            return Path.GetFileName(obj).GetHashCode();
+        }
     }
 }

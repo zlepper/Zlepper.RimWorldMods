@@ -5,8 +5,8 @@ using Verse.AI;
 
 namespace Zlepper.RimWorld.RoyaltyImprovements.Teleporting;
 
-[HarmonyPatch(typeof(PathFinder), nameof(PathFinder.FindPath),
-    typeof(IntVec3), typeof(LocalTargetInfo), typeof(TraverseParms), typeof(PathEndMode), typeof(PathFinderCostTuning)
+[HarmonyPatch(typeof(PathFinder), nameof(PathFinder.FindPathNow),
+    typeof(IntVec3), typeof(LocalTargetInfo), typeof(TraverseParms), typeof(PathFinderCostTuning?), typeof(PathEndMode), typeof(PathRequest.IPathGridCustomizer)
 )]
 public static class PathFinder_FindPath_Patch
 {

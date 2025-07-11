@@ -1,0 +1,10 @@
+<Patch>
+    <Operation Class="PatchOperationAddModExtension">
+        <xpath>Defs/TraitDef[defName="Immunity"]</xpath>
+        <value>
+            <li Class="Zlepper.RimWorld.ExtremeTraits.ExtremeTraitsModExtension">
+                <MinDegree>-4</MinDegree>
+            </li>
+        </value>
+    </Operation>
+</Patch>

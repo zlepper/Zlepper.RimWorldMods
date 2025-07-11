@@ -10,7 +10,7 @@ public class HediffCompProperties_SoulTrapped : HediffCompProperties
 
 public class HediffComp_SoulTrapped : HediffComp
 {
-    public override void Notify_PawnDied()
+    public override void Notify_PawnDied(DamageInfo? dinfo, Hediff? culprit = null)
     {
         Pawn.health.RemoveHediff(parent);
 

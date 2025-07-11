@@ -170,7 +170,7 @@ public class DefToSchemaConverter
 
         var baseType = defType.BaseType;
         if (baseType != null && baseType.FullName != typeof(object).FullName &&
-            baseType.FullName != typeof(ValueType).FullName)
+            baseType.FullName != typeof(ValueType).FullName && !_skipper.ShouldSkip(baseType))
         {
             var baseTypeSchema = CreateXmlSchemaForClass(baseType, depth + 1);
 
